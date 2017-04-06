@@ -1,0 +1,8 @@
+# cat=config/images; type=string; label=Desktop image width:Maximale image width for desktop devices
+maxDesktopImageWidth = 1920
+
+# cat=config/images; type=string; label=Tablet image width:Maximale image width for tablets
+maxTabletImageWidth = 1024
+
+# cat=config/images; type=string; label=Smartphone image width:Maximale image width for smartphones
+maxSmartphoneImageWidth = 320
