@@ -1,6 +1,5 @@
 <?php
-
-namespace Codemonkey1988\ResponsiveImages\Resource\Rendering;
+namespace Codemonkey1988\ResponsiveImages\Resource\Service;
 
 /***************************************************************
  *  This script is part of the TYPO3 project. The TYPO3 project is
