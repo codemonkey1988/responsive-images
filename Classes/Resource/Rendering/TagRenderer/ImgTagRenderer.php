@@ -32,16 +32,4 @@ class ImgTagRenderer extends AbstractTagRenderer
      * @var string
      */
     protected $tagName = 'img';
-
-    /**
-     * Extends the render function to add image processing.
-     *
-     * @param string $content
-     * @return string
-     */
-    public function render($content = '')
-    {
-
-        return parent::render($content);
-    }
 }
