@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = array(
     'category'         => 'fe',
     'contraints'       => array(
         'depends'   => array(
-            'typo3' => '7.6.0-7.6.99',
+            'typo3' => '7.6.0-8.7.99',
         ),
         'conflicts' => array(),
     ),
@@ -17,5 +17,5 @@ $EM_CONF[$_EXTKEY] = array(
     'author'           => 'Tim Schreiner',
     'author_email'     => 'schreiner.tim@gmail.com',
     'author_company'   => '',
-    'version'          => '1.0.1'
+    'version'          => '1.0.2'
 );

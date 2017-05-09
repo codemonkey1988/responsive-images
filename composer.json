@@ -3,8 +3,19 @@
   "type": "typo3-cms-extension",
   "description": "Adds responsive images support for many browser types to TYPO3 using the picture tag.",
   "homepage": "https://github.com/codemonkey1988/responsive-images/",
-  "license": ["GPL-2.0+"],
-  "keywords": ["TYPO3 CMS", "responsive_images"],
+  "license": [
+    "GPL-2.0+"
+  ],
+  "keywords": [
+    "TYPO3 CMS",
+    "responsive_images"
+  ],
+  "authors": [
+    {
+      "name": "Tim Schreiner",
+      "role": "Developer"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Codemonkey1988\\ResponsiveImages\\": "Classes/"
