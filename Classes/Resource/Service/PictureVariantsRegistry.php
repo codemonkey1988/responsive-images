@@ -1,35 +1,30 @@
 <?php
-
 namespace Codemonkey1988\ResponsiveImages\Resource\Service;
 
-/**
- * This file is part of the TYPO3 CMS project.
+/*
+ * This file is part of the TYPO3 responsive images project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
  *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
+ * For the full copyright and license information, please read
+ * LICENSE file that was distributed with this source code.
  *
- * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class PictureVariantsRegistry
- *
- * @package    Codemonkey1988\ResponsiveImages
- * @subpackage Resource\Rendering
- * @author     Tim Schreiner <schreiner.tim@gmail.com>
+ * Register class to add new image variants. Should be used in ext_localconf.php
  */
-class PictureVariantsRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class PictureVariantsRegistry implements SingletonInterface
 {
     /**
      * @var array
      */
-    protected $configs = array();
+    protected $configs = [];
 
     /**
      * @return PictureVariantsRegistry
@@ -79,7 +74,7 @@ class PictureVariantsRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function removeAllImageVariants()
     {
-        $this->configs = array();
+        $this->configs = [];
     }
 
     /**

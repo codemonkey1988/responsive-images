@@ -1,18 +1,16 @@
 <?php
-
 namespace Codemonkey1988\ResponsiveImages\Resource\Rendering;
 
-/**
- * This file is part of the TYPO3 CMS project.
+/*
+ * This file is part of the TYPO3 responsive images project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
  *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
+ * For the full copyright and license information, please read
+ * LICENSE file that was distributed with this source code.
  *
- * The TYPO3 project - inspiring people to share!
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRenderer;
@@ -32,22 +30,16 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
- * Class PictureTagRenderer
- *
- * @package    Codemonkey1988\ResponsiveImages
- * @subpackage Resource\Rendering
- * @author     Tim Schreiner <schreiner.tim@gmail.com>
+ * Class to render a picture tag with different sources and a fallback image.
  */
 class ResponsiveImage implements FileRendererInterface
 {
-    const DEFAULT_IMAGE_VARIANT_KEY = 'default';
+    const DEFAULT_IMAGE_VARIANT_KEY  = 'default';
     const REGISTER_IMAGE_VARIANT_KEY = 'IMAGE_VARIANT_KEY';
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
-
     /**
      * @var array
      */
@@ -172,12 +164,12 @@ class ResponsiveImage implements FileRendererInterface
         $imageService = $this->getImageService();
         $crop         = $file instanceof FileReference ? $file->getProperty('crop') : null;
 
-        $processingInstructions = array(
+        $processingInstructions = [
             'width'                => $width,
             'height'               => $height,
             'crop'                 => $crop,
             'additionalParameters' => $additionalParameters
-        );
+        ];
 
         return $imageService->applyProcessingInstructions($file, $processingInstructions);
     }
@@ -220,13 +212,21 @@ class ResponsiveImage implements FileRendererInterface
         $registry              = PictureVariantsRegistry::getInstance();
         $sources               = [];
 
-        if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY]) && $registry->imageVariantKeyExists($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])) {
+        if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])
+            && $registry->imageVariantKeyExists(
+                $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY]
+            )
+        ) {
             $imageVarientConfigKey = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY];
         }
 
         $imageVariantConfig = $registry->getImageVariant($imageVarientConfigKey);
-        $fallbackImage      = $this->generateImgTag($file, $imageVariantConfig->getDefaultWidth(),
-            $imageVariantConfig->getDefaultHeight(), $options);
+        $fallbackImage      = $this->generateImgTag(
+            $file,
+            $imageVariantConfig->getDefaultWidth(),
+            $imageVariantConfig->getDefaultHeight(),
+            $options
+        );
 
         foreach ($imageVariantConfig->getAllSourceConfig() as $sourceConfig) {
             $sources[] = $this->generateSource($file, $sourceConfig, $options);
@@ -247,7 +247,7 @@ class ResponsiveImage implements FileRendererInterface
      */
     protected function generateSource(FileInterface $file, $config, array $options = [])
     {
-        $srcsets              = array();
+        $srcsets              = [];
         $sourceTagRenderer    = $this->objectManager->get(SourceTagRenderer::class);
         $additionalParameters = '';
 
@@ -264,8 +264,8 @@ class ResponsiveImage implements FileRendererInterface
         }
 
         foreach ($config['srcset'] as $density => $srcstConfig) {
-            $width  = $srcstConfig['width'] ?? '';
-            $height = $srcstConfig['height'] ?? '';
+            $width  = ($srcstConfig['width']) ?: '';
+            $height = ($srcstConfig['height']) ?: '';
 
             if (isset($srcstConfig['quality']) && is_numeric($srcstConfig['quality'])) {
                 $additionalParameters .= ' -quality ' . intval($srcstConfig['quality']);

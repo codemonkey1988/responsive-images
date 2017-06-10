@@ -1,26 +1,20 @@
 <?php
-
 namespace Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer;
 
-/**
- * This file is part of the TYPO3 CMS project.
+/*
+ * This file is part of the TYPO3 responsive images project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
  *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
+ * For the full copyright and license information, please read
+ * LICENSE file that was distributed with this source code.
  *
- * The TYPO3 project - inspiring people to share!
  */
 
 /**
- * Class SourceTagRenderer
- *
- * @package    Codemonkey1988\ResponsiveImages
- * @subpackage Resource\Rendering\TagRenderer
- * @author     Tim Schreiner <schreiner.tim@gmail.com>
+ * Class to render a html source tag.
  */
 class SourceTagRenderer extends AbstractTagRenderer
 {

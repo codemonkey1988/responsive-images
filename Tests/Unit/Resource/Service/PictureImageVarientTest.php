@@ -1,30 +1,25 @@
 <?php
-
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
 
-/**
- * This file is part of the TYPO3 CMS project.
+/*
+ * This file is part of the TYPO3 responsive images project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
  *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
+ * For the full copyright and license information, please read
+ * LICENSE file that was distributed with this source code.
  *
- * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
 
 /**
- * Class GeneralUtilityTest
- *
- * @package    Codemonkey1988\ResponsiveImages
- * @subpackage Tests\Unit\ViewHelpers
- * @author     Tim Schreiner <schreiner.tim@gmail.com>
+ * Test class for \Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant
  */
-class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PictureImageVariantTest extends UnitTestCase
 {
     /**
      * Test if the default width can be set.
@@ -61,6 +56,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @test
      * @return void
+     * @throws \PHPUnit_Framework_AssertionFailedError
      */
     public function testAddSingleSourceConfig()
     {
@@ -89,6 +85,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @test
      * @return void
+     * @throws \PHPUnit_Framework_AssertionFailedError
      */
     public function testAddMultipleSourceConfig()
     {
