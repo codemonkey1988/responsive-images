@@ -3,9 +3,7 @@
   "type": "typo3-cms-extension",
   "description": "Adds responsive images support for many browser types to TYPO3 using the picture tag.",
   "homepage": "https://github.com/codemonkey1988/responsive-images/",
-  "license": [
-    "GPL-2.0+"
-  ],
+  "license": "GPL-2.0+",
   "keywords": [
     "TYPO3 CMS",
     "responsive_images"
@@ -16,9 +14,47 @@
       "role": "Developer"
     }
   ],
+  "require": {
+    "php": ">=5.6.0",
+
+    "typo3/cms-backend": "^7.6 || ^8.7",
+    "typo3/cms-core": "^7.6 || ^8.7",
+    "typo3/cms-extbase": "^7.6 || ^8.7",
+    "typo3/cms-fluid": "^7.6 || ^8.7",
+    "typo3/cms-install": "^7.6 || ^8.7"
+  },
+  "require-dev": {
+    "typo3/cms": "^8.7",
+    "symfony/filesystem": "^3.2",
+    "nimut/testing-framework": "^1.0",
+    "mikey179/vfsStream": "~1.6.0"
+  },
   "autoload": {
     "psr-4": {
       "Codemonkey1988\\ResponsiveImages\\": "Classes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Codemonkey1988\\ResponsiveImages\\Tests\\": "Tests/",
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+    }
+  },
+  "replace": {
+    "responsive_images": "self.version",
+    "typo3-ter/responsive-images": "self.version"
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web",
+      "Package": {
+        "partOfMinimalUsableSystem": true
+      }
     }
   }
 }
