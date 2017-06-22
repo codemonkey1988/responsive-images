@@ -45,8 +45,8 @@ before_script:
 script:
   - >
     echo "Running php lint..."
-    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
+    find . -name \*.php ! -path "./.Build/*"  -exec php -d display_errors=stderr -l {} > /dev/null \;
   - >
     echo "Running unit and functional tests..."
-    .Build/bin/phpunit;
+    .Build/bin/phpunit
 
