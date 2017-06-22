@@ -24,12 +24,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Codemonkey1988\\ResponsiveImages\\": "Classes/"
+      "Codemonkey1988\\ResponsiveImages\\": "Classes"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Codemonkey1988\\ResponsiveImages\\Tests\\": "Tests/"
+      "Codemonkey1988\\ResponsiveImages\\Tests\\": "Tests"
     }
   },
   "replace": {
@@ -39,6 +39,12 @@
   "config": {
     "vendor-dir": ".Build/vendor",
     "bin-dir": ".Build/bin"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "mkdir -p .Build/Web/typo3conf/ext/",
+      "[ -L .Build/Web/typo3conf/ext/responsive_images ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/responsive_images"
+    ]
   },
   "extra": {
     "typo3/cms": {
