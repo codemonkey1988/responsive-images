@@ -13,9 +13,9 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
  *
  */
 
+use Codemonkey1988\ResponsiveImages\ViewHelpers\RestoreRegisterViewHelper;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use Codemonkey1988\ResponsiveImages\ViewHelpers\RestoreRegisterViewHelper;
 
 /**
  * Test class \Codemonkey1988\ResponsiveImages\ViewHelpers\RestoreRegisterViewHelper
@@ -32,7 +32,7 @@ class RestoreRegisterViewHelperTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->tsfe      = $this->getAccessibleMock(
+        $this->tsfe = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
             ['dummy'],
             [],
@@ -46,12 +46,12 @@ class RestoreRegisterViewHelperTest extends UnitTestCase
      * Test if the RestoreRegisterViewHelper resets the registry stack.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_Exception
+     * @return void
      */
     public function variableIsRestored()
     {
-        $registerVariableName  = 'TEST_VARIABLE';
+        $registerVariableName = 'TEST_VARIABLE';
         $registerVariableValue = 'Some value';
 
         array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);

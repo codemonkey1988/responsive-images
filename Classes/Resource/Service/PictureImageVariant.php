@@ -53,7 +53,7 @@ class PictureImageVariant
     public function addSourceConfig($media, array $srcsets)
     {
         $this->sources[] = [
-            'media'  => $media,
+            'media' => $media,
             'srcset' => $srcsets,
         ];
 

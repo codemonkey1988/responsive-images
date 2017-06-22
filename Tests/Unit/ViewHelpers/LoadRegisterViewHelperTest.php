@@ -13,9 +13,9 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
  *
  */
 
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
@@ -32,7 +32,7 @@ class LoadRegisterViewHelperTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->tsfe      = $this->getAccessibleMock(
+        $this->tsfe = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
             ['dummy'],
             [],
@@ -50,7 +50,7 @@ class LoadRegisterViewHelperTest extends UnitTestCase
      */
     public function variableIsSet()
     {
-        $registerVariableName  = 'TEST_VARIABLE';
+        $registerVariableName = 'TEST_VARIABLE';
         $registerVariableValue = 'Some value';
 
         /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */

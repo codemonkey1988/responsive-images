@@ -19,22 +19,18 @@ use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\SourceTagRend
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extbase\Service\ImageService;
 
 /**
  * Class to render a picture tag with different sources and a fallback image.
  */
 class ResponsiveImage implements FileRendererInterface
 {
-    const DEFAULT_IMAGE_VARIANT_KEY  = 'default';
+    const DEFAULT_IMAGE_VARIANT_KEY = 'default';
     const REGISTER_IMAGE_VARIANT_KEY = 'IMAGE_VARIANT_KEY';
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -61,7 +57,7 @@ class ResponsiveImage implements FileRendererInterface
     {
         /** @var EnvironmentService $evironmentService */
         $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
-        $registry          = PictureVariantsRegistry::getInstance();
+        $registry = PictureVariantsRegistry::getInstance();
 
         return $evironmentService->isEnvironmentInFrontendMode()
             && $registry->imageVariantKeyExists(self::DEFAULT_IMAGE_VARIANT_KEY)
@@ -85,9 +81,8 @@ class ResponsiveImage implements FileRendererInterface
         // Check if a responsive image tag should be rendered. If not, just return the normal image tag.
         if (isset($options['disablePictureTag']) && $options['disablePictureTag'] == true) {
             return $this->generateImgTag($file, $width, $height, $options);
-        } else {
-            return $this->generatePictureTag($file, $width, $height, $options);
         }
+        return $this->generatePictureTag($file, $width, $height, $options);
     }
 
     /**
@@ -102,7 +97,7 @@ class ResponsiveImage implements FileRendererInterface
     protected function generateImgTag(FileInterface $file, $width, $height, array $options = [])
     {
         $allowedAdditionalAttributes = ['alt', 'title', 'class', 'id', 'lang', 'style', 'accesskey', 'tabindex', 'onclick'];
-        $additionalParameters        = '';
+        $additionalParameters = '';
 
         if (isset($options['grayscale']) && $options['grayscale'] == true) {
             $additionalParameters .= ' -colorspace Gray';
@@ -162,13 +157,13 @@ class ResponsiveImage implements FileRendererInterface
     protected function processImage(FileInterface $file, $width, $height, $additionalParameters = '')
     {
         $imageService = $this->getImageService();
-        $crop         = $file instanceof FileReference ? $file->getProperty('crop') : null;
+        $crop = $file instanceof FileReference ? $file->getProperty('crop') : null;
 
         $processingInstructions = [
-            'width'                => $width,
-            'height'               => $height,
-            'crop'                 => $crop,
-            'additionalParameters' => $additionalParameters
+            'width' => $width,
+            'height' => $height,
+            'crop' => $crop,
+            'additionalParameters' => $additionalParameters,
         ];
 
         return $imageService->applyProcessingInstructions($file, $processingInstructions);
@@ -207,10 +202,10 @@ class ResponsiveImage implements FileRendererInterface
     protected function generatePictureTag(FileInterface $file, $width, $height, array $options = [])
     {
         /** @var PictureTagRenderer $pictureTagRenderer */
-        $pictureTagRenderer    = $this->objectManager->get(PictureTagRenderer::class);
+        $pictureTagRenderer = $this->objectManager->get(PictureTagRenderer::class);
         $imageVarientConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
-        $registry              = PictureVariantsRegistry::getInstance();
-        $sources               = [];
+        $registry = PictureVariantsRegistry::getInstance();
+        $sources = [];
 
         if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])
             && $registry->imageVariantKeyExists(
@@ -221,7 +216,7 @@ class ResponsiveImage implements FileRendererInterface
         }
 
         $imageVariantConfig = $registry->getImageVariant($imageVarientConfigKey);
-        $fallbackImage      = $this->generateImgTag(
+        $fallbackImage = $this->generateImgTag(
             $file,
             $imageVariantConfig->getDefaultWidth(),
             $imageVariantConfig->getDefaultHeight(),
@@ -234,9 +229,8 @@ class ResponsiveImage implements FileRendererInterface
 
         if ($sources) {
             return $pictureTagRenderer->render(implode('', $sources) . $fallbackImage);
-        } else {
-            return $fallbackImage;
         }
+        return $fallbackImage;
     }
 
     /**
@@ -247,8 +241,8 @@ class ResponsiveImage implements FileRendererInterface
      */
     protected function generateSource(FileInterface $file, $config, array $options = [])
     {
-        $srcsets              = [];
-        $sourceTagRenderer    = $this->objectManager->get(SourceTagRenderer::class);
+        $srcsets = [];
+        $sourceTagRenderer = $this->objectManager->get(SourceTagRenderer::class);
         $additionalParameters = '';
 
         if (isset($options['grayscale']) && $options['grayscale'] == true) {
@@ -264,7 +258,7 @@ class ResponsiveImage implements FileRendererInterface
         }
 
         foreach ($config['srcset'] as $density => $srcstConfig) {
-            $width  = ($srcstConfig['width']) ?: '';
+            $width = ($srcstConfig['width']) ?: '';
             $height = ($srcstConfig['height']) ?: '';
 
             if (isset($srcstConfig['quality']) && is_numeric($srcstConfig['quality'])) {

@@ -40,8 +40,8 @@ class PictureTagRendererTest extends UnitTestCase
      * Test rendering a picture-tag without any attributes but with content.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function testRenderPictureWithoutAttributes()
     {
@@ -57,8 +57,8 @@ class PictureTagRendererTest extends UnitTestCase
      * Test rendering a picture-tag with class attribute and content.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function testRenderPictureWitClassAttribute()
     {

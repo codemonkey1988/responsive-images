@@ -23,10 +23,10 @@ class ConfigurationUtility
      *
      * @return array
      */
-    static public function getExtensionConfig()
+    public static function getExtensionConfig()
     {
-        $desktopWidth    = 1920;
-        $tabletWidth     = 1024;
+        $desktopWidth = 1920;
+        $tabletWidth = 1024;
         $smartphoneWidth = 320;
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images'])) {
@@ -49,8 +49,8 @@ class ConfigurationUtility
         }
 
         return [
-            'maxDesktopImageWidth'    => $desktopWidth,
-            'maxTabletImageWidth'     => $tabletWidth,
+            'maxDesktopImageWidth' => $desktopWidth,
+            'maxTabletImageWidth' => $tabletWidth,
             'maxSmartphoneImageWidth' => $smartphoneWidth,
         ];
     }

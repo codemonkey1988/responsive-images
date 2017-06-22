@@ -40,8 +40,8 @@ class SourceTagRendererTest extends UnitTestCase
      * Test rendering a source-tag with media and srcset attribute.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function testRenderSourceWithDefaultAttributes()
     {

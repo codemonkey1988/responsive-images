@@ -40,8 +40,8 @@ class ImgTagRendererTest extends UnitTestCase
      * Test rendering an img-tag with src and alt attribute.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function testRenderImageTagWithMinimumAttributes()
     {
@@ -59,8 +59,8 @@ class ImgTagRendererTest extends UnitTestCase
      * Test rendering an img-tag with src, alt, width, height and title attribute.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function testRenderImageTagWithStandardAttributes()
     {

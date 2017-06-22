@@ -13,8 +13,8 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Utility;
  *
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility
@@ -25,15 +25,15 @@ class ConfigurationUtilityTest extends UnitTestCase
      * Test is the default extension config is loaded correctly.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function defaultExtensionConfig()
     {
         $extensionConfig = ConfigurationUtility::getExtensionConfig();
-        $expectedConfig  = [
-            'maxDesktopImageWidth'    => 1920,
-            'maxTabletImageWidth'     => 1024,
+        $expectedConfig = [
+            'maxDesktopImageWidth' => 1920,
+            'maxTabletImageWidth' => 1024,
             'maxSmartphoneImageWidth' => 320,
         ];
 
@@ -45,24 +45,24 @@ class ConfigurationUtilityTest extends UnitTestCase
      * Test if user changes to the extension config are loaded correctly.
      *
      * @test
-     * @return void
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
      */
     public function customExtensionConfig()
     {
         // Setup the data.
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images'] = serialize(
             [
-                'maxDesktopImageWidth'    => '2560',
-                'maxTabletImageWidth'     => '1280',
+                'maxDesktopImageWidth' => '2560',
+                'maxTabletImageWidth' => '1280',
                 'maxSmartphoneImageWidth' => '360',
             ]
         );
 
         $extensionConfig = ConfigurationUtility::getExtensionConfig();
-        $expectedConfig  = [
-            'maxDesktopImageWidth'    => 2560,
-            'maxTabletImageWidth'     => 1280,
+        $expectedConfig = [
+            'maxDesktopImageWidth' => 2560,
+            'maxTabletImageWidth' => 1280,
             'maxSmartphoneImageWidth' => 360,
         ];
 
