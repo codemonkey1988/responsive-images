@@ -1,7 +1,7 @@
 <phpunit
 		backupGlobals="true"
 		backupStaticAttributes="false"
-		bootstrap=".Build/vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php"
+		bootstrap="../../../../../typo3/sysext/core/Build/UnitTestsBootstrap.php"
 		colors="true"
 		convertErrorsToExceptions="true"
 		convertWarningsToExceptions="true"
@@ -11,11 +11,13 @@
 		stopOnFailure="false"
 		stopOnIncomplete="false"
 		stopOnSkipped="false"
-		verbose="true"
->
+		strict="false"
+		verbose="false">
+
 	<testsuites>
-		<testsuite name="TYPO3 Responsive Images Tests">
-			<directory>./Tests/Unit/</directory>
+		<testsuite name="EXT:responsive_images tests">
+			<directory>../Unit/</directory>
 		</testsuite>
 	</testsuites>
+
 </phpunit>

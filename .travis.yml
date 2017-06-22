@@ -53,5 +53,5 @@ script:
   - >
     echo;
     echo "Running unit and functional tests..."
-    .Build/bin/phpunit
+    .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
 
