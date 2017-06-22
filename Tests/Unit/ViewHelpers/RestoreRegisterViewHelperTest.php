@@ -14,7 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
  */
 
 use Codemonkey1988\ResponsiveImages\ViewHelpers\RestoreRegisterViewHelper;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**

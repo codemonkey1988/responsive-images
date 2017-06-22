@@ -13,12 +13,9 @@
 		stopOnSkipped="false"
 		verbose="true"
 >
-	<php>
-		<env name="TYPO3_VERSION" value="^8.7" />
-	</php>
 	<testsuites>
 		<testsuite name="TYPO3 Responsive Images Tests">
-			<directory>./Tests/Unit/*/</directory>
+			<directory>./Tests/Unit/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>
