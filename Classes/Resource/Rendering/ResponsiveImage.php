@@ -176,7 +176,7 @@ class ResponsiveImage implements FileRendererInterface
             'width' => $width,
             'height' => $height,
             'crop' => $crop,
-            'additionalParameters' => $additionalParameters,
+            'additionalParameters' => $additionalParameters
         ];
 
         $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
