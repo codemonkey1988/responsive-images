@@ -187,7 +187,9 @@ class ResponsiveImage implements FileRendererInterface
                 'width' => $processedImage->getProperty('width') * $relativeScalingWidth,
             ];
 
-            $processedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
+            $scaleProcessedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
+            $processedImage->delete(true);
+            return $scaleProcessedImage;
         }
 
         return $processedImage;
