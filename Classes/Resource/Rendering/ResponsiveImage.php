@@ -176,7 +176,7 @@ class ResponsiveImage implements FileRendererInterface
             'width' => $width,
             'height' => $height,
             'crop' => $crop,
-            'additionalParameters' => $additionalParameters
+            'additionalParameters' => $additionalParameters,
         ];
 
         $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
@@ -184,7 +184,7 @@ class ResponsiveImage implements FileRendererInterface
         if ($relativeScalingWidth > 0) {
             $relativeScalingProcessingInstructions = [
                 'crop' => false,
-                'width' => $width * $relativeScalingWidth
+                'width' => $width * $relativeScalingWidth,
             ];
 
             $processedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
