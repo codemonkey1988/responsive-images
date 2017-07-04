@@ -84,7 +84,7 @@ class ResponsiveImage implements FileRendererInterface
         if (!array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options)
             && isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY])
         ) {
-            $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY];
+            $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] = (float) $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY];
         }
 
         // Check if a responsive image tag should be rendered. If not, just return the normal image tag.
