@@ -112,7 +112,9 @@ class ResponsiveImage implements FileRendererInterface
             $additionalParameters .= ' -colorspace Gray';
         }
 
-        $processedImage = $this->processImage($file, $width, $height, $additionalParameters);
+        $relativeScalingWidth = array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options) ? $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] : 0;
+
+        $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
 
         /** @var ImgTagRenderer $tagRenderer */
         $tagRenderer = $this->objectManager->get(ImgTagRenderer::class);
@@ -158,12 +160,14 @@ class ResponsiveImage implements FileRendererInterface
      * Processes an image.
      *
      * @param FileInterface $file
-     * @param int|string    $width
-     * @param int|string    $height
-     * @param string        $additionalParameters
+     * @param int|string $width
+     * @param int|string $height
+     * @param float $relativeScalingWidth
+     * @param string $additionalParameters
      * @return FileInterface
+     * @internal param int $relativeScaling
      */
-    protected function processImage(FileInterface $file, $width, $height, $additionalParameters = '')
+    protected function processImage(FileInterface $file, $width, $height, $relativeScalingWidth = 0.0, $additionalParameters = '')
     {
         $imageService = $this->getImageService();
         $crop = $file instanceof FileReference ? $file->getProperty('crop') : null;
@@ -175,7 +179,18 @@ class ResponsiveImage implements FileRendererInterface
             'additionalParameters' => $additionalParameters,
         ];
 
-        return $imageService->applyProcessingInstructions($file, $processingInstructions);
+        $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
+
+        if ($relativeScalingWidth > 0) {
+            $relativeScalingProcessingInstructions = [
+                'crop' => false,
+                'width' => $width * $relativeScalingWidth
+            ];
+
+            $processedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
+        }
+
+        return $processedImage;
     }
 
     /**
@@ -266,6 +281,8 @@ class ResponsiveImage implements FileRendererInterface
             $sourceTagRenderer->addAttribute('media', $config['media']);
         }
 
+        $relativeScalingWidth = array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options) ? $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] : 0;
+
         foreach ($config['srcset'] as $density => $srcstConfig) {
             $width = ($srcstConfig['width']) ?: '';
             $height = ($srcstConfig['height']) ?: '';
@@ -274,7 +291,7 @@ class ResponsiveImage implements FileRendererInterface
                 $additionalParameters .= ' -quality ' . intval($srcstConfig['quality']);
             }
 
-            $processedImage = $this->processImage($file, $width, $height, $additionalParameters);
+            $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
 
             $srcsets[] = $this->getImageUri($processedImage) . ' ' . $density;
         }
