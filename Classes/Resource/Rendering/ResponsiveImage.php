@@ -17,6 +17,7 @@ use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRendere
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\PictureTagRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\SourceTagRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
@@ -170,14 +171,20 @@ class ResponsiveImage implements FileRendererInterface
     protected function processImage(FileInterface $file, $width, $height, $relativeScalingWidth = 0.0, $additionalParameters = '')
     {
         $imageService = $this->getImageService();
-        $crop = $file instanceof FileReference ? $file->getProperty('crop') : null;
-
         $processingInstructions = [
             'width' => $width,
             'height' => $height,
-            'crop' => $crop,
             'additionalParameters' => $additionalParameters,
         ];
+
+        if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {
+            $cropString = $file instanceof FileReference ? $file->getProperty('crop') : '';
+            $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+            $cropArea = $cropVariantCollection->getCropArea('default');
+            $processingInstructions['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
+        } else {
+            $processingInstructions['crop'] = $file instanceof FileReference ? $file->getProperty('crop') : null;
+        }
 
         $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
 
