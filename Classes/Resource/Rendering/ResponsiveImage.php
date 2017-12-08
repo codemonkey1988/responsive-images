@@ -17,6 +17,7 @@ use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRendere
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\PictureTagRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\SourceTagRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
@@ -32,6 +33,9 @@ class ResponsiveImage implements FileRendererInterface
 {
     const DEFAULT_IMAGE_VARIANT_KEY = 'default';
     const REGISTER_IMAGE_VARIANT_KEY = 'IMAGE_VARIANT_KEY';
+    const REGISTER_IMAGE_RELATVE_WIDTH_KEY = 'IMAGE_RELATIVE_WIDTH_KEY';
+    const OPTIONS_IMAGE_RELATVE_WIDTH_KEY = 'relativeScalingWidth';
+
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
@@ -78,6 +82,12 @@ class ResponsiveImage implements FileRendererInterface
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
+        if (!array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options)
+            && isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY])
+        ) {
+            $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] = (float) $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY];
+        }
+
         // Check if a responsive image tag should be rendered. If not, just return the normal image tag.
         if (isset($options['disablePictureTag']) && $options['disablePictureTag'] == true) {
             return $this->generateImgTag($file, $width, $height, $options);
@@ -103,7 +113,9 @@ class ResponsiveImage implements FileRendererInterface
             $additionalParameters .= ' -colorspace Gray';
         }
 
-        $processedImage = $this->processImage($file, $width, $height, $additionalParameters);
+        $relativeScalingWidth = array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options) ? $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] : 0;
+
+        $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
 
         /** @var ImgTagRenderer $tagRenderer */
         $tagRenderer = $this->objectManager->get(ImgTagRenderer::class);
@@ -149,24 +161,45 @@ class ResponsiveImage implements FileRendererInterface
      * Processes an image.
      *
      * @param FileInterface $file
-     * @param int|string    $width
-     * @param int|string    $height
-     * @param string        $additionalParameters
+     * @param int|string $width
+     * @param int|string $height
+     * @param float $relativeScalingWidth
+     * @param string $additionalParameters
      * @return FileInterface
+     * @internal param int $relativeScaling
      */
-    protected function processImage(FileInterface $file, $width, $height, $additionalParameters = '')
+    protected function processImage(FileInterface $file, $width, $height, $relativeScalingWidth = 0.0, $additionalParameters = '')
     {
         $imageService = $this->getImageService();
-        $crop = $file instanceof FileReference ? $file->getProperty('crop') : null;
-
         $processingInstructions = [
             'width' => $width,
             'height' => $height,
-            'crop' => $crop,
             'additionalParameters' => $additionalParameters,
         ];
 
-        return $imageService->applyProcessingInstructions($file, $processingInstructions);
+        if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {
+            $cropString = $file instanceof FileReference ? $file->getProperty('crop') : '';
+            $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+            $cropArea = $cropVariantCollection->getCropArea('default');
+            $processingInstructions['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
+        } else {
+            $processingInstructions['crop'] = $file instanceof FileReference ? $file->getProperty('crop') : null;
+        }
+
+        $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
+
+        if ($relativeScalingWidth > 0) {
+            $relativeScalingProcessingInstructions = [
+                'crop' => false,
+                'width' => $processedImage->getProperty('width') * $relativeScalingWidth,
+            ];
+
+            $scaleProcessedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
+            $processedImage->delete(true);
+            return $scaleProcessedImage;
+        }
+
+        return $processedImage;
     }
 
     /**
@@ -257,6 +290,8 @@ class ResponsiveImage implements FileRendererInterface
             $sourceTagRenderer->addAttribute('media', $config['media']);
         }
 
+        $relativeScalingWidth = array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options) ? $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] : 0;
+
         foreach ($config['srcset'] as $density => $srcstConfig) {
             $width = ($srcstConfig['width']) ?: '';
             $height = ($srcstConfig['height']) ?: '';
@@ -265,7 +300,7 @@ class ResponsiveImage implements FileRendererInterface
                 $additionalParameters .= ' -quality ' . intval($srcstConfig['quality']);
             }
 
-            $processedImage = $this->processImage($file, $width, $height, $additionalParameters);
+            $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
 
             $srcsets[] = $this->getImageUri($processedImage) . ' ' . $density;
         }
