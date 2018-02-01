@@ -118,7 +118,7 @@ class ResponsiveImage implements FileRendererInterface
 
         $relativeScalingWidth = array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options) ? $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] : 0;
 
-        $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
+        $processedImage = $this->processImage($file, $width, $height, 'default', $relativeScalingWidth, $additionalParameters);
 
         /** @var ImgTagRenderer $tagRenderer */
         $tagRenderer = $this->objectManager->get(ImgTagRenderer::class);
@@ -166,12 +166,13 @@ class ResponsiveImage implements FileRendererInterface
      * @param FileInterface $file
      * @param int|string $width
      * @param int|string $height
+     * @param string $croppingVariantKey
      * @param float $relativeScalingWidth
      * @param string $additionalParameters
      * @return FileInterface
      * @internal param int $relativeScaling
      */
-    protected function processImage(FileInterface $file, $width, $height, $relativeScalingWidth = 0.0, $additionalParameters = '')
+    protected function processImage(FileInterface $file, $width, $height, $croppingVariantKey = 'default', $relativeScalingWidth = 0.0, $additionalParameters = '')
     {
         if (!$this->isAnimatedGif) {
             $imageService = $this->getImageService();
@@ -184,7 +185,7 @@ class ResponsiveImage implements FileRendererInterface
             if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {
                 $cropString = $file instanceof FileReference ? $file->getProperty('crop') : '';
                 $cropVariantCollection = CropVariantCollection::create((string)$cropString);
-                $cropArea = $cropVariantCollection->getCropArea('default');
+                $cropArea = $cropVariantCollection->getCropArea($croppingVariantKey);
                 $processingInstructions['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
             } else {
                 $processingInstructions['crop'] = $file instanceof FileReference ? $file->getProperty('crop') : null;
@@ -284,6 +285,7 @@ class ResponsiveImage implements FileRendererInterface
         $srcsets = [];
         $sourceTagRenderer = $this->objectManager->get(SourceTagRenderer::class);
         $additionalParameters = '';
+        $croppingVariantKey = (!empty($config['croppingVariantKey'])) ? $config['croppingVariantKey'] : 'default';
 
         if (isset($options['grayscale']) && $options['grayscale'] == true) {
             $additionalParameters .= ' -colorspace Gray';
@@ -307,7 +309,7 @@ class ResponsiveImage implements FileRendererInterface
                 $additionalParameters .= ' -quality ' . intval($srcstConfig['quality']);
             }
 
-            $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
+            $processedImage = $this->processImage($file, $width, $height, $croppingVariantKey, $relativeScalingWidth, $additionalParameters);
 
             $srcsets[] = $this->getImageUri($processedImage) . ' ' . $density;
         }
