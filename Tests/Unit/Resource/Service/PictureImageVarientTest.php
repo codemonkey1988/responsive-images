@@ -69,6 +69,8 @@ class PictureImageVariantTest extends UnitTestCase
             0 => [
                 'media' => $media,
                 'srcset' => $srcsets,
+                'croppingVariantKey' => 'default'
+
             ],
         ];
 
@@ -103,10 +105,12 @@ class PictureImageVariantTest extends UnitTestCase
             0 => [
                 'media' => $media1,
                 'srcset' => $srcset1,
+                'croppingVariantKey' => 'default'
             ],
             1 => [
                 'media' => $media2,
                 'srcset' => $srcset2,
+                'croppingVariantKey' => 'default'
             ],
         ];
 
@@ -114,6 +118,81 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media1, $srcset1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2);
+
+        $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
+        $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
+    }
+
+    /**
+     * Tests if a source configuration can be added with a custo mcropping variant key
+     *
+     * @test
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
+     */
+    public function testAddSingleSourceConfigWithCroppingVariantKey()
+    {
+        $croppingVariantKey = 'mobile';
+        $media = '(max-width: 64em)';
+        $srcsets = [
+            '1x' => ['width' => '1280c', 'height' => '600c', 'quality' => '80'],
+            '2x' => ['width' => '2560c', 'height' => '1200c', 'quality' => '50'],
+        ];
+        $expected = [
+            0 => [
+                'media' => $media,
+                'srcset' => $srcsets,
+                'croppingVariantKey' => $croppingVariantKey
+
+            ],
+        ];
+
+        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant->addSourceConfig($media, $srcsets, $croppingVariantKey);
+
+        $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
+        $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
+    }
+
+    /**
+     * Tests if a multiple source configurations can be added.
+     *
+     * @test
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @return void
+     */
+    public function testAddMultipleSourceConfigWithCroppingVariantKey()
+    {
+        $croppingVariantKey1 = 'mobile';
+        $croppingVariantKey2 = 'desktop';
+        $media1 = '(max-width: 64em)';
+        $media2 = '(max-width: 40em)';
+        $srcset1 = [
+            '1x' => ['width' => '1280c', 'height' => '600c', 'quality' => '80'],
+            '2x' => ['width' => '2560c', 'height' => '1200c', 'quality' => '50'],
+        ];
+        $srcset2 = [
+            '1x' => ['width' => '360c', 'height' => '200c', 'quality' => '50'],
+            '2x' => ['width' => '7200c', 'height' => '400c', 'quality' => '60'],
+        ];
+        $expected = [
+            0 => [
+                'media' => $media1,
+                'srcset' => $srcset1,
+                'croppingVariantKey' => $croppingVariantKey1
+            ],
+            1 => [
+                'media' => $media2,
+                'srcset' => $srcset2,
+                'croppingVariantKey' => $croppingVariantKey2
+            ],
+        ];
+
+        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant->addSourceConfig($media1, $srcset1, $croppingVariantKey1);
+        $pictureImageVariant->addSourceConfig($media2, $srcset2, $croppingVariantKey2);
 
         $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
         $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
