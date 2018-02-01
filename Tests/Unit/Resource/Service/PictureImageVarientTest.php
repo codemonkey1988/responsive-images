@@ -142,6 +142,7 @@ class PictureImageVariantTest extends UnitTestCase
                 'media' => $media,
                 'srcset' => $srcsets,
                 'croppingVariantKey' => $croppingVariantKey,
+
             ],
         ];
 
