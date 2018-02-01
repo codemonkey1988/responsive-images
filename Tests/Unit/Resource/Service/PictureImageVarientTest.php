@@ -69,8 +69,7 @@ class PictureImageVariantTest extends UnitTestCase
             0 => [
                 'media' => $media,
                 'srcset' => $srcsets,
-                'croppingVariantKey' => 'default'
-
+                'croppingVariantKey' => 'default',
             ],
         ];
 
@@ -105,12 +104,12 @@ class PictureImageVariantTest extends UnitTestCase
             0 => [
                 'media' => $media1,
                 'srcset' => $srcset1,
-                'croppingVariantKey' => 'default'
+                'croppingVariantKey' => 'default',
             ],
             1 => [
                 'media' => $media2,
                 'srcset' => $srcset2,
-                'croppingVariantKey' => 'default'
+                'croppingVariantKey' => 'default',
             ],
         ];
 
@@ -142,7 +141,7 @@ class PictureImageVariantTest extends UnitTestCase
             0 => [
                 'media' => $media,
                 'srcset' => $srcsets,
-                'croppingVariantKey' => $croppingVariantKey
+                'croppingVariantKey' => $croppingVariantKey,
 
             ],
         ];
@@ -180,12 +179,12 @@ class PictureImageVariantTest extends UnitTestCase
             0 => [
                 'media' => $media1,
                 'srcset' => $srcset1,
-                'croppingVariantKey' => $croppingVariantKey1
+                'croppingVariantKey' => $croppingVariantKey1,
             ],
             1 => [
                 'media' => $media2,
                 'srcset' => $srcset2,
-                'croppingVariantKey' => $croppingVariantKey2
+                'croppingVariantKey' => $croppingVariantKey2,
             ],
         ];
 
