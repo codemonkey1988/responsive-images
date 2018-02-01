@@ -4,6 +4,7 @@ branches:
   only:
     - master
     - develop
+    - feature/*
 
 matrix:
   fast_finish: true
