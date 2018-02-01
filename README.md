@@ -49,15 +49,21 @@ $half->setDefaultWidth($desktopWidth / 2)
          array(
              '1x' => array('width' => $smartphoneWidth, 'quality' => 65),
              '2x' => array('width' => $smartphoneWidth * 2, 'quality' => 40)
-         ))
+         ),
+         '[optional cropping variant key for TYPO3 v8]'
+     )
      ->addSourceConfig('(min-width: 64.0625em)',
          array(`
              '1x' => array('width' => $desktopWidth / 2),
              '2x' => array('width' => $desktopWidth * 2 / 2, 'quality' => 80)
-         ))
+         ),
+         '[optional cropping variant key for TYPO3 v8]'
+     )
      ->addSourceConfig('(min-width: 40.0625em)',
          array(
              '1x' => array('width' => $tabletWidth / 2, 'quality' => 80),
              '2x' => array('width' => $tabletWidth * 2 / 2, 'quality' => 60)
-         ));
+         ),
+         '[optional cropping variant key for TYPO3 v8]'
+     );
 ```
