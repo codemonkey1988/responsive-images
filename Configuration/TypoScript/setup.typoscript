@@ -1,0 +1,5 @@
+plugin.tx_responsiveimages {
+    settings {
+        enabled = {$plugin.tx_responsiveimages.settings.enabled}
+    }
+}

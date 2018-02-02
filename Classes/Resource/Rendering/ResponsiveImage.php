@@ -45,6 +45,9 @@ class ResponsiveImage implements FileRendererInterface
      */
     protected $possibleMimeTypes = ['image/jpeg', 'image/jpg', 'image/gif', 'image/png'];
 
+    /**
+     * @var bool
+     */
     protected $isAnimatedGif = false;
 
     /**
@@ -64,8 +67,13 @@ class ResponsiveImage implements FileRendererInterface
         /** @var EnvironmentService $evironmentService */
         $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $registry = PictureVariantsRegistry::getInstance();
+        $enabled = true;
 
-        return $evironmentService->isEnvironmentInFrontendMode()
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
+            $enabled = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['enabled'];
+        }
+
+        return $enabled && $evironmentService->isEnvironmentInFrontendMode()
             && $registry->imageVariantKeyExists(self::DEFAULT_IMAGE_VARIANT_KEY)
             && in_array($file->getMimeType(), $this->possibleMimeTypes, true);
     }
