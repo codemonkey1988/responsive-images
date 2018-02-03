@@ -46,6 +46,11 @@ class ResponsiveImage implements FileRendererInterface
     protected $possibleMimeTypes = ['image/jpeg', 'image/jpg', 'image/gif', 'image/png'];
 
     /**
+     * @var bool
+     */
+    protected $isAnimatedGif = false;
+
+    /**
      * @return int
      */
     public function getPriority()
@@ -62,8 +67,13 @@ class ResponsiveImage implements FileRendererInterface
         /** @var EnvironmentService $evironmentService */
         $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $registry = PictureVariantsRegistry::getInstance();
+        $enabled = true;
 
-        return $evironmentService->isEnvironmentInFrontendMode()
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
+            $enabled = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['enabled'];
+        }
+
+        return $enabled && $evironmentService->isEnvironmentInFrontendMode()
             && $registry->imageVariantKeyExists(self::DEFAULT_IMAGE_VARIANT_KEY)
             && in_array($file->getMimeType(), $this->possibleMimeTypes, true);
     }
@@ -72,24 +82,25 @@ class ResponsiveImage implements FileRendererInterface
      * Renders a responsive image tag.
      *
      * @param FileInterface $file
-     * @param int|string    $width
-     * @param int|string    $height
-     * @param array         $options
-     * @param bool          $usedPathsRelativeToCurrentScript
+     * @param int|string $width
+     * @param int|string $height
+     * @param array $options
+     * @param bool $usedPathsRelativeToCurrentScript
      * @return string
      */
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->isAnimatedGif = $this->isAnimatedGif($file);
 
         if (!array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options)
             && isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY])
         ) {
-            $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] = (float) $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY];
+            $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] = (float)$GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY];
         }
 
         // Check if a responsive image tag should be rendered. If not, just return the normal image tag.
-        if (isset($options['disablePictureTag']) && $options['disablePictureTag'] == true) {
+        if ($this->isAnimatedGif || (isset($options['disablePictureTag']) && $options['disablePictureTag'] == true)) {
             return $this->generateImgTag($file, $width, $height, $options);
         }
         return $this->generatePictureTag($file, $width, $height, $options);
@@ -99,9 +110,9 @@ class ResponsiveImage implements FileRendererInterface
      * Generates a normal img-tag.
      *
      * @param FileInterface $file
-     * @param int|string    $width
-     * @param int|string    $height
-     * @param array         $options
+     * @param int|string $width
+     * @param int|string $height
+     * @param array $options
      * @return string
      */
     protected function generateImgTag(FileInterface $file, $width, $height, array $options = [])
@@ -115,7 +126,7 @@ class ResponsiveImage implements FileRendererInterface
 
         $relativeScalingWidth = array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options) ? $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] : 0;
 
-        $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
+        $processedImage = $this->processImage($file, $width, $height, 'default', $relativeScalingWidth, $additionalParameters);
 
         /** @var ImgTagRenderer $tagRenderer */
         $tagRenderer = $this->objectManager->get(ImgTagRenderer::class);
@@ -163,40 +174,45 @@ class ResponsiveImage implements FileRendererInterface
      * @param FileInterface $file
      * @param int|string $width
      * @param int|string $height
+     * @param string $croppingVariantKey
      * @param float $relativeScalingWidth
      * @param string $additionalParameters
      * @return FileInterface
      * @internal param int $relativeScaling
      */
-    protected function processImage(FileInterface $file, $width, $height, $relativeScalingWidth = 0.0, $additionalParameters = '')
+    protected function processImage(FileInterface $file, $width, $height, $croppingVariantKey = 'default', $relativeScalingWidth = 0.0, $additionalParameters = '')
     {
-        $imageService = $this->getImageService();
-        $processingInstructions = [
-            'width' => $width,
-            'height' => $height,
-            'additionalParameters' => $additionalParameters,
-        ];
-
-        if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {
-            $cropString = $file instanceof FileReference ? $file->getProperty('crop') : '';
-            $cropVariantCollection = CropVariantCollection::create((string)$cropString);
-            $cropArea = $cropVariantCollection->getCropArea('default');
-            $processingInstructions['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
-        } else {
-            $processingInstructions['crop'] = $file instanceof FileReference ? $file->getProperty('crop') : null;
-        }
-
-        $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
-
-        if ($relativeScalingWidth > 0) {
-            $relativeScalingProcessingInstructions = [
-                'crop' => false,
-                'width' => $processedImage->getProperty('width') * $relativeScalingWidth,
+        if (!$this->isAnimatedGif) {
+            $imageService = $this->getImageService();
+            $processingInstructions = [
+                'width' => $width,
+                'height' => $height,
+                'additionalParameters' => $additionalParameters,
             ];
 
-            $scaleProcessedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
-            $processedImage->delete(true);
-            return $scaleProcessedImage;
+            if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {
+                $cropString = $file instanceof FileReference ? $file->getProperty('crop') : '';
+                $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+                $cropArea = $cropVariantCollection->getCropArea($croppingVariantKey);
+                $processingInstructions['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
+            } else {
+                $processingInstructions['crop'] = $file instanceof FileReference ? $file->getProperty('crop') : null;
+            }
+
+            $processedImage = $imageService->applyProcessingInstructions($file, $processingInstructions);
+
+            if ($relativeScalingWidth > 0) {
+                $relativeScalingProcessingInstructions = [
+                    'crop' => false,
+                    'width' => $processedImage->getProperty('width') * $relativeScalingWidth,
+                ];
+
+                $scaleProcessedImage = $imageService->applyProcessingInstructions($processedImage, $relativeScalingProcessingInstructions);
+                $processedImage->delete(true);
+                return $scaleProcessedImage;
+            }
+        } else {
+            $processedImage = $file;
         }
 
         return $processedImage;
@@ -227,9 +243,9 @@ class ResponsiveImage implements FileRendererInterface
      * Generate a picture-tag width different sources and a fallback img-tag.
      *
      * @param FileInterface $file
-     * @param int|string    $width
-     * @param int|string    $height
-     * @param array         $options
+     * @param int|string $width
+     * @param int|string $height
+     * @param array $options
      * @return string
      */
     protected function generatePictureTag(FileInterface $file, $width, $height, array $options = [])
@@ -268,8 +284,8 @@ class ResponsiveImage implements FileRendererInterface
 
     /**
      * @param FileInterface $file
-     * @param array         $config
-     * @param array         $options
+     * @param array $config
+     * @param array $options
      * @return string
      */
     protected function generateSource(FileInterface $file, $config, array $options = [])
@@ -277,6 +293,7 @@ class ResponsiveImage implements FileRendererInterface
         $srcsets = [];
         $sourceTagRenderer = $this->objectManager->get(SourceTagRenderer::class);
         $additionalParameters = '';
+        $croppingVariantKey = (!empty($config['croppingVariantKey'])) ? $config['croppingVariantKey'] : 'default';
 
         if (isset($options['grayscale']) && $options['grayscale'] == true) {
             $additionalParameters .= ' -colorspace Gray';
@@ -300,7 +317,7 @@ class ResponsiveImage implements FileRendererInterface
                 $additionalParameters .= ' -quality ' . intval($srcstConfig['quality']);
             }
 
-            $processedImage = $this->processImage($file, $width, $height, $relativeScalingWidth, $additionalParameters);
+            $processedImage = $this->processImage($file, $width, $height, $croppingVariantKey, $relativeScalingWidth, $additionalParameters);
 
             $srcsets[] = $this->getImageUri($processedImage) . ' ' . $density;
         }
@@ -308,5 +325,42 @@ class ResponsiveImage implements FileRendererInterface
         $sourceTagRenderer->addAttribute('srcset', implode(',', $srcsets));
 
         return $sourceTagRenderer->render();
+    }
+
+    /**
+     * Checks if the given file is an aniamted gif.
+     * See https://secure.php.net/manual/en/function.imagecreatefromgif.php#59787
+     *
+     * @param FileInterface $file
+     * @return bool
+     */
+    protected function isAnimatedGif(FileInterface $file)
+    {
+        if ($file->getMimeType() === 'image/gif') {
+            $filecontents = file_get_contents($file->getForLocalProcessing());
+            $strLoc = 0;
+            $count = 0;
+
+            // There is no point in continuing after we find a 2nd frame
+            while ($count < 2) {
+                $where1 = strpos($filecontents, "\x00\x21\xF9\x04", $strLoc);
+                if ($where1 === false) {
+                    break;
+                }
+                $strLoc = $where1 + 1;
+                $where2 = strpos($filecontents, "\x00\x2C", $strLoc);
+                if ($where2 === false) {
+                    break;
+                }
+                if ($where1 + 8 == $where2) {
+                    $count++;
+                }
+                $strLoc = $where2 + 1;
+            }
+
+            return $count > 1;
+        }
+
+        return false;
     }
 }

@@ -48,13 +48,15 @@ class PictureImageVariant
     /**
      * @param string $media
      * @param array  $srcsets
+     * @param string $croppingVariantKey
      * @return PictureImageVariant
      */
-    public function addSourceConfig($media, array $srcsets)
+    public function addSourceConfig($media, array $srcsets, $croppingVariantKey = 'default')
     {
         $this->sources[] = [
             'media' => $media,
             'srcset' => $srcsets,
+            'croppingVariantKey' => $croppingVariantKey,
         ];
 
         return $this;
