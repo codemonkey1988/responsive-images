@@ -13,10 +13,13 @@ namespace Codemonkey1988\ResponsiveImages\ViewHelpers;
  *
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to remove a stack from the TYPO3 register stack.
+ *
+ * @deprecated Use LoadRegister ViewHelper instead and render content es children.
  */
 class RestoreRegisterViewHelper extends AbstractViewHelper
 {
@@ -27,6 +30,8 @@ class RestoreRegisterViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        GeneralUtility::deprecationLog(sprintf('The ViewHelper "%s" has been deprecated and will be removed with 1.5.0 of EXT:responsive_images', self::class));
+
         $GLOBALS['TSFE']->register = array_pop($GLOBALS['TSFE']->registerStack);
     }
 }
