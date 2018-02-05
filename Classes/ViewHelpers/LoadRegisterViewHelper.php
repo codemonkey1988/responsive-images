@@ -21,15 +21,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class LoadRegisterViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders the viewhelper.
      *
      * @param string $key
      * @param string $value
-     * @return void
+     * @return mixed
      */
     public function render($key, $value)
     {
         array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
         $GLOBALS['TSFE']->register[$key] = $value;
+
+        $content = $this->renderChildren();
+
+        if ($content) {
+            // Restore register when content was rendered
+            $GLOBALS['TSFE']->register = array_pop($GLOBALS['TSFE']->registerStack);
+
+            return $content;
+        }
     }
 }
