@@ -59,4 +59,46 @@ class LoadRegisterViewHelperTest extends UnitTestCase
 
         $this->assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
     }
+
+    /**
+     * @test
+     */
+    public function childrenBeingRendered()
+    {
+        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
+        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
+        $viewHelper->expects($this->once())->method('renderChildren')->willReturn('<content>');
+        $viewHelper->render('foo', 'bar');
+    }
+
+    /**
+     * @test
+     */
+    public function variableIsSetInChildrenContext()
+    {
+        $registerVariableName = 'TEST_VARIABLE';
+        $registerVariableValue = 'Some value';
+
+        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
+        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
+        $viewHelper->expects($this->any())->method('renderChildren')->will($this->returnCallback(function () use ($registerVariableName, $registerVariableValue) {
+            $this->assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
+        }));
+        $viewHelper->render($registerVariableName, $registerVariableValue);
+    }
+
+    /**
+     * @test
+     */
+    public function variableIsUnsetAfterChildrenRendered()
+    {
+        $registerVariableName = 'TEST_VARIABLE';
+
+        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
+        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
+        $viewHelper->expects($this->any())->method('renderChildren')->willReturn('<content>');
+        $viewHelper->render($registerVariableName, 'bar');
+
+        $this->assertArrayNotHasKey($registerVariableName, $GLOBALS['TSFE']->register);
+    }
 }

@@ -144,7 +144,7 @@ call_user_func(function () {
         \Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant::class,
         'two-thirds'
     );
-    $two_thirds->setDefaultWidth($desktopWidth / 0.66666)
+    $two_thirds->setDefaultWidth($desktopWidth * 0.66666)
                ->addSourceConfig(
                    '(max-width: 40em)',
                    [
@@ -155,15 +155,15 @@ call_user_func(function () {
                ->addSourceConfig(
                    '(min-width: 64.0625em)',
                    [
-                       '1x' => ['width' => $desktopWidth / 0.66666],
-                       '2x' => ['width' => $desktopWidth * 2 / 0.66666, 'quality' => 80],
+                       '1x' => ['width' => $desktopWidth * 0.66666],
+                       '2x' => ['width' => $desktopWidth * 2 * 0.66666, 'quality' => 80],
                    ]
                )
                ->addSourceConfig(
                    '(min-width: 40.0625em)',
                    [
-                       '1x' => ['width' => $tabletWidth / 0.66666, 'quality' => 80],
-                       '2x' => ['width' => $tabletWidth * 2 / 0.66666, 'quality' => 60],
+                       '1x' => ['width' => $tabletWidth * 0.66666, 'quality' => 80],
+                       '2x' => ['width' => $tabletWidth * 2 * 0.66666, 'quality' => 60],
                    ]
                );
 
@@ -172,7 +172,7 @@ call_user_func(function () {
         \Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant::class,
         'three-quarters'
     );
-    $three_quarters->setDefaultWidth($desktopWidth / 0.75)
+    $three_quarters->setDefaultWidth($desktopWidth * 0.75)
                    ->addSourceConfig(
                        '(max-width: 40em)',
                        [
@@ -183,15 +183,15 @@ call_user_func(function () {
                    ->addSourceConfig(
                        '(min-width: 64.0625em)',
                        [
-                           '1x' => ['width' => $desktopWidth / 0.75],
-                           '2x' => ['width' => $desktopWidth * 2 / 0.75, 'quality' => 80],
+                           '1x' => ['width' => $desktopWidth * 0.75],
+                           '2x' => ['width' => $desktopWidth * 2 * 0.75, 'quality' => 80],
                        ]
                    )
                    ->addSourceConfig(
                        '(min-width: 40.0625em)',
                        [
-                           '1x' => ['width' => $tabletWidth / 0.75, 'quality' => 80],
-                           '2x' => ['width' => $tabletWidth * 2 / 0.75, 'quality' => 60],
+                           '1x' => ['width' => $tabletWidth * 0.75, 'quality' => 80],
+                           '2x' => ['width' => $tabletWidth * 2 * 0.75, 'quality' => 60],
                        ]
                    );
 
