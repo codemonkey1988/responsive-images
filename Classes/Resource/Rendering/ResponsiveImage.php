@@ -186,7 +186,7 @@ class ResponsiveImage implements FileRendererInterface
                 'width' => $width,
                 'height' => $height,
                 'additionalParameters' => $additionalParameters,
-                'skipProcessing' => !ConfigurationUtility::isProcessingEnabled()
+                'skipProcessing' => !ConfigurationUtility::isProcessingEnabled(),
             ];
 
             if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {
