@@ -20,6 +20,14 @@ if (!defined('TYPO3_MODE')) {
 $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
 $rendererRegistry->registerRendererClass(\Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImage::class);
 
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+    \TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess,
+    \Codemonkey1988\ResponsiveImages\Signal\FileProcessing::class,
+    'preProcess'
+);
+
 // Add default configs
 call_user_func(function () {
     $extConfig = \Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility::getExtensionConfig();
