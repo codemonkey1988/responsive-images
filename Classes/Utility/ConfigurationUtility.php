@@ -58,7 +58,7 @@ class ConfigurationUtility
     /**
      * @return bool
      */
-    public static function isEnabled(): bool
+    public static function isEnabled()
     {
         $enabled = true;
 
@@ -72,7 +72,7 @@ class ConfigurationUtility
     /**
      * @return bool
      */
-    public static function isProcessingEnabled(): bool
+    public static function isProcessingEnabled()
     {
         $processing = true;
 
