@@ -24,3 +24,12 @@ if (!defined('TYPO3_MODE')) {
     'Configuration/TypoScript',
     'Responsive images settings'
 );
+
+/**
+ * Static TypoScript
+ */
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    'responsive_images',
+    'Configuration/TypoScript/DefaultConfiguration',
+    'Responsive images default configuration (optional)'
+);
