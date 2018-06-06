@@ -37,9 +37,12 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @param PictureImageVariant $imageVariant
      * @return void
+     * @deprecated
      */
     public function registerImageVariant(PictureImageVariant $imageVariant): void
     {
+        GeneralUtility::deprecationLog('Registering an image variant by PictureVariantsRegistry::registerImageVariant is deprecated and will be removed in 3.0. Please use TypoScript configuration instead.');
+
         $this->configs[$imageVariant->getKey()] = $imageVariant;
     }
 
@@ -71,18 +74,24 @@ class PictureVariantsRegistry implements SingletonInterface
 
     /**
      * @return void
+     * @deprecated 
      */
     public function removeAllImageVariants(): void
     {
+        GeneralUtility::deprecationLog('Removing all image variants by PictureVariantsRegistry::removeAllImageVariants is deprecated and will be removed in 3.0.');
+
         $this->configs = [];
     }
 
     /**
      * @param string $key
      * @return void
+     * @deprecated
      */
     public function removeImageVariant(string $key): void
     {
+        GeneralUtility::deprecationLog('Removing an image variant by PictureVariantsRegistry::removeImageVariant is deprecated and will be removed in 3.0.');
+        
         if (isset($this->configs[$key])) {
             unset($this->configs[$key]);
         }
