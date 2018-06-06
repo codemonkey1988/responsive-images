@@ -28,13 +28,20 @@ There are some predefined configs:
 
 Before an image is rendered via MediaViewHelper, a registry variable width the key 
 **IMAGE_VARIANT_KEY** must be set. The value should be one of the config keys.
-This can be done width the ViewHelpers
+This can be done width the ViewHelper
 
 `\Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper`
 
-After the image is rendered, registry stack should be restored. That can be done with
+The MediaViewHelper should be placed inside this viewhelper.
 
-`\Codemonkey1988\ResponsiveImages\ViewHelpers\RestoreRegisterViewHelper`
+Example:
+
+```
+<r:loadRegister key="IMAGE_VARIANT_KEY" value="default">
+    <f:media file="{file}" />
+</r:loadRegister>
+```
+
 
 ### Adding new configs
 New image variant configs can be added via ext_localconf.php.
