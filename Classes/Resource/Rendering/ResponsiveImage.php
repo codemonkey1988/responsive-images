@@ -54,7 +54,7 @@ class ResponsiveImage implements FileRendererInterface
     /**
      * @return int
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 5;
     }
@@ -63,7 +63,7 @@ class ResponsiveImage implements FileRendererInterface
      * @param FileInterface $file
      * @return bool
      */
-    public function canRender(FileInterface $file)
+    public function canRender(FileInterface $file): bool
     {
         /** @var EnvironmentService $evironmentService */
         $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
@@ -86,7 +86,7 @@ class ResponsiveImage implements FileRendererInterface
      * @param bool $usedPathsRelativeToCurrentScript
      * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false): string
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->isAnimatedGif = $this->isAnimatedGif($file);
@@ -108,12 +108,12 @@ class ResponsiveImage implements FileRendererInterface
      * Generates a normal img-tag.
      *
      * @param FileInterface $file
-     * @param int|string $width
-     * @param int|string $height
+     * @param string $width
+     * @param string $height
      * @param array $options
      * @return string
      */
-    protected function generateImgTag(FileInterface $file, $width, $height, array $options = [])
+    protected function generateImgTag(FileInterface $file, string $width, string $height, array $options = [])
     {
         $allowedAdditionalAttributes = ['alt', 'title', 'class', 'id', 'lang', 'style', 'accesskey', 'tabindex', 'onclick'];
         $additionalParameters = '';
@@ -170,15 +170,15 @@ class ResponsiveImage implements FileRendererInterface
      * Processes an image.
      *
      * @param FileInterface $file
-     * @param int|string $width
-     * @param int|string $height
+     * @param string $width
+     * @param string $height
      * @param string $croppingVariantKey
      * @param float $relativeScalingWidth
      * @param string $additionalParameters
      * @return FileInterface
      * @internal param int $relativeScaling
      */
-    protected function processImage(FileInterface $file, $width, $height, $croppingVariantKey = 'default', $relativeScalingWidth = 0.0, $additionalParameters = '')
+    protected function processImage(FileInterface $file, string $width, string $height, string $croppingVariantKey = 'default', float $relativeScalingWidth = 0.0, string $additionalParameters = ''): FileInterface
     {
         if (!$this->isAnimatedGif) {
             $imageService = $this->getImageService();
@@ -222,7 +222,7 @@ class ResponsiveImage implements FileRendererInterface
      *
      * @return ImageService
      */
-    protected function getImageService()
+    protected function getImageService(): ImageService
     {
         return $this->objectManager->get(ImageService::class);
     }
@@ -231,7 +231,7 @@ class ResponsiveImage implements FileRendererInterface
      * @param FileInterface $file
      * @return string
      */
-    protected function getImageUri(FileInterface $file)
+    protected function getImageUri(FileInterface $file): string
     {
         $imageService = $this->getImageService();
 
@@ -242,12 +242,12 @@ class ResponsiveImage implements FileRendererInterface
      * Generate a picture-tag width different sources and a fallback img-tag.
      *
      * @param FileInterface $file
-     * @param int|string $width
-     * @param int|string $height
+     * @param string $width
+     * @param string $height
      * @param array $options
      * @return string
      */
-    protected function generatePictureTag(FileInterface $file, $width, $height, array $options = [])
+    protected function generatePictureTag(FileInterface $file, string $width, string $height, array $options = []): string
     {
         /** @var PictureTagRenderer $pictureTagRenderer */
         $pictureTagRenderer = $this->objectManager->get(PictureTagRenderer::class);
@@ -287,7 +287,7 @@ class ResponsiveImage implements FileRendererInterface
      * @param array $options
      * @return string
      */
-    protected function generateSource(FileInterface $file, $config, array $options = [])
+    protected function generateSource(FileInterface $file, array $config, array $options = []): string
     {
         $srcsets = [];
         $sourceTagRenderer = $this->objectManager->get(SourceTagRenderer::class);
@@ -333,7 +333,7 @@ class ResponsiveImage implements FileRendererInterface
      * @param FileInterface $file
      * @return bool
      */
-    protected function isAnimatedGif(FileInterface $file)
+    protected function isAnimatedGif(FileInterface $file): bool
     {
         if ($file->getMimeType() === 'image/gif') {
             $filecontents = file_get_contents($file->getForLocalProcessing());

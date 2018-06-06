@@ -40,7 +40,7 @@ class PictureImageVariant
      *
      * @param string $key
      */
-    public function __construct($key)
+    public function __construct(string $key)
     {
         $this->key = $key;
     }
@@ -51,7 +51,7 @@ class PictureImageVariant
      * @param string $croppingVariantKey
      * @return PictureImageVariant
      */
-    public function addSourceConfig($media, array $srcsets, $croppingVariantKey = 'default')
+    public function addSourceConfig(string $media, array $srcsets, string $croppingVariantKey = 'default'): PictureImageVariant
     {
         $this->sources[] = [
             'media' => $media,
@@ -65,7 +65,7 @@ class PictureImageVariant
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -73,7 +73,7 @@ class PictureImageVariant
     /**
      * @return array
      */
-    public function getAllSourceConfig()
+    public function getAllSourceConfig(): array
     {
         return $this->sources;
     }
@@ -81,7 +81,7 @@ class PictureImageVariant
     /**
      * @return string
      */
-    public function getDefaultWidth()
+    public function getDefaultWidth(): string
     {
         return $this->defaultWidth;
     }
@@ -90,7 +90,7 @@ class PictureImageVariant
      * @param string $defaultWidth
      * @return PictureImageVariant
      */
-    public function setDefaultWidth($defaultWidth)
+    public function setDefaultWidth(string $defaultWidth): PictureImageVariant
     {
         $this->defaultWidth = $defaultWidth;
 
@@ -100,7 +100,7 @@ class PictureImageVariant
     /**
      * @return string
      */
-    public function getDefaultHeight()
+    public function getDefaultHeight(): string
     {
         return $this->defaultHeight;
     }
@@ -109,7 +109,7 @@ class PictureImageVariant
      * @param string $defaultHeight
      * @return PictureImageVariant
      */
-    public function setDefaultHeight($defaultHeight)
+    public function setDefaultHeight(string $defaultHeight): PictureImageVariant
     {
         $this->defaultHeight = $defaultHeight;
 

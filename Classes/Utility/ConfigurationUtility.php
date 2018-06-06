@@ -23,7 +23,7 @@ class ConfigurationUtility
      *
      * @return array
      */
-    public static function getExtensionConfig()
+    public static function getExtensionConfig(): array
     {
         $desktopWidth = 1920;
         $tabletWidth = 1024;
@@ -58,7 +58,7 @@ class ConfigurationUtility
     /**
      * @return bool
      */
-    public static function isEnabled()
+    public static function isEnabled(): bool
     {
         $enabled = true;
 
@@ -72,7 +72,7 @@ class ConfigurationUtility
     /**
      * @return bool
      */
-    public static function isProcessingEnabled()
+    public static function isProcessingEnabled(): bool
     {
         $processing = true;
 

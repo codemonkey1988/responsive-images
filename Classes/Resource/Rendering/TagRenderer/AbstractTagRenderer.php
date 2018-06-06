@@ -43,7 +43,7 @@ abstract class AbstractTagRenderer
      * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tag
      * @return void
      */
-    public function injectTag(TagBuilder $tag)
+    public function injectTag(TagBuilder $tag): void
     {
         $this->tag = $tag;
     }
@@ -53,7 +53,7 @@ abstract class AbstractTagRenderer
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->tag->reset();
     }
@@ -63,7 +63,7 @@ abstract class AbstractTagRenderer
      * @param string $value
      * @return void
      */
-    public function addAttribute($name, $value)
+    public function addAttribute(string $name, string $value): void
     {
         $this->tagAttributes[$name] = $value;
     }
@@ -74,7 +74,7 @@ abstract class AbstractTagRenderer
      * @param string $content
      * @return string
      */
-    public function render($content = '')
+    public function render(string $content = ''): string
     {
         $this->tag->setTagName($this->tagName);
         $this->tag->setContent($content);

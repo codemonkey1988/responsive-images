@@ -30,9 +30,9 @@ class LoadRegisterViewHelper extends AbstractViewHelper
      *
      * @param string $key
      * @param string $value
-     * @return mixed
+     * @return string
      */
-    public function render($key, $value)
+    public function render(string $key, string $value): string
     {
         array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
         $GLOBALS['TSFE']->register[$key] = $value;
@@ -45,5 +45,7 @@ class LoadRegisterViewHelper extends AbstractViewHelper
 
             return $content;
         }
+
+        return '';
     }
 }

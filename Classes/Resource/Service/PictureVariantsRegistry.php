@@ -29,7 +29,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @return PictureVariantsRegistry
      */
-    public static function getInstance()
+    public static function getInstance(): PictureVariantsRegistry
     {
         return GeneralUtility::makeInstance(self::class);
     }
@@ -38,7 +38,7 @@ class PictureVariantsRegistry implements SingletonInterface
      * @param PictureImageVariant $imageVariant
      * @return void
      */
-    public function registerImageVariant(PictureImageVariant $imageVariant)
+    public function registerImageVariant(PictureImageVariant $imageVariant): void
     {
         $this->configs[$imageVariant->getKey()] = $imageVariant;
     }
@@ -47,15 +47,15 @@ class PictureVariantsRegistry implements SingletonInterface
      * @param string $key
      * @return bool
      */
-    public function imageVariantKeyExists($key)
+    public function imageVariantKeyExists($key): bool
     {
         return isset($this->configs[$key]);
     }
 
     /**
-     * @return PictureImageVariant[]
+     * @return array
      */
-    public function getAllImageVariants()
+    public function getAllImageVariants(): array
     {
         return $this->configs;
     }
@@ -72,7 +72,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @return void
      */
-    public function removeAllImageVariants()
+    public function removeAllImageVariants(): void
     {
         $this->configs = [];
     }
@@ -81,7 +81,7 @@ class PictureVariantsRegistry implements SingletonInterface
      * @param string $key
      * @return void
      */
-    public function removeImageVariant($key)
+    public function removeImageVariant(string $key): void
     {
         if (isset($this->configs[$key])) {
             unset($this->configs[$key]);
