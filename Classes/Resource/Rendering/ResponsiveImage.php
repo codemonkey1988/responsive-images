@@ -17,6 +17,7 @@ use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRendere
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\PictureTagRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\SourceTagRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
+use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -67,11 +68,8 @@ class ResponsiveImage implements FileRendererInterface
         /** @var EnvironmentService $evironmentService */
         $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $registry = PictureVariantsRegistry::getInstance();
-        $enabled = true;
 
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
-            $enabled = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['enabled'];
-        }
+        $enabled = ConfigurationUtility::isEnabled();
 
         return $enabled && $evironmentService->isEnvironmentInFrontendMode()
             && $registry->imageVariantKeyExists(self::DEFAULT_IMAGE_VARIANT_KEY)
@@ -188,6 +186,7 @@ class ResponsiveImage implements FileRendererInterface
                 'width' => $width,
                 'height' => $height,
                 'additionalParameters' => $additionalParameters,
+                'skipProcessing' => !ConfigurationUtility::isProcessingEnabled(),
             ];
 
             if (class_exists('TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection')) {

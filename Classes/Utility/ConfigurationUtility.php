@@ -54,4 +54,32 @@ class ConfigurationUtility
             'maxSmartphoneImageWidth' => $smartphoneWidth,
         ];
     }
+
+    /**
+     * @return bool
+     */
+    public static function isEnabled()
+    {
+        $enabled = true;
+
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
+            $enabled = (bool)$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['enabled'];
+        }
+
+        return $enabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isProcessingEnabled()
+    {
+        $processing = true;
+
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
+            $processing = (bool)$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['processing'];
+        }
+
+        return $processing;
+    }
 }
