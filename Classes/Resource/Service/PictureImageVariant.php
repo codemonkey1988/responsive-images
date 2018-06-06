@@ -51,7 +51,7 @@ class PictureImageVariant
      * @param string $croppingVariantKey
      * @return PictureImageVariant
      */
-    public function addSourceConfig(string $media, array $srcsets, string $croppingVariantKey = 'default'): PictureImageVariant
+    public function addSourceConfig(string $media, array $srcsets, string $croppingVariantKey = 'default'): self
     {
         $this->sources[] = [
             'media' => $media,
@@ -90,7 +90,7 @@ class PictureImageVariant
      * @param string $defaultWidth
      * @return PictureImageVariant
      */
-    public function setDefaultWidth(string $defaultWidth): PictureImageVariant
+    public function setDefaultWidth(string $defaultWidth): self
     {
         $this->defaultWidth = $defaultWidth;
 
@@ -109,7 +109,7 @@ class PictureImageVariant
      * @param string $defaultHeight
      * @return PictureImageVariant
      */
-    public function setDefaultHeight(string $defaultHeight): PictureImageVariant
+    public function setDefaultHeight(string $defaultHeight): self
     {
         $this->defaultHeight = $defaultHeight;
 

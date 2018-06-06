@@ -29,7 +29,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @return PictureVariantsRegistry
      */
-    public static function getInstance(): PictureVariantsRegistry
+    public static function getInstance(): self
     {
         return GeneralUtility::makeInstance(self::class);
     }

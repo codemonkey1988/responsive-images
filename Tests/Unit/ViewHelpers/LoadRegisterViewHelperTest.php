@@ -14,8 +14,8 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
  */
 
 use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper

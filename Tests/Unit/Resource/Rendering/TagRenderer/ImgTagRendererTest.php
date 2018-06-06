@@ -14,8 +14,8 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRenderer;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRenderer
