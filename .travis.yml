@@ -54,5 +54,5 @@ script:
   - >
     echo;
     echo "Running unit and functional tests..."
-    .Build/bin/phpunit
+    .Build/bin/phpunit -c Tests/Unit/UnitTests.xml
 
