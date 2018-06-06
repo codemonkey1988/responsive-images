@@ -26,6 +26,11 @@ class PictureVariantsRegistry implements SingletonInterface
      */
     protected $configs = [];
 
+    public function __construct()
+    {
+        $this->initializeTypoScriptConfiguration();
+    }
+
     /**
      * @return PictureVariantsRegistry
      */
@@ -74,7 +79,7 @@ class PictureVariantsRegistry implements SingletonInterface
 
     /**
      * @return void
-     * @deprecated 
+     * @deprecated
      */
     public function removeAllImageVariants(): void
     {
@@ -91,9 +96,81 @@ class PictureVariantsRegistry implements SingletonInterface
     public function removeImageVariant(string $key): void
     {
         GeneralUtility::deprecationLog('Removing an image variant by PictureVariantsRegistry::removeImageVariant is deprecated and will be removed in 3.0.');
-        
+
         if (isset($this->configs[$key])) {
             unset($this->configs[$key]);
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function initializeTypoScriptConfiguration(): void
+    {
+        $plainConfig = [];
+
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['configuration.'])) {
+            $plainConfig = GeneralUtility::removeDotsFromTS($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['configuration.']);
+        }
+
+        foreach ($plainConfig as $key => $imageVariantConfig) {
+            $this->configs[$key] = self::generateImageVariantFromTypoScript($key, $imageVariantConfig);
+        }
+    }
+
+    /**
+     * @param string $key
+     * @param array $config
+     * @return PictureImageVariant
+     */
+    protected static function generateImageVariantFromTypoScript(string $key, array $config): PictureImageVariant
+    {
+        $imageVariant = GeneralUtility::makeInstance(PictureImageVariant::class, $key);
+
+        if (!empty($config['defaultWidth'])) {
+            $imageVariant->setDefaultWidth($config['defaultWidth']);
+        }
+        if (!empty($config['defaultHeight'])) {
+            $imageVariant->setDefaultWidth($config['defaultHeight']);
+        }
+
+        if (!empty($config['sources']) && is_array($config['sources'])) {
+            foreach ($config['sources'] as $source) {
+                list($media, $sourceConfigs, $croppingVariantKey) = self::generateSourceConfigForImageVariant($source);
+
+                if ($media && $sourceConfigs) {
+                    $imageVariant->addSourceConfig($media, $sourceConfigs, $croppingVariantKey);
+                }
+            }
+        }
+
+        return $imageVariant;
+    }
+
+    /**
+     * @param array $source
+     * @return array
+     */
+    protected static function generateSourceConfigForImageVariant(array $source): array
+    {
+        $sourceConfig = [
+            0 => '',
+            1 => [],
+            2 => 'default',
+        ];
+
+        if (empty($source['media']) || empty($source['sizes'])) {
+            return $sourceConfig;
+        }
+
+        $sourceConfig[0] = $source['media'];
+        foreach ($source['sizes'] as $density => $imageConfig) {
+            $sourceConfig[1][$density] = $imageConfig;
+        }
+        if (!empty($source['croppingVariantKey'])) {
+            $sourceConfig[2] = $source['croppingVariantKey'];
+        }
+
+        return $sourceConfig;
     }
 }

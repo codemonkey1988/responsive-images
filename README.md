@@ -44,33 +44,61 @@ Example:
 
 
 ### Adding new configs
-New image variant configs can be added via ext_localconf.php.
+New image variant configs can be added via TypoScript
 
 Example:
 
 ```
-/** @var \Codemonkey1988\ResponsiveImages\Resource\Rendering\PictureImageVariant $half */
-$half = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Codemonkey1988\ResponsiveImages\Resource\Rendering\PictureImageVariant::class, 'half');
-$half->setDefaultWidth($desktopWidth / 2)
-     ->addSourceConfig('(max-width: 40em)',
-         array(
-             '1x' => array('width' => $smartphoneWidth, 'quality' => 65),
-             '2x' => array('width' => $smartphoneWidth * 2, 'quality' => 40)
-         ),
-         '[optional cropping variant key for TYPO3 v8]'
-     )
-     ->addSourceConfig('(min-width: 64.0625em)',
-         array(`
-             '1x' => array('width' => $desktopWidth / 2),
-             '2x' => array('width' => $desktopWidth * 2 / 2, 'quality' => 80)
-         ),
-         '[optional cropping variant key for TYPO3 v8]'
-     )
-     ->addSourceConfig('(min-width: 40.0625em)',
-         array(
-             '1x' => array('width' => $tabletWidth / 2, 'quality' => 80),
-             '2x' => array('width' => $tabletWidth * 2 / 2, 'quality' => 60)
-         ),
-         '[optional cropping variant key for TYPO3 v8]'
-     );
+plugin.tx_responsiveimages.settings.configuration {
+    default {
+        defaultWidth = 1920
+        defaultHeight =
+        sources {
+            smartphone {
+                media = (max-width: 40em)
+                croppingVariantKey = default
+                sizes {
+                    1x {
+                        width = 320
+                        height =
+                        quality = 65
+                    }
+                    2x {
+                        width = 640
+                        height =
+                        quality = 40
+                    }
+                }
+            }
+            desktop {
+                media = (min-width: 64.0625em)
+                croppingVariantKey = default
+                sizes {
+                    1x {
+                        width = 1920
+                        height =
+                        quality = 80
+                    }
+
+                }
+            }
+            tablet {
+                media = (min-width: 40.0625em)
+                croppingVariantKey = default
+                sizes {
+                    1x {
+                        width = 1024
+                        height =
+                        quality = 80
+                    }
+                    2x {
+                        width = 2048
+                        height =
+                        quality = 40
+                    }
+                }
+            }
+        }
+    }
+}
 ```

@@ -5,39 +5,46 @@ plugin.tx_responsiveimages.settings.configuration {
         sources {
             smartphone {
                 media = (max-width: 40em)
-
-                1x {
-                    width = 320
-                    height =
-                    quality = 65
-                }
-                2x {
-                    width = 640
-                    height =
-                    quality = 40
+                croppingVariantKey = default
+                sizes {
+                    1x {
+                        width = 320
+                        height =
+                        quality = 65
+                    }
+                    2x {
+                        width = 640
+                        height =
+                        quality = 40
+                    }
                 }
             }
             desktop {
                 media = (min-width: 64.0625em)
+                croppingVariantKey = default
+                sizes {
+                    1x {
+                        width = 1920
+                        height =
+                        quality = 80
+                    }
 
-                1x {
-                    width = 1920
-                    height =
-                    quality = 80
                 }
             }
             tablet {
                 media = (min-width: 40.0625em)
-
-                1x {
-                    width = 1024
-                    height =
-                    quality = 80
-                }
-                2x {
-                    width = 2048
-                    height =
-                    quality = 40
+                croppingVariantKey = default
+                sizes {
+                    1x {
+                        width = 1024
+                        height =
+                        quality = 80
+                    }
+                    2x {
+                        width = 2048
+                        height =
+                        quality = 40
+                    }
                 }
             }
         }
@@ -46,55 +53,45 @@ plugin.tx_responsiveimages.settings.configuration {
     half {
         defaultWidth = 960
         sources {
-            desktop.1x.width = 960
-            tablet {
-                1x.width = 512
-                2x.width = 1024
-            }
+            desktop.sizes.1x.width = 960
+            tablet.sizes.1x.width = 512
+            tablet.sizes.2x.width = 1024
         }
     }
     third < .default
     third {
         defaultWidth = 640
         sources {
-            desktop.1x.width = 640
-            tablet {
-                1x.width = 341
-                2x.width = 682
-            }
+            desktop.sizes.1x.width = 640
+            tablet.sizes.1x.width = 341
+            tablet.sizes.2x.width = 682
         }
     }
     quarter < .default
     quarter {
         defaultWidth = 480
         sources {
-            desktop.1x.width = 480
-            tablet {
-                1x.width = 256
-                2x.width = 512
-            }
+            desktop.sizes.1x.width = 480
+            tablet.sizes.1x.width = 256
+            tablet.sizes.2x.width = 512
         }
     }
     two-thirds < .default
     two-thirds {
         defaultWidth = 1280
         sources {
-            desktop.1x.width = 1280
-            tablet {
-                1x.width = 682
-                2x.width = 1364
-            }
+            desktop.sizes.1x.width = 1280
+            tablet.sizes.1x.width = 682
+            tablet.sizes.2x.width = 1364
         }
     }
     three-quarters < .default
     two-thirds {
         defaultWidth = 1440
         sources {
-            desktop.1x.width = 1440
-            tablet {
-                1x.width = 768
-                2x.width = 1536
-            }
+            desktop.sizes.1x.width = 1440
+            tablet.sizes.1x.width = 768
+            tablet.sizes.2x.width = 1536
         }
     }
 }

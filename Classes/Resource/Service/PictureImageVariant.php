@@ -13,12 +13,8 @@ namespace Codemonkey1988\ResponsiveImages\Resource\Service;
  *
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Class to store configuration for different picture tag configurations.
- *
- * @deprecated Use TypoScript configuration instead.
  */
 class PictureImageVariant
 {
@@ -46,8 +42,6 @@ class PictureImageVariant
      */
     public function __construct(string $key)
     {
-        GeneralUtility::deprecationLog('Registering an image variant with PHP is deprecated and will be removed in 3.0. Please use TypoScript configuration instead.');
-
         $this->key = $key;
     }
 
