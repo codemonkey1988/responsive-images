@@ -99,9 +99,9 @@ class ResponsiveImage implements FileRendererInterface
 
         // Check if a responsive image tag should be rendered. If not, just return the normal image tag.
         if ($this->isAnimatedGif || (isset($options['disablePictureTag']) && $options['disablePictureTag'] == true)) {
-            return $this->generateImgTag($file, $width, $height, $options);
+            return $this->generateImgTag($file, (string)$width, (string)$height, $options);
         }
-        return $this->generatePictureTag($file, $width, $height, $options);
+        return $this->generatePictureTag($file, (string)$width, (string)$height, $options);
     }
 
     /**
