@@ -13,7 +13,7 @@ namespace Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer;
  *
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
  * Class AbstractTagRenderer
@@ -40,7 +40,7 @@ abstract class AbstractTagRenderer
     private $tagAttributes = [];
 
     /**
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tag
+     * @param \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder $tag
      * @return void
      */
     public function injectTag(TagBuilder $tag): void
