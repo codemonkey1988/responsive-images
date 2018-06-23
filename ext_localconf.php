@@ -16,7 +16,7 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied');
 }
 
-call_user_func(function() {
+call_user_func(function () {
     /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
     $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
     $rendererRegistry->registerRendererClass(\Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImage::class);
