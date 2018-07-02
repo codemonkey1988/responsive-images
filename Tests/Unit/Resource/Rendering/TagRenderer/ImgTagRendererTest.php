@@ -25,15 +25,15 @@ class ImgTagRendererTest extends UnitTestCase
     /**
      * @var ImgTagRenderer
      */
-    protected $imgTagRenderer;
+    protected $subject;
 
     /**
      * Set up
      */
     public function setUp()
     {
-        $this->imgTagRenderer = new ImgTagRenderer();
-        $this->imgTagRenderer->injectTag(new TagBuilder());
+        $this->subject = new ImgTagRenderer();
+        $this->subject->injectTag(new TagBuilder());
     }
 
     /**
@@ -43,11 +43,11 @@ class ImgTagRendererTest extends UnitTestCase
      */
     public function renderImageTagWithMinimumAttributes()
     {
-        $this->imgTagRenderer->initialize();
-        $this->imgTagRenderer->addAttribute('src', 'test.jpg');
-        $this->imgTagRenderer->addAttribute('alt', 'Test image');
+        $this->subject->initialize();
+        $this->subject->addAttribute('src', 'test.jpg');
+        $this->subject->addAttribute('alt', 'Test image');
 
-        $result = $this->imgTagRenderer->render();
+        $result = $this->subject->render();
 
         $this->assertTrue(is_string($result));
         $this->assertEquals('<img src="test.jpg" alt="Test image" />', $result);
@@ -60,14 +60,14 @@ class ImgTagRendererTest extends UnitTestCase
      */
     public function renderImageTagWithStandardAttributes()
     {
-        $this->imgTagRenderer->initialize();
-        $this->imgTagRenderer->addAttribute('src', 'test.jpg');
-        $this->imgTagRenderer->addAttribute('alt', 'Test image');
-        $this->imgTagRenderer->addAttribute('width', '1920');
-        $this->imgTagRenderer->addAttribute('height', '1080');
-        $this->imgTagRenderer->addAttribute('title', 'Title of test image');
+        $this->subject->initialize();
+        $this->subject->addAttribute('src', 'test.jpg');
+        $this->subject->addAttribute('alt', 'Test image');
+        $this->subject->addAttribute('width', '1920');
+        $this->subject->addAttribute('height', '1080');
+        $this->subject->addAttribute('title', 'Title of test image');
 
-        $result = $this->imgTagRenderer->render();
+        $result = $this->subject->render();
 
         $this->assertTrue(is_string($result));
         $this->assertEquals('<img src="test.jpg" alt="Test image" width="1920" height="1080" title="Title of test image" />', $result);

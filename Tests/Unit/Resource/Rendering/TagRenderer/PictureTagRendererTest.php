@@ -25,15 +25,15 @@ class PictureTagRendererTest extends UnitTestCase
     /**
      * @var PictureTagRenderer
      */
-    protected $pictureTagRenderer;
+    protected $subject;
 
     /**
      * Set up
      */
     public function setUp()
     {
-        $this->pictureTagRenderer = new PictureTagRenderer();
-        $this->pictureTagRenderer->injectTag(new TagBuilder());
+        $this->subject = new PictureTagRenderer();
+        $this->subject->injectTag(new TagBuilder());
     }
 
     /**
@@ -43,9 +43,9 @@ class PictureTagRendererTest extends UnitTestCase
      */
     public function renderPictureWithoutAttributes()
     {
-        $this->pictureTagRenderer->initialize();
+        $this->subject->initialize();
 
-        $result = $this->pictureTagRenderer->render('Picture tag content');
+        $result = $this->subject->render('Picture tag content');
 
         $this->assertTrue(is_string($result));
         $this->assertEquals('<picture>Picture tag content</picture>', $result);
@@ -58,10 +58,10 @@ class PictureTagRendererTest extends UnitTestCase
      */
     public function renderPictureWitClassAttribute()
     {
-        $this->pictureTagRenderer->initialize();
-        $this->pictureTagRenderer->addAttribute('class', 'my-class');
+        $this->subject->initialize();
+        $this->subject->addAttribute('class', 'my-class');
 
-        $result = $this->pictureTagRenderer->render('Picture tag content');
+        $result = $this->subject->render('Picture tag content');
 
         $this->assertTrue(is_string($result));
         $this->assertEquals('<picture class="my-class">Picture tag content</picture>', $result);

@@ -25,15 +25,15 @@ class SourceTagRendererTest extends UnitTestCase
     /**
      * @var SourceTagRenderer
      */
-    protected $sourceTagRenderer;
+    protected $subject;
 
     /**
      * Set up
      */
     public function setUp()
     {
-        $this->sourceTagRenderer = new SourceTagRenderer();
-        $this->sourceTagRenderer->injectTag(new TagBuilder());
+        $this->subject = new SourceTagRenderer();
+        $this->subject->injectTag(new TagBuilder());
     }
 
     /**
@@ -43,11 +43,11 @@ class SourceTagRendererTest extends UnitTestCase
      */
     public function renderSourceWithDefaultAttributes()
     {
-        $this->sourceTagRenderer->initialize();
-        $this->sourceTagRenderer->addAttribute('media', '(max-width: 40em)');
-        $this->sourceTagRenderer->addAttribute('srcset', 'test.jpg, text@2x.jpg');
+        $this->subject->initialize();
+        $this->subject->addAttribute('media', '(max-width: 40em)');
+        $this->subject->addAttribute('srcset', 'test.jpg, text@2x.jpg');
 
-        $result = $this->sourceTagRenderer->render();
+        $result = $this->subject->render();
 
         $this->assertTrue(is_string($result));
         $this->assertEquals('<source media="(max-width: 40em)" srcset="test.jpg, text@2x.jpg" />', $result);
