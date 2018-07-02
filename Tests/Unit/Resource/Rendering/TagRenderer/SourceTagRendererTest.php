@@ -14,7 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\SourceTagRenderer;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -40,10 +40,8 @@ class SourceTagRendererTest extends UnitTestCase
      * Test rendering a source-tag with media and srcset attribute.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testRenderSourceWithDefaultAttributes()
+    public function renderSourceWithDefaultAttributes()
     {
         $this->sourceTagRenderer->initialize();
         $this->sourceTagRenderer->addAttribute('media', '(max-width: 40em)');

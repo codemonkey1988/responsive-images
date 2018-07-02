@@ -14,7 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\PictureTagRenderer;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -40,10 +40,8 @@ class PictureTagRendererTest extends UnitTestCase
      * Test rendering a picture-tag without any attributes but with content.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testRenderPictureWithoutAttributes()
+    public function renderPictureWithoutAttributes()
     {
         $this->pictureTagRenderer->initialize();
 
@@ -57,10 +55,8 @@ class PictureTagRendererTest extends UnitTestCase
      * Test rendering a picture-tag with class attribute and content.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testRenderPictureWitClassAttribute()
+    public function renderPictureWitClassAttribute()
     {
         $this->pictureTagRenderer->initialize();
         $this->pictureTagRenderer->addAttribute('class', 'my-class');

@@ -25,8 +25,6 @@ class ConfigurationUtilityTest extends UnitTestCase
      * Test is the default extension config is loaded correctly.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
     public function defaultExtensionConfig()
     {
@@ -45,8 +43,6 @@ class ConfigurationUtilityTest extends UnitTestCase
      * Test if user changes to the extension config are loaded correctly.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
     public function customExtensionConfig()
     {

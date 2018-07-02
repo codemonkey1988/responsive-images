@@ -46,7 +46,6 @@ class LoadRegisterViewHelperTest extends UnitTestCase
      * Test if the variable is set via the viewhelper.
      *
      * @test
-     * @return void
      */
     public function variableIsSet()
     {

@@ -14,7 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\TagRenderer\ImgTagRenderer;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -40,10 +40,8 @@ class ImgTagRendererTest extends UnitTestCase
      * Test rendering an img-tag with src and alt attribute.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testRenderImageTagWithMinimumAttributes()
+    public function renderImageTagWithMinimumAttributes()
     {
         $this->imgTagRenderer->initialize();
         $this->imgTagRenderer->addAttribute('src', 'test.jpg');
@@ -59,10 +57,8 @@ class ImgTagRendererTest extends UnitTestCase
      * Test rendering an img-tag with src, alt, width, height and title attribute.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testRenderImageTagWithStandardAttributes()
+    public function renderImageTagWithStandardAttributes()
     {
         $this->imgTagRenderer->initialize();
         $this->imgTagRenderer->addAttribute('src', 'test.jpg');

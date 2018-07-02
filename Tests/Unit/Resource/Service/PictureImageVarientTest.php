@@ -25,9 +25,8 @@ class PictureImageVariantTest extends UnitTestCase
      * Test if the default width can be set.
      *
      * @test
-     * @return void
      */
-    public function testDefaultWidth()
+    public function settingDefaultWidthWillWork()
     {
         /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
@@ -40,9 +39,8 @@ class PictureImageVariantTest extends UnitTestCase
      * Test if the default height can be set.
      *
      * @test
-     * @return void
      */
-    public function testDefaultHeight()
+    public function settingDefaultHeightWillWork()
     {
         /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
@@ -55,10 +53,8 @@ class PictureImageVariantTest extends UnitTestCase
      * Tests if a source configuration can be added.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testAddSingleSourceConfig()
+    public function addSingleSourceConfig()
     {
         $media = '(max-width: 64em)';
         $srcsets = [
@@ -85,10 +81,8 @@ class PictureImageVariantTest extends UnitTestCase
      * Tests if a multiple source configurations can be added.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testAddMultipleSourceConfig()
+    public function addMultipleSourceConfig()
     {
         $media1 = '(max-width: 64em)';
         $media2 = '(max-width: 40em)';
@@ -126,10 +120,8 @@ class PictureImageVariantTest extends UnitTestCase
      * Tests if a source configuration can be added with a custo mcropping variant key
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testAddSingleSourceConfigWithCroppingVariantKey()
+    public function addSingleSourceConfigWithCroppingVariantKey()
     {
         $croppingVariantKey = 'mobile';
         $media = '(max-width: 64em)';
@@ -157,10 +149,8 @@ class PictureImageVariantTest extends UnitTestCase
      * Tests if a multiple source configurations can be added.
      *
      * @test
-     * @throws \PHPUnit_Framework_AssertionFailedError
-     * @return void
      */
-    public function testAddMultipleSourceConfigWithCroppingVariantKey()
+    public function addMultipleSourceConfigWithCroppingVariantKey()
     {
         $croppingVariantKey1 = 'mobile';
         $croppingVariantKey2 = 'desktop';
