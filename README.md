@@ -28,7 +28,7 @@ There are some predefined configs:
 
 Before an image is rendered via MediaViewHelper, a registry variable width the key 
 **IMAGE_VARIANT_KEY** must be set. The value should be one of the config keys.
-This can be done width the ViewHelper
+This can be done with the this ViewHelper
 
 `\Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper`
 
