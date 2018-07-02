@@ -43,7 +43,7 @@ class ImageServiceTest extends UnitTestCase
             File::class,
             [
                 'getMimeType' => 'image/gif',
-                'getForLocalProcessing' => __DIR__ . '/Assets/animated.gif'
+                'getForLocalProcessing' => __DIR__ . '/Assets/animated.gif',
             ]
         );
 
@@ -59,7 +59,7 @@ class ImageServiceTest extends UnitTestCase
             File::class,
             [
                 'getMimeType' => 'image/gif',
-                'getForLocalProcessing' => __DIR__ . '/Assets/typo3.gif'
+                'getForLocalProcessing' => __DIR__ . '/Assets/typo3.gif',
             ]
         );
 
