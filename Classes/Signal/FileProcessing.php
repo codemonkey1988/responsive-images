@@ -33,7 +33,7 @@ class FileProcessing
      * @param array $configuration
      * @return void
      */
-    public function preProcess(FileProcessingService $ref, DriverInterface $driver, ProcessedFile $processedFile, FileInterface $file, string $context, array $configuration): void
+    public function preProcess(FileProcessingService $ref, DriverInterface $driver, ProcessedFile $processedFile, FileInterface $file, string $context, array $configuration)
     {
         if (!empty($processedFile->getProcessingConfiguration()['skipProcessing'])) {
             $processedFile->setUsesOriginalFile();

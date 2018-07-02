@@ -44,7 +44,7 @@ abstract class AbstractTagRenderer
      * @param \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder $tag
      * @return void
      */
-    public function injectTag(TagBuilder $tag): void
+    public function injectTag(TagBuilder $tag)
     {
         $this->tag = $tag;
     }
@@ -54,7 +54,7 @@ abstract class AbstractTagRenderer
      *
      * @return void
      */
-    public function initialize(): void
+    public function initialize()
     {
         $this->tag->reset();
     }
@@ -64,7 +64,7 @@ abstract class AbstractTagRenderer
      * @param string $value
      * @return void
      */
-    public function addAttribute(string $name, string $value): void
+    public function addAttribute(string $name, string $value)
     {
         $this->tagAttributes[$name] = $value;
     }

@@ -44,7 +44,7 @@ class PictureVariantsRegistry implements SingletonInterface
      * @param PictureImageVariant $imageVariant
      * @return void
      */
-    public function registerImageVariant(PictureImageVariant $imageVariant): void
+    public function registerImageVariant(PictureImageVariant $imageVariant)
     {
         $this->configs[$imageVariant->getKey()] = $imageVariant;
     }
@@ -78,7 +78,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @return void
      */
-    public function removeAllImageVariants(): void
+    public function removeAllImageVariants()
     {
         $this->configs = [];
     }
@@ -87,7 +87,7 @@ class PictureVariantsRegistry implements SingletonInterface
      * @param string $key
      * @return void
      */
-    public function removeImageVariant(string $key): void
+    public function removeImageVariant(string $key)
     {
         if (isset($this->configs[$key])) {
             unset($this->configs[$key]);
@@ -97,7 +97,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @return void
      */
-    protected function initializeTypoScriptConfiguration(): void
+    protected function initializeTypoScriptConfiguration()
     {
         $plainConfig = [];
 
