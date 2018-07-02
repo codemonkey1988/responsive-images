@@ -131,8 +131,8 @@ class ResponsiveImage implements FileRendererInterface
         $tagRenderer = $this->objectManager->get(ImgTagRenderer::class);
         $tagRenderer->initialize();
 
-        $tagRenderer->addAttribute('width', $processedImage->getProperty('width'));
-        $tagRenderer->addAttribute('height', $processedImage->getProperty('height'));
+        $tagRenderer->addAttribute('width', (string)$processedImage->getProperty('width'));
+        $tagRenderer->addAttribute('height', (string)$processedImage->getProperty('height'));
         $tagRenderer->addAttribute('src', $this->getImageUri($processedImage));
 
         if ($file->getProperty('alternative')) {
