@@ -49,6 +49,14 @@ script:
     .Build/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --diff --diff-format=udiff
   - >
     echo;
-    echo "Running unit and functional tests..."
+    echo "Running unit tests..."
     .Build/bin/phpunit -c Tests/Unit/UnitTests.xml
+  - >
+    echo;
+    echo "Running functional tests..."
+    export typo3DatabaseName="typo3";
+    export typo3DatabaseHost="localhost";
+    export typo3DatabaseUsername="root";
+    export typo3DatabasePassword="";
+    .Build/bin/phpunit -c Tests/Unit/FunctionalTests.xml
 
