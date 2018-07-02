@@ -114,27 +114,30 @@ You can add image configuration for your ext_localconf.php
 Example:
 ```
 /** @var \Codemonkey1988\ResponsiveImages\Resource\Rendering\PictureImageVariant $half */
-$half = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Codemonkey1988\ResponsiveImages\Resource\Rendering\PictureImageVariant::class, 'half');
+$half = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant::class, 'half');
 $half->setDefaultWidth($desktopWidth / 2)
      ->addSourceConfig('(max-width: 40em)',
-         array(
+         [
              '1x' => array('width' => $smartphoneWidth, 'quality' => 65),
              '2x' => array('width' => $smartphoneWidth * 2, 'quality' => 40)
-         ),
+         ],
          '[optional cropping variant key for TYPO3 v8]'
      )
      ->addSourceConfig('(min-width: 64.0625em)',
-         array(`
+         [
              '1x' => array('width' => $desktopWidth / 2),
              '2x' => array('width' => $desktopWidth * 2 / 2, 'quality' => 80)
-         ),
+         ],
          '[optional cropping variant key for TYPO3 v8]'
      )
      ->addSourceConfig('(min-width: 40.0625em)',
-         array(
+         [
              '1x' => array('width' => $tabletWidth / 2, 'quality' => 80),
              '2x' => array('width' => $tabletWidth * 2 / 2, 'quality' => 60)
-         ),
+         ],
          '[optional cropping variant key for TYPO3 v8]'
      );
+// Add variant to registry.
+$registry = PictureVariantsRegistry::getInstance();
+$registry->registerImageVariant($half);
 ```
