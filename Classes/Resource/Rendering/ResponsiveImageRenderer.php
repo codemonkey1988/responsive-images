@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 /**
  * Class to render a picture tag with different sources and a fallback image.
  */
-class ResponsiveImage implements FileRendererInterface
+class ResponsiveImageRenderer implements FileRendererInterface
 {
     const DEFAULT_IMAGE_VARIANT_KEY = 'default';
     const REGISTER_IMAGE_VARIANT_KEY = 'IMAGE_VARIANT_KEY';
@@ -51,6 +51,11 @@ class ResponsiveImage implements FileRendererInterface
      * @var bool
      */
     protected $isAnimatedGif = false;
+
+    /**
+     * @var \Codemonkey1988\ResponsiveImages\Resource\Service\ImageService
+     */
+    protected $imageService;
 
     /**
      * @return int
@@ -250,7 +255,7 @@ class ResponsiveImage implements FileRendererInterface
      */
     protected function generatePictureTag(FileInterface $file, string $width, string $height, array $options = []): string
     {
-        /** @var PictureTagRenderer $pictureTagRenderer */
+        /** @var ResponsiveImageRenderer $pictureTagRenderer */
         $pictureTagRenderer = $this->objectManager->get(PictureTagRenderer::class);
         $imageVarientConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
         $registry = PictureVariantsRegistry::getInstance();
@@ -317,7 +322,7 @@ class ResponsiveImage implements FileRendererInterface
                 $additionalParameters .= ' -quality ' . intval($srcstConfig['quality']);
             }
 
-            $processedImage = $this->processImage($file, $width, $height, $croppingVariantKey, $relativeScalingWidth, $additionalParameters);
+            $processedImage = $this->processImage($file, (string)$width, (string)$height, $croppingVariantKey, $relativeScalingWidth, $additionalParameters);
 
             $srcsets[] = $this->getImageUri($processedImage) . ' ' . $density;
         }
@@ -328,39 +333,11 @@ class ResponsiveImage implements FileRendererInterface
     }
 
     /**
-     * Checks if the given file is an aniamted gif.
-     * See https://secure.php.net/manual/en/function.imagecreatefromgif.php#59787
-     *
      * @param FileInterface $file
      * @return bool
      */
     protected function isAnimatedGif(FileInterface $file): bool
     {
-        if ($file->getMimeType() === 'image/gif') {
-            $filecontents = file_get_contents($file->getForLocalProcessing());
-            $strLoc = 0;
-            $count = 0;
-
-            // There is no point in continuing after we find a 2nd frame
-            while ($count < 2) {
-                $where1 = strpos($filecontents, "\x00\x21\xF9\x04", $strLoc);
-                if ($where1 === false) {
-                    break;
-                }
-                $strLoc = $where1 + 1;
-                $where2 = strpos($filecontents, "\x00\x2C", $strLoc);
-                if ($where2 === false) {
-                    break;
-                }
-                if ($where1 + 8 == $where2) {
-                    $count++;
-                }
-                $strLoc = $where2 + 1;
-            }
-
-            return $count > 1;
-        }
-
-        return false;
+        return $this->imageService->isAnimatedGif($file);
     }
 }

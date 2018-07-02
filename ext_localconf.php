@@ -19,7 +19,7 @@ if (!defined('TYPO3_MODE')) {
 call_user_func(function () {
     /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
     $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-    $rendererRegistry->registerRendererClass(\Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImage::class);
+    $rendererRegistry->registerRendererClass(\Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer::class);
 
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
     $signalSlotDispatcher->connect(
