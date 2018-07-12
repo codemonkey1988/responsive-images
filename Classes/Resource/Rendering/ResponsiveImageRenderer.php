@@ -95,6 +95,7 @@ class ResponsiveImageRenderer implements FileRendererInterface
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false): string
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->imageService = $this->objectManager->get(\Codemonkey1988\ResponsiveImages\Resource\Service\ImageService::class);
         $this->isAnimatedGif = $this->isAnimatedGif($file);
 
         if (!array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options)
