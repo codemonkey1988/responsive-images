@@ -38,7 +38,7 @@ before_install:
 before_script:
   - phpenv config-rm xdebug.ini
   - composer require typo3/minimal="$TYPO3_VERSION"
-  - if [ "$TYPO3_VERSION" -eq "^9" ]; then composer require doctrine/dbal=~2.7.0; fi
+  - if [ "$TYPO3_VERSION" = "^9" ]; then composer require doctrine/dbal=~2.7.0; fi
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
