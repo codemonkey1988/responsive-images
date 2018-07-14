@@ -16,9 +16,9 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Resource\Rendering;
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer

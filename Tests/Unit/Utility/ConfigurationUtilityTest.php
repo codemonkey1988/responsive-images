@@ -14,7 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Utility;
  */
 
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility
