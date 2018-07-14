@@ -14,8 +14,8 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
-use TYPO3\CMS\Core\Resource\File;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\CMS\Core\Resource\File;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Service\ImageService
