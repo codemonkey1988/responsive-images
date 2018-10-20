@@ -36,8 +36,8 @@ class ConfigurationUtility
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images'])) {
             $desktopWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxDesktopImageWidth'] ?? self::DEFAULT_DESKTOP_WIDTH;
-            $tabletWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxDesktopImageWidth'] ?? self::DEFAULT_TABLET_WIDTH;
-            $smartphoneWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxDesktopImageWidth'] ?? self::DEFAULT_SMARTPHONE_WIDTH;
+            $tabletWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxTabletImageWidth'] ?? self::DEFAULT_TABLET_WIDTH;
+            $smartphoneWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxSmartphoneImageWidth'] ?? self::DEFAULT_SMARTPHONE_WIDTH;
         } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images'])) {
             try {
                 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images']);
