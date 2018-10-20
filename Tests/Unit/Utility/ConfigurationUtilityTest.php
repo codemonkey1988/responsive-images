@@ -40,11 +40,11 @@ class ConfigurationUtilityTest extends UnitTestCase
     }
 
     /**
-     * Test if user changes to the extension config are loaded correctly.
+     * Test if user changes to the extension config are loaded correctly for TYPO3 v8
      *
      * @test
      */
-    public function customExtensionConfig()
+    public function customExtensionConfigV8()
     {
         // Setup the data.
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images'] = serialize(
@@ -54,6 +54,31 @@ class ConfigurationUtilityTest extends UnitTestCase
                 'maxSmartphoneImageWidth' => '360',
             ]
         );
+
+        $extensionConfig = ConfigurationUtility::getExtensionConfig();
+        $expectedConfig = [
+            'maxDesktopImageWidth' => 2560,
+            'maxTabletImageWidth' => 1280,
+            'maxSmartphoneImageWidth' => 360,
+        ];
+
+        $this->assertTrue(is_array($extensionConfig));
+        $this->assertEquals($expectedConfig, $extensionConfig);
+    }
+
+    /**
+     * Test if user changes to the extension config are loaded correctly for TYPO3 v9
+     *
+     * @test
+     */
+    public function customExtensionConfigV9()
+    {
+        // Setup the data.
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images'] = [
+            'maxDesktopImageWidth' => '2560',
+            'maxTabletImageWidth' => '1280',
+            'maxSmartphoneImageWidth' => '360',
+        ];
 
         $extensionConfig = ConfigurationUtility::getExtensionConfig();
         $expectedConfig = [
