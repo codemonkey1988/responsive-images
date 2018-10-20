@@ -1,21 +1,21 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = array(
-    'title'            => 'Responsive Images',
-    'description'      => 'Adds responsive images support for many browser types to TYPO3 using the picture tag.',
-    'category'         => 'fe',
-    'contraints'       => array(
-        'depends'   => array(
+$EM_CONF[$_EXTKEY] = [
+    'title' => 'Responsive Images',
+    'description' => 'Adds responsive images support for many browser types to TYPO3 using the picture tag.',
+    'category' => 'fe',
+    'constraints' => [
+        'depends' => [
             'typo3' => '8.7.0-9.5.99',
-        ),
-        'conflicts' => array(),
-    ),
-    'state'            => 'beta',
-    'uploadfolder'     => false,
-    'createDirs'       => '',
+        ],
+        'conflicts' => [],
+    ],
+    'state' => 'stable',
+    'uploadfolder' => false,
+    'createDirs' => '',
     'clearCacheOnLoad' => true,
-    'author'           => 'Tim Schreiner',
-    'author_email'     => 'schreiner.tim@gmail.com',
-    'author_company'   => '',
-    'version'          => '2.0.1-dev'
-);
+    'author' => 'Tim Schreiner',
+    'author_email' => 'schreiner.tim@gmail.com',
+    'author_company' => '',
+    'version' => '2.0.1-dev',
+];
