@@ -42,6 +42,7 @@ class ResponsiveImageRenderer implements FileRendererInterface
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
+
     /**
      * @var array
      */
