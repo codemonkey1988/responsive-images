@@ -74,5 +74,6 @@ return PhpCsFixer\Config::create()
             ->in(__DIR__)
             ->exclude('.Build')
             ->exclude('Documentation')
+            ->exclude('var')
             ->notName('ext_emconf.php')
     );
