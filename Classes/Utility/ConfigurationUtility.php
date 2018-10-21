@@ -70,8 +70,11 @@ class ConfigurationUtility
     public static function isEnabled(): bool
     {
         $enabled = true;
+        $enabledByEnv = getenv('RESPONSIVE_IMAGES_ENABLED');
 
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
+        if ($enabledByEnv !== false) {
+            $enabled = (bool)$enabledByEnv;
+        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
             $enabled = (bool)$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['enabled'];
         }
 
@@ -84,8 +87,11 @@ class ConfigurationUtility
     public static function isProcessingEnabled(): bool
     {
         $processing = true;
+        $processingByEnv = getenv('RESPONSIVE_IMAGES_PROCESSING');
 
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
+        if ($processingByEnv !== false) {
+            $processing = (bool)$processingByEnv;
+        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.'])) {
             $processing = (bool)$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['processing'];
         }
 
