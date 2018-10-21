@@ -14,31 +14,49 @@ namespace Codemonkey1988\ResponsiveImages\ViewHelpers;
  *
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ViewHelper to add a key-value-pair to TYPO3 register stack.
  */
 class LoadRegisterViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('key', 'string', 'Key for adding value to register stack', true);
+        $this->registerArgument('value', 'string', 'Value that should be added to register stack', true);
+    }
+
+    /**
      * Renders the viewhelper.
      *
-     * @param string $key
-     * @param string $value
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render(string $key, string $value): string
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
+        $key = $arguments['key'];
+        $value = $arguments['value'];
+
         array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
         $GLOBALS['TSFE']->register[$key] = $value;
 
-        $content = $this->renderChildren();
+        $content = $renderChildrenClosure();
 
         if ($content) {
             // Restore register when content was rendered
