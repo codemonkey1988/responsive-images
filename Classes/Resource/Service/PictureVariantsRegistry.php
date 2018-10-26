@@ -123,7 +123,7 @@ class PictureVariantsRegistry implements SingletonInterface
             $imageVariant->setDefaultWidth($config['defaultWidth']);
         }
         if (!empty($config['defaultHeight'])) {
-            $imageVariant->setDefaultWidth($config['defaultHeight']);
+            $imageVariant->setDefaultHeight($config['defaultHeight']);
         }
 
         if (!empty($config['sources']) && is_array($config['sources'])) {
