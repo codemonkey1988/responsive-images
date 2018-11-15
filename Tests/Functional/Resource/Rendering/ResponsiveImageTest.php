@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
  */
 class ResponsiveImageTest extends FunctionalTestCase
 {
+    protected $coreExtensionsToLoad = ['recordlist'];
+
     protected function setUp()
     {
         parent::setUp();

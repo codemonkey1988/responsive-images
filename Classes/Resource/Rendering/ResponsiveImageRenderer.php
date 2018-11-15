@@ -75,12 +75,13 @@ class ResponsiveImageRenderer implements FileRendererInterface
         /** @var EnvironmentService $evironmentService */
         $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $registry = PictureVariantsRegistry::getInstance();
+        $supportedMimeTypes = ConfigurationUtility::getExtensionConfig()['supportedMimeTypes'];
 
         $enabled = ConfigurationUtility::isEnabled();
 
         return $enabled && $evironmentService->isEnvironmentInFrontendMode()
             && $registry->imageVariantKeyExists(self::DEFAULT_IMAGE_VARIANT_KEY)
-            && in_array($file->getMimeType(), $this->possibleMimeTypes, true);
+            && GeneralUtility::inList($supportedMimeTypes, $file->getMimeType());
     }
 
     /**

@@ -30,6 +30,7 @@ class ConfigurationUtilityTest extends UnitTestCase
     {
         $extensionConfig = ConfigurationUtility::getExtensionConfig();
         $expectedConfig = [
+            'supportedMimeTypes' => 'image/jpeg,image/jpg,image/gif,image/png',
             'maxDesktopImageWidth' => 1920,
             'maxTabletImageWidth' => 1024,
             'maxSmartphoneImageWidth' => 320,
@@ -49,6 +50,7 @@ class ConfigurationUtilityTest extends UnitTestCase
         // Setup the data.
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images'] = serialize(
             [
+                'supportedMimeTypes' => 'image/jpeg',
                 'maxDesktopImageWidth' => '2560',
                 'maxTabletImageWidth' => '1280',
                 'maxSmartphoneImageWidth' => '360',
@@ -57,6 +59,7 @@ class ConfigurationUtilityTest extends UnitTestCase
 
         $extensionConfig = ConfigurationUtility::getExtensionConfig();
         $expectedConfig = [
+            'supportedMimeTypes' => 'image/jpeg',
             'maxDesktopImageWidth' => 2560,
             'maxTabletImageWidth' => 1280,
             'maxSmartphoneImageWidth' => 360,
@@ -75,6 +78,7 @@ class ConfigurationUtilityTest extends UnitTestCase
     {
         // Setup the data.
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images'] = [
+            'supportedMimeTypes' => 'image/jpeg',
             'maxDesktopImageWidth' => '2560',
             'maxTabletImageWidth' => '1280',
             'maxSmartphoneImageWidth' => '360',
@@ -82,6 +86,7 @@ class ConfigurationUtilityTest extends UnitTestCase
 
         $extensionConfig = ConfigurationUtility::getExtensionConfig();
         $expectedConfig = [
+            'supportedMimeTypes' => 'image/jpeg',
             'maxDesktopImageWidth' => 2560,
             'maxTabletImageWidth' => 1280,
             'maxSmartphoneImageWidth' => 360,

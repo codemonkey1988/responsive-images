@@ -19,6 +19,7 @@ namespace Codemonkey1988\ResponsiveImages\Utility;
  */
 class ConfigurationUtility
 {
+    const DEFAULT_SUPPORTED_MIME_TYPES = 'image/jpeg,image/jpg,image/gif,image/png';
     const DEFAULT_DESKTOP_WIDTH = 1920;
     const DEFAULT_TABLET_WIDTH = 1024;
     const DEFAULT_SMARTPHONE_WIDTH = 320;
@@ -30,17 +31,23 @@ class ConfigurationUtility
      */
     public static function getExtensionConfig(): array
     {
+        $supportedMimeTypes = self::DEFAULT_SUPPORTED_MIME_TYPES;
         $desktopWidth = self::DEFAULT_DESKTOP_WIDTH;
         $tabletWidth = self::DEFAULT_TABLET_WIDTH;
         $smartphoneWidth = self::DEFAULT_SMARTPHONE_WIDTH;
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images'])) {
+            $supportedMimeTypes = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['supportedMimeTypes'] ?? self::DEFAULT_SUPPORTED_MIME_TYPES;
             $desktopWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxDesktopImageWidth'] ?? self::DEFAULT_DESKTOP_WIDTH;
             $tabletWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxTabletImageWidth'] ?? self::DEFAULT_TABLET_WIDTH;
             $smartphoneWidth = (int)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['responsive_images']['maxSmartphoneImageWidth'] ?? self::DEFAULT_SMARTPHONE_WIDTH;
         } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images'])) {
             try {
                 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['responsive_images']);
+
+                if (!empty($extConfig['supportedMimeTypes'])) {
+                    $supportedMimeTypes = $extConfig['supportedMimeTypes'];
+                }
 
                 if (isset($extConfig['maxDesktopImageWidth']) && is_numeric($extConfig['maxDesktopImageWidth'])) {
                     $desktopWidth = (int)$extConfig['maxDesktopImageWidth'];
@@ -58,6 +65,7 @@ class ConfigurationUtility
         }
 
         return [
+            'supportedMimeTypes' => $supportedMimeTypes,
             'maxDesktopImageWidth' => $desktopWidth,
             'maxTabletImageWidth' => $tabletWidth,
             'maxSmartphoneImageWidth' => $smartphoneWidth,
