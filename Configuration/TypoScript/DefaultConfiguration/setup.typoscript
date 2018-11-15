@@ -86,7 +86,7 @@ plugin.tx_responsiveimages.settings.configuration {
         }
     }
     three-quarters < .default
-    two-thirds {
+    three-quarters {
         defaultWidth = 1440
         sources {
             desktop.sizes.1x.width = 1440
