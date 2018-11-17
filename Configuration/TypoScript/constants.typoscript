@@ -5,4 +5,9 @@ plugin.tx_responsiveimages {
         # cat=basic; type=boolean; label= Enable the image processing
         processing = 1
     }
+    view {
+        templateRootPath = EXT:responsive_images/Resources/Private/Templates
+        partialRootPath = EXT:responsive_images/Resources/Private/Partials
+        layoutRootPath = EXT:responsive_images/Resources/Private/Layouts
+    }
 }

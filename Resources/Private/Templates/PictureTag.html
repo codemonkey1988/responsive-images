@@ -1,0 +1,14 @@
+<html data-namespace-typo3-fluid="true"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:if condition="!{isAnimatedGif} && !{options.disablePictureTag}">
+    <f:then>
+        <picture>
+            <f:render partial="Sources" arguments="{_all}"/>
+            <f:render partial="DefaultImage" arguments="{_all}"/>
+        </picture>
+    </f:then>
+    <f:else>
+        <f:render partial="DefaultImage" arguments="{_all}"/>
+    </f:else>
+</f:if>
+</html>
