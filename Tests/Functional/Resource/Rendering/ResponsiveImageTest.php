@@ -55,8 +55,6 @@ class ResponsiveImageTest extends FunctionalTestCase
             ->getMock();
 
         $tsfeMock->tmpl = new TemplateService();
-        // Flux hooks into the process triggered by this method.
-        $tsfeMock->tmpl->processTemplate([], '', 1);
         $tsfeMock->tmpl->setup = [];
 
         foreach ($typoscriptIncludes as $additionalTypoScript) {
@@ -120,5 +118,55 @@ class ResponsiveImageTest extends FunctionalTestCase
         $result = $subject->render($file, 0, 0, ['disablePictureTag' => true]);
 
         $this->assertRegExp('/^<img src=".*" width="1920" height="1056" alt="" \/>$/', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function generatePictureTagForValidJpegImageWithoutImageProcessingDisabledByEnv()
+    {
+        putenv('RESPONSIVE_IMAGES_PROCESSING=0');
+
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $file = $fileRepository->findByUid(1);
+
+        $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
+        $result = $subject->render($file, 0, 0);
+
+        putenv('RESPONSIVE_IMAGES_PROCESSING');
+
+        $imagePaths = [
+            '.Build/bin/typo3conf/ext/responsive_images/Tests/Functional/Fixtures/fileadmin/example.jpg 1x',
+            '.Build/bin/typo3conf/ext/responsive_images/Tests/Functional/Fixtures/fileadmin/example.jpg 2x',
+        ];
+
+        $this->assertRegExp('/^<picture>.*<\/picture>$/', $result);
+        $this->assertContains('<source media="(max-width: 40em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
+        $this->assertContains('<source media="(min-width: 40.0625em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
+        $this->assertContains('<source media="(min-width: 64.0625em)" srcset="' . $imagePaths[0] . '" />', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function generatePictureTagForValidJpegImageWithoutImageProcessingDisabledByTypoScript()
+    {
+        $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['settings.']['processing'] = '0';
+
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $file = $fileRepository->findByUid(1);
+
+        $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
+        $result = $subject->render($file, 0, 0);
+
+        $imagePaths = [
+            '.Build/bin/typo3conf/ext/responsive_images/Tests/Functional/Fixtures/fileadmin/example.jpg 1x',
+            '.Build/bin/typo3conf/ext/responsive_images/Tests/Functional/Fixtures/fileadmin/example.jpg 2x',
+        ];
+
+        $this->assertRegExp('/^<picture>.*<\/picture>$/', $result);
+        $this->assertContains('<source media="(max-width: 40em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
+        $this->assertContains('<source media="(min-width: 40.0625em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
+        $this->assertContains('<source media="(min-width: 64.0625em)" srcset="' . $imagePaths[0] . '" />', $result);
     }
 }

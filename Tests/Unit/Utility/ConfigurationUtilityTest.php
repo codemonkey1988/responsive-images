@@ -15,6 +15,8 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Utility;
 
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility
@@ -94,5 +96,99 @@ class ConfigurationUtilityTest extends UnitTestCase
 
         $this->assertTrue(is_array($extensionConfig));
         $this->assertEquals($expectedConfig, $extensionConfig);
+    }
+
+    /**
+     * @test
+     */
+    public function extensionEnabledByDefault()
+    {
+        $this->assertTrue(ConfigurationUtility::isEnabled());
+    }
+
+    /**
+     * @test
+     */
+    public function processingEnabledByDefault()
+    {
+        $this->assertTrue(ConfigurationUtility::isProcessingEnabled());
+    }
+
+    /**
+     * @test
+     */
+    public function extensionDisabledByEnv()
+    {
+        putenv('RESPONSIVE_IMAGES_ENABLED=0');
+        $isEnabled = ConfigurationUtility::isEnabled();
+        putenv('RESPONSIVE_IMAGES_ENABLED');
+
+        $this->assertFalse($isEnabled);
+    }
+
+    /**
+     * @test
+     */
+    public function extensionDisabledByTypoScript()
+    {
+        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $tsfeMock->tmpl = new TemplateService();
+        $tsfeMock->tmpl->setup = [
+            'plugin.' => [
+                'tx_responsiveimages.' => [
+                    'settings.' => [
+                        'enabled' => '0',
+                    ],
+                ],
+            ],
+        ];
+
+        $GLOBALS['TSFE'] = $tsfeMock;
+        $isEnabled = ConfigurationUtility::isEnabled();
+        unset($GLOBALS['TSFE']);
+
+        $this->assertFalse($isEnabled);
+    }
+
+    /**
+     * @test
+     */
+    public function processingDisabledByEnv()
+    {
+        putenv('RESPONSIVE_IMAGES_PROCESSING=0');
+        $isProcessingEnabled = ConfigurationUtility::isProcessingEnabled();
+        putenv('RESPONSIVE_IMAGES_PROCESSING');
+
+        $this->assertFalse($isProcessingEnabled);
+    }
+
+    /**
+     * @test
+     */
+    public function processingDisabledByTypoScript()
+    {
+        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $tsfeMock->tmpl = new TemplateService();
+        $tsfeMock->tmpl->setup = [
+            'plugin.' => [
+                'tx_responsiveimages.' => [
+                    'settings.' => [
+                        'processing' => '0',
+                    ],
+                ],
+            ],
+        ];
+
+        $GLOBALS['TSFE'] = $tsfeMock;
+        $isProcessingEnabled = ConfigurationUtility::isProcessingEnabled();
+        unset($GLOBALS['TSFE']);
+
+        $this->assertFalse($isProcessingEnabled);
     }
 }
