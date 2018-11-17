@@ -8,7 +8,11 @@ branches:
 
 matrix:
   fast_finish: true
+  allow_failures:
+    - env: TYPO3_VERSION="dev-master"
   include:
+    - php: 7.2
+      env: TYPO3_VERSION="dev-master"
     - php: 7.2
       env: TYPO3_VERSION=^9
     - php: 7.2
@@ -32,12 +36,22 @@ notifications:
     - schreiner.tim@gmail.com
 
 before_install:
+  - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
   - composer self-update
   - composer --version
 
 before_script:
   - phpenv config-rm xdebug.ini
-  - composer require typo3/minimal="$TYPO3_VERSION"
+  - |
+    composer require \
+      typo3/cms-backend="$TYPO3_VERSION" \
+      typo3/cms-core="$TYPO3_VERSION" \
+      typo3/cms-extbase="$TYPO3_VERSION" \
+      typo3/cms-extensionmanager="$TYPO3_VERSION" \
+      typo3/cms-fluid="$TYPO3_VERSION" \
+      typo3/cms-frontend="$TYPO3_VERSION" \
+      typo3/cms-install="$TYPO3_VERSION" \
+      typo3/cms-scheduler="$TYPO3_VERSION" \
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
