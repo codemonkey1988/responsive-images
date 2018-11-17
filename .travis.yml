@@ -44,6 +44,7 @@ before_script:
   - |
     composer require \
       typo3/cms-backend="$TYPO3_VERSION" \
+      typo3/cms-recordlist="$TYPO3_VERSION" \
       typo3/cms-core="$TYPO3_VERSION" \
       typo3/cms-extbase="$TYPO3_VERSION" \
       typo3/cms-extensionmanager="$TYPO3_VERSION" \
