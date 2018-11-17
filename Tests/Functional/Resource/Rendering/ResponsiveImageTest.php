@@ -17,51 +17,84 @@ use Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer
  */
 class ResponsiveImageTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['recordlist'];
+    protected $coreExtensionsToLoad = [
+        'recordlist'
+    ];
+
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/responsive_images'
+    ];
 
     protected function setUp()
     {
         parent::setUp();
 
-        $defaultVariant = new PictureImageVariant('default');
-        $defaultVariant->setDefaultWidth(1920)
-            ->addSourceConfig(
-                '(max-width: 40em)',
-                [
-                    '1x' => ['width' => 320, 'quality' => 65],
-                    '2x' => ['width' => 640, 'quality' => 40],
-                ]
-            )
-            ->addSourceConfig(
-                '(min-width: 64.0625em)',
-                [
-                    '1x' => ['width' => 1920],
-                    '2x' => ['width' => 1920 * 2, 'quality' => 80],
-                ]
-            )
-            ->addSourceConfig(
-                '(min-width: 40.0625em)',
-                [
-                    '1x' => ['width' => 1024, 'quality' => 80],
-                    '2x' => ['width' => 1024 * 2, 'quality' => 60],
-                ]
-            );
+        $this->importDataSet(__DIR__ . '/../../Fixtures/sys_file_storage.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/sys_file.xml');
 
-        $registry = PictureVariantsRegistry::getInstance();
-        $registry->registerImageVariant($defaultVariant);
+        $typoscriptIncludes = [
+            GeneralUtility::getFileAbsFileName('EXT:responsive_images/Configuration/TypoScript/setup.typoscript'),
+            GeneralUtility::getFileAbsFileName('EXT:responsive_images/Configuration/TypoScript/DefaultConfiguration/setup.typoscript'),
+        ];
+
+        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $tsfeMock->tmpl = new TemplateService();
+        // Flux hooks into the process triggered by this method.
+        $tsfeMock->tmpl->processTemplate([], '', 1);
+        $tsfeMock->tmpl->setup = [];
+
+        foreach ($typoscriptIncludes as $additionalTypoScript) {
+            $config = GeneralUtility::makeInstance(TypoScriptParser::class);
+            $config->parse(file_get_contents($additionalTypoScript));
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $tsfeMock->tmpl->setup,
+                $config->setup
+            );
+        }
+
+        $contentObjectRenderer = new ContentObjectRenderer($tsfeMock);
+        $contentObjectRenderer->data = [];
+
+        $tsfeMock->cObj = $contentObjectRenderer;
+
+        $GLOBALS['TSFE'] = $tsfeMock;
+        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $GLOBALS['BE_USER']->expects($this->any())
+            ->method('isAdmin')
+            ->willReturn(true);
     }
 
     protected function tearDown()
     {
         parent::tearDown();
+
+        unset($GLOBALS['TSFE']);
+        unset($GLOBALS['BE_USER']);
 
         $registry = PictureVariantsRegistry::getInstance();
         $registry->removeAllImageVariants();
@@ -69,43 +102,14 @@ class ResponsiveImageTest extends FunctionalTestCase
 
     /**
      * @test
-     * @runInSeparateProcess
      */
     public function generateImageTagForValidJpegImage()
     {
-        $processedFileMock = $this->createMock(ProcessedFile::class);
-        $processedFileMock
-            ->method('getProperty')
-            ->will(
-                $this->returnValueMap([
-                    ['width', 720],
-                    ['height', 500],
-                ])
-            );
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $file = $fileRepository->findByUid(1);
 
-        $fileMock = $this->createMock(File::class);
-        $fileMock
-            ->method('getProperty')
-            ->will(
-                $this->returnValueMap([
-                    ['alernative', ''],
-                    ['title', ''],
-                ])
-            );
-
-        $subject = $this->getMockBuilder(ResponsiveImageRenderer::class)
-            ->setMethods(['processImage', 'isAnimatedGif', 'getImageUri'])
-            ->getMock();
-
-        $subject->method('processImage')
-            ->willReturn($processedFileMock);
-        $subject->method('isAnimatedGif')
-            ->willReturn(false);
-        $subject
-            ->method('getImageUri')
-            ->willReturn('my-example-image.jpg');
-
-        $result = $subject->render($fileMock, 0, 0);
+        $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
+        $result = $subject->render($file, 0, 0);
 
         $this->assertRegExp('/^<picture>.*<\/picture>$/', $result);
         $this->assertRegExp('/<source media=".*" srcset=".*" \/>/', $result);
@@ -113,87 +117,15 @@ class ResponsiveImageTest extends FunctionalTestCase
 
     /**
      * @test
-     * @runInSeparateProcess
-     */
-    public function generateImageTagForInvalidAnimatedGifImage()
-    {
-        $processedFileMock = $this->createMock(ProcessedFile::class);
-        $processedFileMock
-            ->method('getProperty')
-            ->will(
-                $this->returnValueMap([
-                    ['width', 720],
-                    ['height', 500],
-                ])
-            );
-
-        $fileMock = $this->createMock(File::class);
-        $fileMock
-            ->method('getProperty')
-            ->will(
-                $this->returnValueMap([
-                    ['alernative', ''],
-                    ['title', ''],
-                ])
-            );
-
-        $subject = $this->getMockBuilder(ResponsiveImageRenderer::class)
-            ->setMethods(['processImage', 'isAnimatedGif', 'getImageUri'])
-            ->getMock();
-
-        $subject->method('processImage')
-            ->willReturn($processedFileMock);
-        $subject->method('isAnimatedGif')
-            ->willReturn(true);
-        $subject
-            ->method('getImageUri')
-            ->willReturn('my-animated-gif.gif');
-
-        $result = $subject->render($fileMock, 0, 0);
-
-        $this->assertSame('<img width="720" height="500" src="my-animated-gif.gif" />', $result);
-    }
-
-    /**
-     * @test
-     * @runInSeparateProcess
      */
     public function generateImageTagForValidJpegImageButDisabledPictureTag()
     {
-        $processedFileMock = $this->createMock(ProcessedFile::class);
-        $processedFileMock
-            ->method('getProperty')
-            ->will(
-                $this->returnValueMap([
-                    ['width', 720],
-                    ['height', 500],
-                ])
-            );
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $file = $fileRepository->findByUid(1);
 
-        $fileMock = $this->createMock(File::class);
-        $fileMock
-            ->method('getProperty')
-            ->will(
-                $this->returnValueMap([
-                    ['alernative', ''],
-                    ['title', ''],
-                ])
-            );
+        $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
+        $result = $subject->render($file, 0, 0, ['disablePictureTag' => true]);
 
-        $subject = $this->getMockBuilder(ResponsiveImageRenderer::class)
-            ->setMethods(['processImage', 'isAnimatedGif', 'getImageUri'])
-            ->getMock();
-
-        $subject->method('processImage')
-            ->willReturn($processedFileMock);
-        $subject->method('isAnimatedGif')
-            ->willReturn(false);
-        $subject
-            ->method('getImageUri')
-            ->willReturn('my-example-image.jpg');
-
-        $result = $subject->render($fileMock, 0, 0, ['disablePictureTag' => true]);
-
-        $this->assertSame('<img width="720" height="500" src="my-example-image.jpg" />', $result);
+        $this->assertRegExp('/^<img src=".*" width="1920" height="1056" alt="" \/>$/', $result);
     }
 }
