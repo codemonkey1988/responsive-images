@@ -14,23 +14,16 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Resource\Rendering;
  */
 
 use Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer;
-use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer
@@ -38,11 +31,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class ResponsiveImageTest extends FunctionalTestCase
 {
     protected $coreExtensionsToLoad = [
-        'recordlist'
+        'recordlist',
     ];
 
     protected $testExtensionsToLoad = [
-        'typo3conf/ext/responsive_images'
+        'typo3conf/ext/responsive_images',
     ];
 
     protected function setUp()

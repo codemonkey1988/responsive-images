@@ -3,12 +3,11 @@ declare(strict_types=1);
 namespace Codemonkey1988\ResponsiveImages\ViewHelpers\Uri;
 
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\Uri\ImageViewHelper as BaseImageViewHelper;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Fluid\ViewHelpers\Uri\ImageViewHelper as BaseImageViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-
 
 class ImageViewHelper extends BaseImageViewHelper
 {
@@ -30,8 +29,8 @@ class ImageViewHelper extends BaseImageViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @return string
      * @throws Exception
+     * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
@@ -90,7 +89,7 @@ class ImageViewHelper extends BaseImageViewHelper
      * @param array $arguments
      * @return string
      */
-    static protected function generateAdditionalProcessingParameters(array $arguments): string
+    protected static function generateAdditionalProcessingParameters(array $arguments): string
     {
         $additionalParameters = '';
 

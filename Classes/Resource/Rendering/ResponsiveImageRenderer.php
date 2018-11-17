@@ -83,7 +83,7 @@ class ResponsiveImageRenderer implements FileRendererInterface
             'config' => $this->getConfig(),
             'data' => $GLOBALS['TSFE']->cObj->data,
             'file' => $file,
-            'options' => $options
+            'options' => $options,
         ]);
 
         $content = $view->render('pictureTag');

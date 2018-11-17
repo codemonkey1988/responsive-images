@@ -3,11 +3,10 @@ declare(strict_types=1);
 namespace Codemonkey1988\ResponsiveImages\ViewHelpers;
 
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper as BaseImageViewHelper;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper as BaseImageViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-
 
 class ImageViewHelper extends BaseImageViewHelper
 {
