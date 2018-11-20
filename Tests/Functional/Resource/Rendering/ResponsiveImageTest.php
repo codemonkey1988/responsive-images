@@ -100,7 +100,7 @@ class ResponsiveImageTest extends FunctionalTestCase
         $file = $fileRepository->findByUid(1);
 
         $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
-        $result = $subject->render($file, 0, 0);
+        $result = trim($subject->render($file, 0, 0), "\n ");
 
         $this->assertRegExp('/^<picture>.*<\/picture>$/', $result);
         $this->assertRegExp('/<source media=".*" srcset=".*" \/>/', $result);
@@ -115,7 +115,7 @@ class ResponsiveImageTest extends FunctionalTestCase
         $file = $fileRepository->findByUid(1);
 
         $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
-        $result = $subject->render($file, 0, 0, ['disablePictureTag' => true]);
+        $result = trim($subject->render($file, 0, 0, ['disablePictureTag' => true]), "\n ");
 
         $this->assertRegExp('/^<img src=".*" width="1920" height="1056" alt="" \/>$/', $result);
     }
@@ -131,7 +131,7 @@ class ResponsiveImageTest extends FunctionalTestCase
         $file = $fileRepository->findByUid(1);
 
         $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
-        $result = $subject->render($file, 0, 0);
+        $result = trim($subject->render($file, 0, 0), "\n ");
 
         putenv('RESPONSIVE_IMAGES_PROCESSING');
 
@@ -157,7 +157,7 @@ class ResponsiveImageTest extends FunctionalTestCase
         $file = $fileRepository->findByUid(1);
 
         $subject = GeneralUtility::makeInstance(ResponsiveImageRenderer::class);
-        $result = $subject->render($file, 0, 0);
+        $result = trim($subject->render($file, 0, 0), "\n ");
 
         $imagePaths = [
             '.Build/bin/typo3conf/ext/responsive_images/Tests/Functional/Fixtures/fileadmin/example.jpg 1x',

@@ -86,10 +86,7 @@ class ResponsiveImageRenderer implements FileRendererInterface
             'options' => $options,
         ]);
 
-        $content = $view->render('pictureTag');
-        $content = trim(str_replace("\n", '', $content));
-
-        return $content;
+        return $view->render('pictureTag');
     }
 
     /**
