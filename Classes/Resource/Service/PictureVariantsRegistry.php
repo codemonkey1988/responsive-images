@@ -133,7 +133,7 @@ class PictureVariantsRegistry implements SingletonInterface
             foreach ($config['sources'] as $source) {
                 list($media, $sourceConfigs, $croppingVariantKey) = self::generateSourceConfigForImageVariant($source);
 
-                if ($media && $sourceConfigs) {
+                if ($sourceConfigs) {
                     $imageVariant->addSourceConfig($media, $sourceConfigs, $croppingVariantKey);
                 }
             }
@@ -154,11 +154,11 @@ class PictureVariantsRegistry implements SingletonInterface
             2 => 'default',
         ];
 
-        if (empty($source['media']) || empty($source['sizes'])) {
+        if (empty($source['sizes'])) {
             return $sourceConfig;
         }
 
-        $sourceConfig[0] = $source['media'];
+        $sourceConfig[0] = $source['media'] ?: '';
         foreach ($source['sizes'] as $density => $imageConfig) {
             $sourceConfig[1][$density] = $imageConfig;
         }

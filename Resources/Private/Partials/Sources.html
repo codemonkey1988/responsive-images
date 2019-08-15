@@ -8,7 +8,7 @@
 <f:section name="source">
     <f:switch expression="{layoutKey}">
         <f:case value="data-srcset">
-            <source media="{source.media}" data-srcset="{f:render(section:'srcset',arguments:_all)}" />
+            <source {f:if(condition: '{source.media}', then: 'media="{source.media}"')} data-srcset="{f:render(section:'srcset',arguments:_all)}" />
         </f:case>
         <f:case value="srcset">
             <source media="{source.media}" srcset="{f:render(section:'srcset',arguments:_all)}" />
