@@ -119,6 +119,9 @@ class PictureVariantsRegistry implements SingletonInterface
     {
         $imageVariant = GeneralUtility::makeInstance(PictureImageVariant::class, $key);
 
+        if (!empty($config['layoutKey'])) {
+            $imageVariant->setLayoutKey($config['layoutKey']);
+        }
         if (!empty($config['defaultWidth'])) {
             $imageVariant->setDefaultWidth($config['defaultWidth']);
         }

@@ -20,6 +20,7 @@ class ImageViewHelper extends BaseImageViewHelper
         $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg', false);
         $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale?', false);
         $this->registerTagAttribute('grayscale', 'bool', 'Should be image be rendered as greyscale?', false);
+        $this->registerArgument('layoutKey', 'string', 'Specifies the tag layout', false, '');
     }
 
     /**
@@ -66,9 +67,31 @@ class ImageViewHelper extends BaseImageViewHelper
                     $this->tag->addAttribute('data-focus-area', $focusArea->makeAbsoluteBasedOnFile($image));
                 }
             }
-            $this->tag->addAttribute('src', $imageUri);
-            $this->tag->addAttribute('width', $processedImage->getProperty('width'));
-            $this->tag->addAttribute('height', $processedImage->getProperty('height'));
+
+            $layoutKey = $this->arguments['layoutKey'];
+            switch ($layoutKey) {
+                case 'data-srcset':
+                    // Image placeholder: empty SVG with correct aspect ratio.
+                    // Use huge SVG as Internet Explorer does no up-scaling for SVGs.
+                    $width = 2048;
+                    $height = (int)($processedImage->getProperty('height') / $processedImage->getProperty('width') * $width);
+                    $this->tag->addAttribute(
+                        'src',
+                        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20" .
+                        $width . "%20" . $height .
+                        "'%2F%3E"
+                    );
+                    $this->tag->addAttribute('data-src', $imageUri);
+                    $this->tag->addAttribute('width', $width);
+                    $this->tag->addAttribute('height', $height);
+                    break;
+                case 'srcset':
+                default:
+                    $this->tag->addAttribute('src', $imageUri);
+                    $this->tag->addAttribute('width', $processedImage->getProperty('width'));
+                    $this->tag->addAttribute('height', $processedImage->getProperty('height'));
+                    break;
+            }
 
             $alt = $image->getProperty('alternative');
             $title = $image->getProperty('title');
