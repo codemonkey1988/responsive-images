@@ -178,3 +178,62 @@ Keep in mind, that also cropping  will not work when processing is disabled.
 
 **By environment variable**<br>
 `RESPONSIVE_IMAGES_PROCESSING=0`
+
+### lazySizes configuration
+
+This also does not work out of the box. 
+The templates "Responsive images settings" and "Responsive images lazySizes configuration (optional)" must be included.
+Before an image is rendered a registry variable with the key **IMAGE_VARIANT_KEY** and the value **lazysizes** must be set.
+Additionally extra classes and attributes must be set.  
+
+
+Example lazySizes:
+
+```
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:r="http://typo3.org/ns/Codemonkey1988/ResponsiveImages/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<r:loadRegister key="IMAGE_VARIANT_KEY" value="lazysizes">
+    <f:media
+            file="{file}"
+            additionalAttributes="{data-sizes: 'auto'}"
+            class="lazyload"
+            alt="{file.alternative}"
+            title="{file.title}"
+    />
+</r:loadRegister>
+</html>
+```
+
+The lazySizes configuration will create a picture tag like the following one:
+
+```
+<picture>
+    <source
+        media="(-webkit-min-device-pixel-ratio: 1.9), (min-resolution: 1.9dppx)"
+        data-srcset="image-w2048-q40.jpg 1024w,
+            image-w1536-q40.jpg 768w,
+            image-w1364-q40.jpg 682w,
+            image-w1024-q40.jpg 512w,
+            image-w682-q40.jpg 341w,
+            image-w512-q40.jpg 256w" />
+    <source
+        data-srcset="image-w1920-q80.jpg 1920w,
+            image-w1440-q80.jpg 1440w,
+            image-w1280-q80.jpg 1280w,
+            image-w1024-q80.jpg 1024w,
+            image-w768-q80.jpg 768w,
+            image-w682-q80.jpg 682w,
+            image-w512-q80.jpg 512w,
+            image-w341-q80.jpg 341w,
+            image-w256-q80.jpg 256w" />
+    <img
+        data-sizes="auto"
+        class="lazyload"
+        src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%202048%201152'%2F%3E"
+        data-src="image-w256.jpg"
+        width="2048"
+        height="1152"
+        alt="Example alternative" />
+</picture>
+```

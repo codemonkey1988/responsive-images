@@ -1,0 +1,163 @@
+page.includeJS {
+    responsiveImagesLazysizes = https://cdn.jsdelivr.net/npm/lazysizes@5/lazysizes.min.js
+    responsiveImagesLazysizes.external = 1
+}
+
+plugin.tx_responsiveimages.settings.configuration {
+    default {
+    }
+    lazysizes {
+        layoutKey = data-srcset
+        defaultWidth = 256
+        defaultHeight =
+        sources {
+            highres {
+                media = (-webkit-min-device-pixel-ratio: 1.9), (min-resolution: 1.9dppx)
+                croppingVariantKey = default
+                sizes {
+                    1024w {
+                        // tablet full
+                        width = 2048
+                        height =
+                        quality = 40
+                    }
+                    768w {
+                        // tablet two-thirds
+                        width = 1536
+                        height =
+                        quality = 40
+                    }
+                    682w {
+                        // tablet two-thirds
+                        width = 1364
+                        height =
+                        quality = 40
+                    }
+                    512w {
+                        // tablet half
+                        width = 1024
+                        height =
+                        quality = 40
+                    }
+                    341w {
+                        // tablet third
+                        // also use for: smartphone full
+                        width = 682
+                        height =
+                        quality = 40
+                    }
+                    /*
+                    320w {
+                        // smartphone full
+                        width = 640
+                        height =
+                        quality = 40
+                    }
+                    */
+                    256w {
+                        // tablet quarter
+                        width = 512
+                        height =
+                        quality = 40
+                    }
+                }
+            }
+            default {
+                media =
+                croppingVariantKey = default
+                sizes {
+                    1920w {
+                        // desktop full
+                        width = 1920
+                        height =
+                        quality = 80
+                    }
+                    1440w {
+                        // desktop three-quarters
+                        width = 1440
+                        height =
+                        quality = 80
+                    }
+                    1280w {
+                        // desktop two-thirds
+                        width = 1280
+                        height =
+                        quality = 80
+                    }
+                    1024w {
+                        // tablet full
+                        // also use for: desktop half
+                        width = 1024
+                        height =
+                        quality = 80
+                    }
+                    /*
+                    960w {
+                        // desktop half
+                        width = 960
+                        height =
+                        quality = 80
+                    }
+                    */
+                    768w {
+                        // tablet two-thirds
+                        width = 768
+                        height =
+                        quality = 80
+                    }
+                    682w {
+                        // tablet three-quarters
+                        // also use for: desktop third
+                        width = 682
+                        height =
+                        quality = 80
+                    }
+                    /*
+                    640w {
+                        // desktop third
+                        width = 640
+                        height =
+                        quality = 80
+                    }
+                    */
+                    512w {
+                        // tablet half
+                        // also use for: desktop quarter
+                        width = 512
+                        height =
+                        quality = 80
+                    }
+                    /*
+                    480w {
+                        // desktop quarter
+                        width = 480
+                        height =
+                        quality = 80
+                    }
+                    */
+                    341w {
+                        // tablet third
+                        // also use for: smartphone full
+                        width = 341
+                        height =
+                        quality = 80
+                    }
+                    /*
+                    320w {
+                        // smartphone full
+                        width = 320
+                        height =
+                        quality = 80
+                    }
+                    */
+                    256w {
+                        // tablet quarter
+                        width = 256
+                        height =
+                        quality = 80
+                    }
+                }
+            }
+        }
+    }
+}
