@@ -11,10 +11,10 @@
             <source {f:if(condition: '{source.media}', then: 'media="{source.media}"')} data-srcset="{f:render(section:'srcset',arguments:_all)}" />
         </f:case>
         <f:case value="srcset">
-            <source media="{source.media}" srcset="{f:render(section:'srcset',arguments:_all)}" />
+            <source {f:if(condition: '{source.media}', then: 'media="{source.media}"')} srcset="{f:render(section:'srcset',arguments:_all)}" />
         </f:case>
         <f:defaultCase>
-            <source media="{source.media}" srcset="{f:render(section:'srcset',arguments:_all)}" />
+            <source {f:if(condition: '{source.media}', then: 'media="{source.media}"')} srcset="{f:render(section:'srcset',arguments:_all)}" />
         </f:defaultCase>
     </f:switch>
 </f:section>
