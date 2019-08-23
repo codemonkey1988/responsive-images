@@ -211,12 +211,12 @@ The lazySizes configuration will create a picture tag like the following one:
 <picture>
     <source
         media="(-webkit-min-device-pixel-ratio: 1.9), (min-resolution: 1.9dppx)"
-        data-srcset="image-w2048-q40.jpg 1024w,
-            image-w1536-q40.jpg 768w,
-            image-w1364-q40.jpg 682w,
-            image-w1024-q40.jpg 512w,
-            image-w682-q40.jpg 341w,
-            image-w512-q40.jpg 256w" />
+        data-srcset="image-w2048-q40.jpg w2048,
+            image-w1536-q40.jpg 1536w,
+            image-w1364-q40.jpg 1364w,
+            image-w1024-q40.jpg 1024w,
+            image-w682-q40.jpg 682w,
+            image-w512-q40.jpg 512w" />
     <source
         data-srcset="image-w1920-q80.jpg 1920w,
             image-w1440-q80.jpg 1440w,

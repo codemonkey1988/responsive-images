@@ -15,31 +15,31 @@ plugin.tx_responsiveimages.settings.configuration {
                 media = (-webkit-min-device-pixel-ratio: 1.9), (min-resolution: 1.9dppx)
                 croppingVariantKey = default
                 sizes {
-                    1024w {
+                    2048w {
                         // tablet full
                         width = 2048
                         height =
                         quality = 40
                     }
-                    768w {
+                    1536w {
                         // tablet two-thirds
                         width = 1536
                         height =
                         quality = 40
                     }
-                    682w {
+                    1364w {
                         // tablet two-thirds
                         width = 1364
                         height =
                         quality = 40
                     }
-                    512w {
+                    1024w {
                         // tablet half
                         width = 1024
                         height =
                         quality = 40
                     }
-                    341w {
+                    682w {
                         // tablet third
                         // also use for: smartphone full
                         width = 682
@@ -47,14 +47,14 @@ plugin.tx_responsiveimages.settings.configuration {
                         quality = 40
                     }
                     /*
-                    320w {
+                    640w {
                         // smartphone full
                         width = 640
                         height =
                         quality = 40
                     }
                     */
-                    256w {
+                    512w {
                         // tablet quarter
                         width = 512
                         height =
