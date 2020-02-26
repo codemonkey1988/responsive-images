@@ -17,6 +17,9 @@ class ImageViewHelper extends BaseImageViewHelper
     {
         parent::initializeArguments();
 
+        // Re-register this argument. In TYPO3 v9, there is no default value. When dropping v9 support, this line can be removed.
+        $this->overrideArgument('src', 'string', 'src', false, '');
+
         $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg', false);
         $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale?', false);
         $this->registerTagAttribute('grayscale', 'bool', 'Should be image be rendered as greyscale?', false);
@@ -32,7 +35,7 @@ class ImageViewHelper extends BaseImageViewHelper
      */
     public function render()
     {
-        if (($this->arguments['src'] === null && $this->arguments['image'] === null) || ($this->arguments['src'] !== null && $this->arguments['image'] !== null)) {
+        if (($this->arguments['src'] === '' && $this->arguments['image'] === null) || ($this->arguments['src'] !== '' && $this->arguments['image'] !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1382284106);
         }
 
