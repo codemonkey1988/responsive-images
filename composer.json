@@ -4,6 +4,7 @@
   "description": "Adds responsive images support for many browser types to TYPO3 using the picture tag.",
   "homepage": "https://github.com/codemonkey1988/responsive-images/",
   "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
   "keywords": [
     "TYPO3 CMS",
     "responsive_images"
@@ -15,12 +16,11 @@
     }
   ],
   "require": {
-    "typo3/cms-core": "^8.7.13 || ^9.5.0"
+    "typo3/cms-core": "^8.7.13 || ^9.5.0 || ~10.3.0 || dev-master"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.10",
-    "phpunit/phpunit": "^6.4",
-    "nimut/testing-framework": "^4.0"
+    "nimut/testing-framework": "^5.0"
   },
   "autoload": {
     "psr-4": {
@@ -33,7 +33,6 @@
     }
   },
   "replace": {
-    "responsive_images": "self.version",
     "typo3-ter/responsive-images": "self.version"
   },
   "config": {
