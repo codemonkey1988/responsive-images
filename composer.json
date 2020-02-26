@@ -4,7 +4,6 @@
   "description": "Adds responsive images support for many browser types to TYPO3 using the picture tag.",
   "homepage": "https://github.com/codemonkey1988/responsive-images/",
   "license": "GPL-2.0-or-later",
-  "minimum-stability": "dev",
   "keywords": [
     "TYPO3 CMS",
     "responsive_images"
