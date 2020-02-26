@@ -1,11 +1,11 @@
-# cat=config/general; type=string; label=Supported mime types:A lsit of mime types for generating responsive images
+# cat=config/general; type=string; label=Supported mime types:A list of mime types for generating responsive images
 supportedMimeTypes = image/jpeg,image/jpg,image/gif,image/png
 
-# cat=config/images; type=string; label=Desktop image width:Maximale image width for desktop devices
+# cat=config/images; type=string; label=Desktop image width:Maximum image width for desktop devices
 maxDesktopImageWidth = 1920
 
-# cat=config/images; type=string; label=Tablet image width:Maximale image width for tablets
+# cat=config/images; type=string; label=Tablet image width:Maximum image width for tablets
 maxTabletImageWidth = 1024
 
-# cat=config/images; type=string; label=Smartphone image width:Maximale image width for smartphones
+# cat=config/images; type=string; label=Smartphone image width:Maximum image width for smartphones
 maxSmartphoneImageWidth = 320
