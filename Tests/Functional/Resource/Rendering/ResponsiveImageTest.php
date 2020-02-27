@@ -50,6 +50,10 @@ class ResponsiveImageTest extends FunctionalTestCase
             GeneralUtility::getFileAbsFileName('EXT:responsive_images/Configuration/TypoScript/DefaultConfiguration/setup.typoscript'),
         ];
 
+        if (version_compare(TYPO3_version, '9.5.0', '<')) {
+            $this->typoScriptIncludes[] = __DIR__ . '/../../Fixtures/config/typo3_v8.typoscript';
+        }
+
         $this->setUpBackendUserFromFixture(1);
     }
 
