@@ -5,3 +5,4 @@
 /.ddev
 /var
 /config
+/Tests/Functional/Fixtures/fileadmin/typo3temp

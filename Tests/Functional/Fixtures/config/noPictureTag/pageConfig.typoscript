@@ -1,0 +1,18 @@
+page = PAGE
+page.typeNum = 0
+
+page.config.disableAllHeaderCode = 1
+
+page.10 = FLUIDTEMPLATE
+page.10 {
+    templateName = Page
+    templateRootPaths.0 = EXT:responsive_images/Tests/Functional/Fixtures/config/noPictureTag
+
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+        10 {
+            files = 1
+            as = files
+        }
+    }
+}
