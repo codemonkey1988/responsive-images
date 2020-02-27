@@ -39,6 +39,10 @@ class ResponsiveImageTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/../../Fixtures/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../../Fixtures/pages.xml');
 
+        if (version_compare(TYPO3_version, '9.5.0', '>')) {
+            $this->getDatabaseConnection()->updateArray('pages', ['uid' => '1'], ['slug' => '/']);
+        }
+
         $this->getDatabaseConnection()->delete('sys_file_processedfile', ['storage' => '1']);
 
         $this->typoScriptIncludes = [
