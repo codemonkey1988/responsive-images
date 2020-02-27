@@ -103,7 +103,7 @@ class ResponsiveImageTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(1, array_merge(
             $this->typoScriptIncludes,
             [
-                $additionalTypoScriptIncludes
+                $additionalTypoScriptIncludes,
             ]
         ));
 
