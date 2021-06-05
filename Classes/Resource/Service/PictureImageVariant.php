@@ -30,6 +30,10 @@ class PictureImageVariant
     /**
      * @var string
      */
+    protected $layoutKey = '';
+    /**
+     * @var string
+     */
     protected $defaultWidth = '1920';
     /**
      * @var string
@@ -77,6 +81,25 @@ class PictureImageVariant
     public function getAllSourceConfig(): array
     {
         return $this->sources;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLayoutKey(): string
+    {
+        return $this->layoutKey;
+    }
+
+    /**
+     * @param string $layoutKey
+     * @return PictureImageVariant
+     */
+    public function setLayoutKey(string $layoutKey): self
+    {
+        $this->layoutKey = $layoutKey;
+
+        return $this;
     }
 
     /**
