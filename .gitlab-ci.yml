@@ -32,6 +32,8 @@ stages:
 lint-php:
   stage: lint
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
+  except:
+    - master
   script:
     - find . -name \*.php ! -path "./.Build/*" -exec php -d display_errors=stderr -l {} > /dev/null \;
   parallel:
@@ -41,6 +43,8 @@ lint-php:
 codestyle-php:
   extends: .composer-install
   stage: lint
+  except:
+    - master
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
   script:
     - .Build/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff --diff-format=udiff
@@ -50,6 +54,8 @@ unit-tests:
     - .composer-install
     - .install-typo3
   stage: test
+  except:
+    - master
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
   script:
     - .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
@@ -67,6 +73,8 @@ functional-tests:
     - .composer-install
     - .install-typo3
   stage: test
+  except:
+    - master
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
   services:
     - mysql:5.7
