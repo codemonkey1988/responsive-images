@@ -109,3 +109,17 @@ mirror-github:
     - git config user.email "$GIT_USER_EMAIL"
     - git checkout -b master
     - git push -f --mirror https://$GITHUB_USERNAME:ghp_$GITHUB_TOKEN@$GITHUB_REPOSITORY
+
+mirror-master:
+  stage: mirror
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
+  only:
+    - main
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - git clone $CI_REPOSITORY_URL -b $CI_COMMIT_BRANCH repo && cd repo
+    - git config user.name "$GIT_USER_NAME"
+    - git config user.email "$GIT_USER_EMAIL"
+    - git checkout master && git merge --ff main
+    - git push https://$GITLAB_USERNAME:M2_$GITLAB_TOKEN@$GITLAB_REPOSITORY
