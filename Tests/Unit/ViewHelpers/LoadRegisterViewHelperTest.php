@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
 
 /*
@@ -25,7 +33,7 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected $tsfe = null;
+    protected $tsfe;
 
     /**
      * Set up
@@ -50,8 +58,8 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
     {
         /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
         $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['registerArgument']);
-        $viewHelper->expects($this->at(0))->method('registerArgument')->with('key', 'string', $this->anything(), true);
-        $viewHelper->expects($this->at(1))->method('registerArgument')->with('value', 'string', $this->anything(), true);
+        $viewHelper->expects(self::at(0))->method('registerArgument')->with('key', 'string', self::anything(), true);
+        $viewHelper->expects(self::at(1))->method('registerArgument')->with('value', 'string', self::anything(), true);
         $viewHelper->initializeArguments();
     }
 
@@ -77,7 +85,7 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
         ]);
         $viewHelper->render();
 
-        $this->assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
+        self::assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
     }
 
     /**
@@ -87,7 +95,7 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
     {
         /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
         $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
-        $viewHelper->expects($this->once())->method('renderChildren')->willReturn('<content>');
+        $viewHelper->expects(self::once())->method('renderChildren')->willReturn('<content>');
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments([
             'key' => 'foo',
@@ -106,9 +114,9 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
 
         /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
         $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
-        $viewHelper->expects($this->any())->method('renderChildren')->will($this->returnCallback(function () use ($registerVariableName, $registerVariableValue) {
+        $viewHelper->expects(self::any())->method('renderChildren')->willReturnCallback(function () use ($registerVariableName, $registerVariableValue) {
             $this->assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
-        }));
+        });
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments([
             'key' => $registerVariableName,
@@ -126,7 +134,7 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
 
         /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
         $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
-        $viewHelper->expects($this->any())->method('renderChildren')->willReturn('<content>');
+        $viewHelper->expects(self::any())->method('renderChildren')->willReturn('<content>');
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments([
             'key' => $registerVariableName,
@@ -134,6 +142,6 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
         ]);
         $viewHelper->render();
 
-        $this->assertArrayNotHasKey($registerVariableName, $GLOBALS['TSFE']->register);
+        self::assertArrayNotHasKey($registerVariableName, $GLOBALS['TSFE']->register);
     }
 }

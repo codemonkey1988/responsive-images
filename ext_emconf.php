@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Responsive Images',
     'description' => 'Adds responsive images support for many browser types to TYPO3 using the picture tag.',

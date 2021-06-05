@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Utility;
 
 /*
@@ -38,8 +46,8 @@ class ConfigurationUtilityTest extends UnitTestCase
             'maxSmartphoneImageWidth' => 320,
         ];
 
-        $this->assertTrue(is_array($extensionConfig));
-        $this->assertEquals($expectedConfig, $extensionConfig);
+        self::assertTrue(is_array($extensionConfig));
+        self::assertEquals($expectedConfig, $extensionConfig);
     }
 
     /**
@@ -67,8 +75,8 @@ class ConfigurationUtilityTest extends UnitTestCase
             'maxSmartphoneImageWidth' => 360,
         ];
 
-        $this->assertTrue(is_array($extensionConfig));
-        $this->assertEquals($expectedConfig, $extensionConfig);
+        self::assertTrue(is_array($extensionConfig));
+        self::assertEquals($expectedConfig, $extensionConfig);
     }
 
     /**
@@ -94,8 +102,8 @@ class ConfigurationUtilityTest extends UnitTestCase
             'maxSmartphoneImageWidth' => 360,
         ];
 
-        $this->assertTrue(is_array($extensionConfig));
-        $this->assertEquals($expectedConfig, $extensionConfig);
+        self::assertTrue(is_array($extensionConfig));
+        self::assertEquals($expectedConfig, $extensionConfig);
     }
 
     /**
@@ -103,7 +111,7 @@ class ConfigurationUtilityTest extends UnitTestCase
      */
     public function extensionEnabledByDefault()
     {
-        $this->assertTrue(ConfigurationUtility::isEnabled());
+        self::assertTrue(ConfigurationUtility::isEnabled());
     }
 
     /**
@@ -111,7 +119,7 @@ class ConfigurationUtilityTest extends UnitTestCase
      */
     public function processingEnabledByDefault()
     {
-        $this->assertTrue(ConfigurationUtility::isProcessingEnabled());
+        self::assertTrue(ConfigurationUtility::isProcessingEnabled());
     }
 
     /**
@@ -123,7 +131,7 @@ class ConfigurationUtilityTest extends UnitTestCase
         $isEnabled = ConfigurationUtility::isEnabled();
         putenv('RESPONSIVE_IMAGES_ENABLED');
 
-        $this->assertFalse($isEnabled);
+        self::assertFalse($isEnabled);
     }
 
     /**
@@ -150,7 +158,7 @@ class ConfigurationUtilityTest extends UnitTestCase
         $isEnabled = ConfigurationUtility::isEnabled();
         unset($GLOBALS['TSFE']);
 
-        $this->assertFalse($isEnabled);
+        self::assertFalse($isEnabled);
     }
 
     /**
@@ -162,7 +170,7 @@ class ConfigurationUtilityTest extends UnitTestCase
         $isProcessingEnabled = ConfigurationUtility::isProcessingEnabled();
         putenv('RESPONSIVE_IMAGES_PROCESSING');
 
-        $this->assertFalse($isProcessingEnabled);
+        self::assertFalse($isProcessingEnabled);
     }
 
     /**
@@ -189,6 +197,6 @@ class ConfigurationUtilityTest extends UnitTestCase
         $isProcessingEnabled = ConfigurationUtility::isProcessingEnabled();
         unset($GLOBALS['TSFE']);
 
-        $this->assertFalse($isProcessingEnabled);
+        self::assertFalse($isProcessingEnabled);
     }
 }

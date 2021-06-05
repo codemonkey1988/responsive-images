@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
 
 /*
@@ -32,7 +40,7 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->setDefaultWidth('2000');
 
-        $this->assertEquals('2000', $pictureImageVariant->getDefaultWidth());
+        self::assertEquals('2000', $pictureImageVariant->getDefaultWidth());
     }
 
     /**
@@ -46,7 +54,7 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->setDefaultHeight('700');
 
-        $this->assertEquals('700', $pictureImageVariant->getDefaultHeight());
+        self::assertEquals('700', $pictureImageVariant->getDefaultHeight());
     }
 
     /**
@@ -73,8 +81,8 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media, $srcsets);
 
-        $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
-        $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
+        self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
+        self::assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
     }
 
     /**
@@ -112,8 +120,8 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant->addSourceConfig($media1, $srcset1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2);
 
-        $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
-        $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
+        self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
+        self::assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
     }
 
     /**
@@ -141,8 +149,8 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media, $srcsets, $croppingVariantKey);
 
-        $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
-        $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
+        self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
+        self::assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
     }
 
     /**
@@ -182,7 +190,7 @@ class PictureImageVariantTest extends UnitTestCase
         $pictureImageVariant->addSourceConfig($media1, $srcset1, $croppingVariantKey1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2, $croppingVariantKey2);
 
-        $this->assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
-        $this->assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
+        self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
+        self::assertEquals($expected, $pictureImageVariant->getAllSourceConfig());
     }
 }

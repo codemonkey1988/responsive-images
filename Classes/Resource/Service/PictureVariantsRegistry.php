@@ -1,5 +1,14 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Resource\Service;
 
 /*
@@ -42,7 +51,6 @@ class PictureVariantsRegistry implements SingletonInterface
 
     /**
      * @param PictureImageVariant $imageVariant
-     * @return void
      */
     public function registerImageVariant(PictureImageVariant $imageVariant)
     {
@@ -75,9 +83,6 @@ class PictureVariantsRegistry implements SingletonInterface
         return isset($this->configs[$key]) ? $this->configs[$key] : null;
     }
 
-    /**
-     * @return void
-     */
     public function removeAllImageVariants()
     {
         $this->configs = [];
@@ -85,7 +90,6 @@ class PictureVariantsRegistry implements SingletonInterface
 
     /**
      * @param string $key
-     * @return void
      */
     public function removeImageVariant(string $key)
     {
@@ -94,9 +98,6 @@ class PictureVariantsRegistry implements SingletonInterface
         }
     }
 
-    /**
-     * @return void
-     */
     protected function initializeTypoScriptConfiguration()
     {
         $plainConfig = [];

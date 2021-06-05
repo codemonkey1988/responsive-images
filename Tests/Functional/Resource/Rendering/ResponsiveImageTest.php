@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Resource\Rendering;
 
 /*
@@ -66,8 +74,8 @@ class ResponsiveImageTest extends FunctionalTestCase
             __DIR__ . '/../../Fixtures/config/pictureTag/pageConfig.typoscript'
         );
 
-        $this->assertRegExp('/^<picture>.*<\/picture>$/', $result);
-        $this->assertRegExp('/<source media=".*" srcset=".*" \/>/', $result);
+        self::assertRegExp('/^<picture>.*<\/picture>$/', $result);
+        self::assertRegExp('/<source media=".*" srcset=".*" \/>/', $result);
     }
 
     /**
@@ -79,7 +87,7 @@ class ResponsiveImageTest extends FunctionalTestCase
             __DIR__ . '/../../Fixtures/config/noPictureTag/pageConfig.typoscript'
         );
 
-        $this->assertRegExp('/^<img src=".*" width="1920" height="1056" alt="" \/>$/', $result);
+        self::assertRegExp('/^<img src=".*" width="1920" height="1056" alt="" \/>$/', $result);
     }
 
     /**
@@ -96,10 +104,10 @@ class ResponsiveImageTest extends FunctionalTestCase
             '/typo3conf/ext/responsive_images/Tests/Functional/Fixtures/fileadmin/example.jpg 2x',
         ];
 
-        $this->assertRegExp('/^<picture>.*<\/picture>$/', $result);
-        $this->assertContains('<source media="(max-width: 40em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
-        $this->assertContains('<source media="(min-width: 40.0625em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
-        $this->assertContains('<source media="(min-width: 64.0625em)" srcset="' . $imagePaths[0] . '" />', $result);
+        self::assertRegExp('/^<picture>.*<\/picture>$/', $result);
+        self::assertContains('<source media="(max-width: 40em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
+        self::assertContains('<source media="(min-width: 40.0625em)" srcset="' . implode(',', $imagePaths) . '" />', $result);
+        self::assertContains('<source media="(min-width: 64.0625em)" srcset="' . $imagePaths[0] . '" />', $result);
     }
 
     /**

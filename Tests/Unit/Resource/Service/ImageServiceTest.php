@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
 
 /*
@@ -47,7 +55,7 @@ class ImageServiceTest extends UnitTestCase
             ]
         );
 
-        $this->assertTrue($this->subject->isAnimatedGif($fileMock));
+        self::assertTrue($this->subject->isAnimatedGif($fileMock));
     }
 
     /**
@@ -63,6 +71,6 @@ class ImageServiceTest extends UnitTestCase
             ]
         );
 
-        $this->assertFalse($this->subject->isAnimatedGif($fileMock));
+        self::assertFalse($this->subject->isAnimatedGif($fileMock));
     }
 }

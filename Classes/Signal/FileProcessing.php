@@ -1,5 +1,14 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of the "responsive_images" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Codemonkey1988\ResponsiveImages\Signal;
 
 /*
@@ -31,7 +40,6 @@ class FileProcessing
      * @param FileInterface $file
      * @param string $context
      * @param array $configuration
-     * @return void
      */
     public function preProcess(FileProcessingService $ref, DriverInterface $driver, ProcessedFile $processedFile, FileInterface $file, string $context, array $configuration)
     {
