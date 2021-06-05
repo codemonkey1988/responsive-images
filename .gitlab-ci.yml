@@ -1,6 +1,7 @@
 stages:
   - lint
   - test
+  - mirror
 
 .composer-install:
   before_script:
@@ -86,3 +87,17 @@ functional-tests:
         PHP_VERSION: [ '7.2', '7.3', '7.4' ]
       - TYPO3_VERSION: '^9.5'
         PHP_VERSION: [ '7.2', '7.3', '7.4' ]
+
+mirror-github:
+  stage: mirror
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
+  only:
+    - main
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - git clone $CI_REPOSITORY_URL -b $CI_COMMIT_BRANCH repo && cd repo
+    - git config user.name "$GIT_USER_NAME"
+    - git config user.email "$GIT_USER_EMAIL"
+    - git checkout -b master
+    - git push -f --mirror https://$GITHUB_USERNAME:ghp_$GITHUB_TOKEN@$GITHUB_REPOSITORY
