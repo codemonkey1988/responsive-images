@@ -101,6 +101,7 @@ mirror:
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
   only:
     - main
+    - tags
   variables:
     GIT_STRATEGY: none
   script:
