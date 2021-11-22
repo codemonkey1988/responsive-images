@@ -61,8 +61,6 @@ unit-tests:
     - .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
   parallel:
     matrix:
-      - TYPO3_VERSION: 'dev-master'
-        PHP_VERSION: [ '7.4' ]
       - TYPO3_VERSION: '^10.4'
         PHP_VERSION: [ '7.2', '7.3', '7.4' ]
       - TYPO3_VERSION: '^9.5'
@@ -89,8 +87,6 @@ functional-tests:
     - .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
   parallel:
     matrix:
-      - TYPO3_VERSION: 'dev-master'
-        PHP_VERSION: [ '7.4' ]
       - TYPO3_VERSION: '^10.4'
         PHP_VERSION: [ '7.2', '7.3', '7.4' ]
       - TYPO3_VERSION: '^9.5'
