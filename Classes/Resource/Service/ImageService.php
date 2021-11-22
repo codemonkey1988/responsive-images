@@ -40,7 +40,7 @@ class ImageService
     public function isAnimatedGif(FileInterface $file): bool
     {
         if ($file->getMimeType() === 'image/gif') {
-            $filecontents = file_get_contents($file->getForLocalProcessing());
+            $filecontents = $file->getContents();
             $strLoc = 0;
             $count = 0;
 
