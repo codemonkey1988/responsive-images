@@ -75,8 +75,6 @@ plugin.tx_responsiveimages.settings.configuration.col-12 < plugin.tx_responsivei
 plugin.tx_responsiveimages.settings.configuration.col-11 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-11 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*11
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*11
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*11*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*11
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*11*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*11
@@ -87,8 +85,6 @@ plugin.tx_responsiveimages.settings.configuration.col-11 {
 plugin.tx_responsiveimages.settings.configuration.col-10 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-10 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*10
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*10
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*10*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*10
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*10*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*10
@@ -99,8 +95,6 @@ plugin.tx_responsiveimages.settings.configuration.col-10 {
 plugin.tx_responsiveimages.settings.configuration.col-9 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-9 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*9
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*9
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*9*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*9
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*9*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*9
@@ -111,8 +105,6 @@ plugin.tx_responsiveimages.settings.configuration.col-9 {
 plugin.tx_responsiveimages.settings.configuration.col-8 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-8 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*8
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*8
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*8*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*8
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*8*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*8
@@ -123,8 +115,6 @@ plugin.tx_responsiveimages.settings.configuration.col-8 {
 plugin.tx_responsiveimages.settings.configuration.col-7 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-7 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*7
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*7
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*7*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*7
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*7*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*7
@@ -135,8 +125,6 @@ plugin.tx_responsiveimages.settings.configuration.col-7 {
 plugin.tx_responsiveimages.settings.configuration.col-6 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-6 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*6
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*6
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*6*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*6
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*6*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*6
@@ -147,8 +135,6 @@ plugin.tx_responsiveimages.settings.configuration.col-6 {
 plugin.tx_responsiveimages.settings.configuration.col-5 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-5 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*5
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*5
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*5*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*5
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*5*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*5
@@ -159,8 +145,6 @@ plugin.tx_responsiveimages.settings.configuration.col-5 {
 plugin.tx_responsiveimages.settings.configuration.col-4 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-4 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*4
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*4
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*4*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*4
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*4*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*4
@@ -171,8 +155,6 @@ plugin.tx_responsiveimages.settings.configuration.col-4 {
 plugin.tx_responsiveimages.settings.configuration.col-3 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-3 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*3
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*3
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*3*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*3
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*3*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*3
@@ -183,8 +165,6 @@ plugin.tx_responsiveimages.settings.configuration.col-3 {
 plugin.tx_responsiveimages.settings.configuration.col-2 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-2 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12*2
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*2
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*2*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*2
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*2*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12*2
@@ -195,8 +175,6 @@ plugin.tx_responsiveimages.settings.configuration.col-2 {
 plugin.tx_responsiveimages.settings.configuration.col-1 < plugin.tx_responsiveimages.settings.configuration.default
 plugin.tx_responsiveimages.settings.configuration.col-1 {
   defaultWidth = {$plugin.tx_responsiveimages.settings.configuration.defaultLargeWidth}/12
-  sources.extraSmall.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12
-  sources.extraSmall.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultExtraSmallWidth}/12*2
   sources.small.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12
   sources.small.sizes.2x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultSmallWidth}/12*2
   sources.medium.sizes.1x.width = {$plugin.tx_responsiveimages.settings.configuration.defaultMediumWidth}/12
