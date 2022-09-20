@@ -41,14 +41,19 @@ class ImageViewHelper extends BaseImageViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $src = $arguments['src'];
+        $src = (string)$arguments['src'];
         $image = $arguments['image'];
-        $treatIdAsReference = $arguments['treatIdAsReference'];
+        $treatIdAsReference = (bool)$arguments['treatIdAsReference'];
         $cropString = $arguments['crop'];
         $absolute = $arguments['absolute'];
 
         if (($src === '' && $image === null) || ($src !== '' && $image !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1460976233);
+        }
+
+        // A URL was given as src, this is kept as is
+        if ($src !== '' && preg_match('/^(https?:)?\/\//', $src)) {
+            return $src;
         }
 
         try {
@@ -70,10 +75,12 @@ class ImageViewHelper extends BaseImageViewHelper
                 'maxWidth' => $arguments['maxWidth'],
                 'maxHeight' => $arguments['maxHeight'],
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
-                // Added by me
                 'additionalParameters' => self::generateAdditionalProcessingParameters($arguments),
                 'skipProcessing' => !ConfigurationUtility::isProcessingEnabled(),
             ];
+            if (!empty($arguments['fileExtension'])) {
+                $processingInstructions['fileExtension'] = $arguments['fileExtension'];
+            }
 
             $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
             return $imageService->getImageUri($processedImage, $absolute);
