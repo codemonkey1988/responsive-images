@@ -13,14 +13,14 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'fe',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.99',
+            'typo3' => '10.4.99-11.2.99',
         ],
         'conflicts' => [],
     ],
     'state' => 'stable',
     'clearCacheOnLoad' => true,
     'author' => 'Tim Schreiner',
-    'author_email' => 'schreiner.tim@gmail.com',
+    'author_email' => 'dev@tim-schreiner.de',
     'author_company' => '',
     'version' => '3.0.0-dev',
 ];
