@@ -24,7 +24,9 @@
     "friendsofphp/php-cs-fixer": "^3.11",
 	"phpstan/phpstan": "^1.8.5",
 	"saschaegerer/phpstan-typo3": "^1.1.2",
-    "typo3/testing-framework": "^6.16.6"
+    "typo3/testing-framework": "^6.16.6",
+    "typo3/cms-fluid-styled-content": "^10.4 || ^11.5",
+    "helhum/typo3-console": "^6.7.4 || ^7.1.2"
   },
   "autoload": {
     "psr-4": {
@@ -42,10 +44,7 @@
   "config": {
     "vendor-dir": ".Build/vendor",
     "bin-dir": ".Build/bin",
-    "allow-plugins": {
-      "typo3/cms-composer-installers": true,
-      "typo3/class-alias-loader": true
-    }
+    "allow-plugins": true
   },
   "scripts": {
 	"phpcsfixer": "php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff",

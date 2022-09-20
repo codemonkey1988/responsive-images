@@ -1,0 +1,13 @@
+<html data-namespace-typo3-fluid="true"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:ri="http://typo3.org/ns/Codemonkey1988/ResponsiveImages/ViewHelpers">
+
+<ri:loadRegister value="col-6">
+    <picture>
+        <ri:source image="{files.0}" cropVariantKey="mobile" media="(max-width: 700px)" />
+        <ri:source image="{files.0}" cropVariantKey="desktop" media="(min-width: 701px)" />
+        <f:image image="{files.0}" cropVariant="desktop" maxWidth="1920" />
+    </picture>
+</ri:loadRegister>
+
+</html>

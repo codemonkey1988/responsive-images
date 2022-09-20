@@ -1,0 +1,12 @@
+{
+  "name": "responsive-images-tests",
+  "version": "3.0.0-dev",
+  "main": "index.js",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "cypress": "cypress"
+  },
+  "devDependencies": {
+    "cypress": "10.7.0"
+  }
+}

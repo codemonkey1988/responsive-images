@@ -76,6 +76,46 @@ unit-tests:
     paths:
       - .composer/cache
 
+cypress-tests:
+  stage: test
+  only:
+    - main
+    - v3
+  interruptible: true
+  variables:
+    GIT_STRATEGY: clone
+  tags:
+    - ddev
+  before_script:
+    - mkdir -p $CI_PROJECT_DIR/.Build/Web/typo3conf/
+    - ddev config --auto --php-version=$PHP_VERSION --omit-containers=dba --database=$DATABASE
+    - ddev start -y
+    - ddev composer require typo3/minimal="$TYPO3_VERSION"
+    - ddev typo3cms install:setup --skip-integrity-check
+    - gunzip < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/dump.sql.gz | ddev mysql
+    - nvm install 18 && nvm use 18
+    - cd $CI_PROJECT_DIR/build/ && npm ci && npx cypress install
+  script:
+    - cd $CI_PROJECT_DIR/build/ && npx cypress run --headless --e2e --browser chrome
+  after_script:
+    -  ddev rm -RO
+  parallel:
+    matrix:
+      - TYPO3_VERSION: '^11'
+        PHP_VERSION: [ '8.1' ]
+        DATABASE: [ 'mariadb:10.8' ]
+      - TYPO3_VERSION: '^10'
+        PHP_VERSION: [ '7.4' ]
+        DATABASE: [ 'mariadb:10.5' ]
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build/cypress/screenshots/
+    when: always
+    reports:
+      junit:
+        - build/reports/cypress-integration*.xml
+
 mirror:
   stage: mirror
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4

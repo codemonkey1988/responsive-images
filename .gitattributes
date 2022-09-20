@@ -5,4 +5,5 @@
 /.php-cs-fixer.dist.php export-ignore
 /phpstan.neon export-ignore
 /UnitTests.xml export-ignore
+/build/ export-ignore
 /Tests/ export-ignore

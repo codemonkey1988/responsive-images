@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## Description: Run TYPO3 Console (typo3cms) command inside the web container
+## Usage: typo3cms [args]
+## Example: "ddev typo3cms cache:flush" or "ddev typo3cms database:export"
+## ProjectTypes: typo3
+## ExecRaw: true
+
+.Build/bin/typo3cms "$@"
