@@ -1,0 +1,6 @@
+plugin.tx_responsiveimages.settings.configuration {
+  defaultLargeWidth = 1170
+  defaultMediumWidth = 970
+  defaultSmallWidth = 750
+  defaultExtraSmallWidth = 520
+}
