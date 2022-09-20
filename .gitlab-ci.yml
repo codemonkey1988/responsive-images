@@ -12,7 +12,7 @@ lint-php:
     - find . -name \*.php ! -path "./.Build/*" -exec php -d display_errors=stderr -l {} > /dev/null \;
   parallel:
     matrix:
-      - PHP_VERSION: ['7.4', '8.0']
+      - PHP_VERSION: [ '7.4', '8.0', '8.1' ]
 
 codestyle-php:
   stage: lint
@@ -47,7 +47,7 @@ php:phpstan:
   parallel:
     matrix:
       - TYPO3_VERSION: '^11'
-        PHP_VERSION: [ '7.4', '8.0' ]
+        PHP_VERSION: [ '7.4', '8.0', '8.1' ]
       - TYPO3_VERSION: '^10'
         PHP_VERSION: [ '7.4' ]
 
@@ -68,7 +68,7 @@ unit-tests:
   parallel:
     matrix:
       - TYPO3_VERSION: '^11'
-        PHP_VERSION: [ '7.4', '8.0' ]
+        PHP_VERSION: [ '7.4', '8.0', '8.1' ]
       - TYPO3_VERSION: '^10'
         PHP_VERSION: [ '7.4' ]
   cache:
