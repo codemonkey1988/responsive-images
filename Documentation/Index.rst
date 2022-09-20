@@ -6,13 +6,8 @@ Responsive Images
 =============================================================
 
 Extension for TYPO3 that adds the option to define centralized
-configurations for picture tags and render them using Fluid.
-
-Configurations are given by using TypoScript. The rendering is
-done using the TYPO3 f:media ViewHelper.
-
-
-
+configurations for picture tags and render them using Fluid ViewHelpers.
+Configurations are defined using TypoScript.
 
 
 About this extension
@@ -20,14 +15,21 @@ About this extension
 
 This extension is based on the fact, that the integrator forces image sizes that
 the content editor may not change. An integrator can specify image configurations
-that are used in fluid templates.
+that are used in Fluid templates.
 
-This extension will also respect cropping variants (introduced in TYPO3 v8) and will handle
-different jpeg qualities for each image.
+
+Upgrading from v2
+=================
+
+.. attention::
+   Version 3 of this extension is not compatible with version 2 configuration.
+   Please see :ref:`upgrade` for more information.
 
 .. toctree::
    :hidden:
+   :maxdepth: 2
+   :titlesonly:
 
-   Installation
-   Configuration
-   Migration
+   Installation/Index
+   Usage/Index
+   Upgrade/Index

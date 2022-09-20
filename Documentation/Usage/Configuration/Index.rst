@@ -4,14 +4,25 @@
 Configuration
 =============
 
-Using example configuration
-===========================
+Extension Configuration
+=======================
 
-This extension provides tweo example configurations with
-different variants:
+This extension does not require any TypoScript to be included.
+But this extension provides some example configuration that can
+be used for image rendering:
+
+* `Responsive images default configuration (optional)`
+* `Responsive images bootstrap configuration (optional)`
+
+Only one of them should be included. These configurations provide
+the following variant keys:
+
+Continue this :ref:`rendering` after configuration is finished.
 
 Default configuration
 ---------------------
+
+This configuration is loaded by default when including the default extension TypoScript.
 
 +---------------+---------------------+---------------------+--------------+
 |Variant key    |Size: smartphone     |Size: tablet         |Size: desktop |
@@ -29,8 +40,12 @@ Default configuration
 |three-quarters |320px 1x, 640px 2x   |768px 1x, 1536px 2x  |1440px 1x     |
 +---------------+---------------------+---------------------+--------------+
 
+
 Bootstrap configuration
 -----------------------
+
+This configuration can be loaded by adding the static
+TypoScript file **Responsive images bootstrap configuration (optional)**.
 
 +---------------+---------------------+---------------------+---------------------+--------------+
 |Variant key    |Size: extraSmall     |Size: small          |Size: medium         |Size: large   |
@@ -61,22 +76,3 @@ Bootstrap configuration
 +---------------+---------------------+---------------------+---------------------+--------------+
 |col-1          |400px 1x, 800px 2x   |62px 1x, 125px 2x    |80px 1x, 161px 2x    |97px 1x       |
 +---------------+---------------------+---------------------+---------------------+--------------+
-
-Extension settings
-==================
-
-Available settings for `plugin.tx_responsiveimages.settings`
-
-+-----------+--------+--------+------------------------------------------------------------------------+
-|Name       |Type    |Default |Description                                                             |
-+===========+========+========+========================================================================+
-|enabled    |boolean |true    |Globally activate/deactivate the extension                              |
-+-----------+--------+--------+------------------------------------------------------------------------+
-|processing |boolean |true    |Enable/disable image processing (can speed up development when disabled |
-+-----------+--------+--------+------------------------------------------------------------------------+
-
-Adding new Variants
-===================
-
-New variants can be added via TypoScript. Please have a look at
-the example configurations.

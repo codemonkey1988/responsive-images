@@ -1,0 +1,13 @@
+.. _installation:
+
+============
+Installation
+============
+
+This extension can be installed by using composer:
+
+.. code-block:: shell
+
+   composer require codemonkey1988/responsive-images
+
+Continue this :ref:`configuration`.
