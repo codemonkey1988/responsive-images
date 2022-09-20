@@ -24,7 +24,7 @@ $config->setRules([
     'function_typehint_space' => true,
     'header_comment' => [
         'header' => $headerTemplate,
-        'commentType' => 'comment',
+        'comment_type' => 'comment',
         'location' => 'after_declare_strict',
         'separate' => 'both',
     ],
