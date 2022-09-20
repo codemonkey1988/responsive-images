@@ -2,6 +2,7 @@ stages:
   - lint
   - test
   - mirror
+  - release
 
 lint-php:
   stage: lint
@@ -150,3 +151,22 @@ mirror:
     - git checkout master && git merge --ff main
     - git push https://$GITLAB_USERNAME:M2_$GITLAB_TOKEN@$GITLAB_REPOSITORY
     - git push -f --mirror https://$GITHUB_USERNAME:ghp_$GITHUB_TOKEN@$GITHUB_REPOSITORY
+
+publish:ter:
+  stage: release
+  image: composer:2
+  only:
+    - tags
+  before_script:
+    - composer global require typo3/tailor
+  script:
+    - >
+      if [ -n "$CI_COMMIT_TAG" ] && [ -n "$TYPO3_API_TOKEN" ] && [ -n "$TYPO3_EXTENSION_KEY" ]; then
+        echo -e "Preparing upload of release ${CI_COMMIT_TAG} to TER\n"
+        # Cleanup before we upload
+        git reset --hard HEAD && git clean -fx
+        # Upload
+        TAG_MESSAGE=`git tag -n10 -l $CI_COMMIT_TAG | sed 's/^[0-9.]*[ ]*//g'`
+        echo "Uploading release ${CI_COMMIT_TAG} to TER"
+        /tmp/vendor/bin/tailor ter:publish --comment "$TAG_MESSAGE" "$CI_COMMIT_TAG" "$TYPO3_EXTENSION_KEY"
+      fi;

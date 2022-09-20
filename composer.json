@@ -47,6 +47,18 @@
     "allow-plugins": true
   },
   "scripts": {
+	"prepare-release": [
+		"rm -f .editorconfig",
+		"rm -f .gitattributes",
+		"rm -f .gitignore",
+		"rm -f .gitlab-ci.yml",
+		"rm -f .php-cs-fixer.dist.php",
+		"rm -f phpstan.neon",
+		"rm -f UnitTests.xml",
+		"rm -rf .ddev/",
+		"rm -rf build/",
+		"rm -rf Tests/"
+	],
 	"phpcsfixer": "php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff",
 	"phpstan": "phpstan analyse --ansi --no-progress --memory-limit=1024M --configuration=phpstan.neon",
 	"phpunit": "phpunit --color -c UnitTests.xml",
