@@ -36,7 +36,7 @@ lint-php:
     - find . -name \*.php ! -path "./.Build/*" -exec php -d display_errors=stderr -l {} > /dev/null \;
   parallel:
     matrix:
-      - PHP_VERSION: ['7.2', '7.3', '7.4', '8.0']
+      - PHP_VERSION: ['7.4', '8.0']
 
 codestyle-php:
   extends: .composer-install
@@ -60,7 +60,7 @@ unit-tests:
   parallel:
     matrix:
       - TYPO3_VERSION: '^10.4'
-        PHP_VERSION: [ '7.2', '7.3', '7.4' ]
+        PHP_VERSION: [ '7.4' ]
 
 functional-tests:
   extends:
@@ -84,7 +84,7 @@ functional-tests:
   parallel:
     matrix:
       - TYPO3_VERSION: '^10.4'
-        PHP_VERSION: [ '7.2', '7.3', '7.4' ]
+        PHP_VERSION: [ '7.4' ]
 
 mirror:
   stage: mirror
