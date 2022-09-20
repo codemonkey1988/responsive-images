@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Codemonkey1988\ResponsiveImages\Resource\Rendering;
 
 use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
+use Codemonkey1988\ResponsiveImages\Resource\Service\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
@@ -28,8 +29,8 @@ class ResponsiveImageRenderer implements FileRendererInterface
 {
     const DEFAULT_IMAGE_VARIANT_KEY = 'default';
     const REGISTER_IMAGE_VARIANT_KEY = 'IMAGE_VARIANT_KEY';
-    const REGISTER_IMAGE_RELATVE_WIDTH_KEY = 'IMAGE_RELATIVE_WIDTH_KEY';
-    const OPTIONS_IMAGE_RELATVE_WIDTH_KEY = 'relativeScalingWidth';
+    const REGISTER_IMAGE_RELATIVE_WIDTH_KEY = 'IMAGE_RELATIVE_WIDTH_KEY';
+    const OPTIONS_IMAGE_RELATIVE_WIDTH_KEY = 'relativeScalingWidth';
 
     /**
      * @return int
@@ -48,7 +49,11 @@ class ResponsiveImageRenderer implements FileRendererInterface
         /** @var EnvironmentService $environmentService */
         $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $enabled = ConfigurationUtility::isEnabled();
-        $config = $this->getConfig();
+        try {
+            $config = $this->getConfig();
+        } catch (NoSuchVariantException $e) {
+            return false;
+        }
 
         return $enabled
             && $config !== null
@@ -68,16 +73,21 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false): string
     {
-        if (!array_key_exists(self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY, $options)
-            && isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY])
+        if (!array_key_exists(self::OPTIONS_IMAGE_RELATIVE_WIDTH_KEY, $options)
+            && isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATIVE_WIDTH_KEY])
         ) {
-            $options[self::OPTIONS_IMAGE_RELATVE_WIDTH_KEY] = (float)$GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATVE_WIDTH_KEY];
+            $options[self::OPTIONS_IMAGE_RELATIVE_WIDTH_KEY] = (float)$GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATIVE_WIDTH_KEY];
         }
 
+        try {
+            $config = $this->getConfig();
+        } catch (NoSuchVariantException $e) {
+            $config = null;
+        }
         $view = $this->initializeView();
         $view->assignMultiple([
             'isAnimatedGif' => $this->isAnimatedGif($file),
-            'config' => $this->getConfig(),
+            'config' => $config,
             'data' => $GLOBALS['TSFE']->cObj->data,
             'file' => $file,
             'options' => $options,
@@ -104,11 +114,12 @@ class ResponsiveImageRenderer implements FileRendererInterface
     }
 
     /**
-     * @return PictureImageVariant|null
+     * @return PictureImageVariant
+     * @throws NoSuchVariantException
      */
-    protected function getConfig(): ?PictureImageVariant
+    protected function getConfig(): PictureImageVariant
     {
-        $imageVarientConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
+        $imageVariantConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
         $registry = PictureVariantsRegistry::getInstance();
 
         if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])
@@ -116,10 +127,10 @@ class ResponsiveImageRenderer implements FileRendererInterface
                 $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY]
             )
         ) {
-            $imageVarientConfigKey = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY];
+            $imageVariantConfigKey = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY];
         }
 
-        return $registry->getImageVariant($imageVarientConfigKey);
+        return $registry->getImageVariant($imageVariantConfigKey);
     }
 
     /**

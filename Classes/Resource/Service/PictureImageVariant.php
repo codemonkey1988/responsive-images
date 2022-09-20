@@ -21,24 +21,24 @@ class PictureImageVariant
     /**
      * @var string
      */
-    protected $key;
+    protected string $key;
     /**
      * @var array
      */
-    protected $sources = [];
+    protected array $sources = [];
     /**
      * @var string
      */
-    protected $defaultWidth = '1920';
+    protected string $defaultWidth = '1920';
     /**
      * @var string
      */
-    protected $defaultHeight = '';
+    protected string $defaultHeight = '';
 
     /**
      * @var array
      */
-    protected $mimeTypes = [];
+    protected array $mimeTypes = [];
 
     /**
      * PictureImageVariant constructor.

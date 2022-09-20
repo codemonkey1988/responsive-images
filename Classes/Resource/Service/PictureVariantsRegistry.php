@@ -22,7 +22,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @var array
      */
-    protected $configs = [];
+    protected array $configs = [];
 
     public function __construct()
     {
@@ -40,7 +40,7 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @param PictureImageVariant $imageVariant
      */
-    public function registerImageVariant(PictureImageVariant $imageVariant)
+    public function registerImageVariant(PictureImageVariant $imageVariant): void
     {
         $this->configs[$imageVariant->getKey()] = $imageVariant;
     }
@@ -49,7 +49,7 @@ class PictureVariantsRegistry implements SingletonInterface
      * @param string $key
      * @return bool
      */
-    public function imageVariantKeyExists($key): bool
+    public function imageVariantKeyExists(string $key): bool
     {
         return isset($this->configs[$key]);
     }
@@ -64,14 +64,19 @@ class PictureVariantsRegistry implements SingletonInterface
 
     /**
      * @param string $key
-     * @return PictureImageVariant|null
+     * @return PictureImageVariant
+     * @throws NoSuchVariantException
      */
-    public function getImageVariant($key)
+    public function getImageVariant(string $key): PictureImageVariant
     {
-        return isset($this->configs[$key]) ? $this->configs[$key] : null;
+        if ($this->imageVariantKeyExists($key)) {
+            return $this->configs[$key];
+        }
+
+        throw new NoSuchVariantException('No variant found with key "' . $key . '".', 1623538021);
     }
 
-    public function removeAllImageVariants()
+    public function removeAllImageVariants(): void
     {
         $this->configs = [];
     }
@@ -79,14 +84,14 @@ class PictureVariantsRegistry implements SingletonInterface
     /**
      * @param string $key
      */
-    public function removeImageVariant(string $key)
+    public function removeImageVariant(string $key): void
     {
         if (isset($this->configs[$key])) {
             unset($this->configs[$key]);
         }
     }
 
-    protected function initializeTypoScriptConfiguration()
+    protected function initializeTypoScriptConfiguration(): void
     {
         $plainConfig = [];
 
