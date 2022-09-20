@@ -32,7 +32,6 @@ namespace Codemonkey1988\ResponsiveImages\Variant;
  *         minHeight?: string|null,
  *         maxWidth?: string|null,
  *         maxHeight?: string|null,
- *         quality?: string|null
  *     }>
  * }
  */

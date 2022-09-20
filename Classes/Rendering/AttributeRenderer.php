@@ -134,9 +134,6 @@ class AttributeRenderer
                 'maxHeight' => $srcset['maxHeight'] ?? null,
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
             ];
-            if (array_key_exists('quality', $srcset) && MathUtility::canBeInterpretedAsInteger($srcset['quality'])) {
-                $processingInstructions[$key]['additionalParameters'] = ' -quality ' . $srcset['quality'];
-            }
         }
         ksort($processingInstructions);
 

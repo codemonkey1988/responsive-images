@@ -44,27 +44,7 @@ class ImageViewHelper extends BaseImageViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg (deprecated)');
-        $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale? (deprecated)');
         $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.');
-    }
-
-    public function initialize(): void
-    {
-        parent::initialize();
-
-        if ($this->hasArgument('quality')) {
-            trigger_error(
-                'Argument "quality" in ' . __CLASS__ . ' is deprecated and will be removed in responsive_images 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
-        if ($this->hasArgument('greyscale')) {
-            trigger_error(
-                'Argument "greyscale" in ' . __CLASS__ . ' is deprecated and will be removed in responsive_images 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
     }
 
     /**
@@ -109,7 +89,6 @@ class ImageViewHelper extends BaseImageViewHelper
                     'maxWidth' => $this->arguments['maxWidth'],
                     'maxHeight' => $this->arguments['maxHeight'],
                     'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
-                    'additionalParameters' => $this->generateAdditionalProcessingParameters(),
                 ];
                 if (!empty($this->arguments['fileExtension'] ?? '')) {
                     $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
@@ -164,20 +143,5 @@ class ImageViewHelper extends BaseImageViewHelper
         }
 
         return $this->tag->render();
-    }
-
-    protected function generateAdditionalProcessingParameters(): string
-    {
-        $additionalParameters = '';
-
-        if ($this->arguments['greyscale']) {
-            $additionalParameters .= ' -colorspace Gray';
-        }
-
-        if ($this->arguments['quality']) {
-            $additionalParameters .= ' -quality ' . $this->arguments['quality'];
-        }
-
-        return $additionalParameters;
     }
 }
