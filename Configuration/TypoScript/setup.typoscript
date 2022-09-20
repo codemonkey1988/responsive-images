@@ -1,7 +1,6 @@
 plugin.tx_responsiveimages {
   settings {
     enabled = {$plugin.tx_responsiveimages.settings.enabled}
-    processing = {$plugin.tx_responsiveimages.settings.processing}
     variants {
       default {
         croppingVariantKey = default

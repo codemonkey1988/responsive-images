@@ -40,12 +40,4 @@ class ConfigurationService
         }
         return  true;
     }
-
-    public function isProcessingEnabled(): bool
-    {
-        if (isset($this->settings['processing'])) {
-            return (bool)$this->settings['processing'];
-        }
-        return  true;
-    }
 }
