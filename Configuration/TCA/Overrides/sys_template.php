@@ -7,18 +7,12 @@
  * LICENSE file that was distributed with this source code.
  */
 
-/**
- * Static TypoScript
- */
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'responsive_images',
-    'Configuration/TypoScript',
-    'Responsive images settings'
+    'Configuration/TypoScript/DefaultConfiguration',
+    'Responsive images default configuration (optional)'
 );
 
-/**
- * Static TypoScript
- */
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'responsive_images',
     'Configuration/TypoScript/BootstrapConfiguration',

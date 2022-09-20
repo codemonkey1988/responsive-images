@@ -4,7 +4,7 @@ VALUES (1, 0, 1, 1, 'Root', '/', 'TCEFORM.sys_file_reference.crop.config.cropVar
 
 TRUNCATE `sys_template`;
 INSERT INTO `sys_template` (`uid`, `pid`, `title`, `root`, `clear`, `include_static_file`, `constants`, `config`)
-VALUES (1, 1, 'Main TypoScript Rendering', 1, 1, 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:fluid_styled_content/Configuration/TypoScript/Styling/,EXT:responsive_images/Configuration/TypoScript/BootstrapConfiguration,EXT:responsive_images/Configuration/TypoScript', 'styles.templates.templateRootPath = EXT:responsive_images/Tests/Cypress/Fixtures/Templates/', 'page = PAGE\r\npage.100 = CONTENT\r\npage.100 {\r\n    table = tt_content\r\n    select {\r\n        orderBy = sorting\r\n        where = {#colPos}=0\r\n    }\r\n}\n\nlib.contentElement.partialRootPaths.1663513618 = EXT:responsive_images/Resources/Private/Partials');
+VALUES (1, 1, 'Main TypoScript Rendering', 1, 1, 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:fluid_styled_content/Configuration/TypoScript/Styling/,EXT:responsive_images/Configuration/TypoScript/BootstrapConfiguration', 'styles.templates.templateRootPath = EXT:responsive_images/Tests/Cypress/Fixtures/Templates/', 'page = PAGE\r\npage.100 = CONTENT\r\npage.100 {\r\n    table = tt_content\r\n    select {\r\n        orderBy = sorting\r\n        where = {#colPos}=0\r\n    }\r\n}\n\nlib.contentElement.partialRootPaths.1663513618 = EXT:responsive_images/Resources/Private/Partials');
 
 TRUNCATE `sys_file_storage`;
 INSERT INTO `sys_file_storage` (`uid`, `pid`, `name`, `driver`, `configuration`, `is_default`, `is_browsable`, `is_public`, `is_writable`, `is_online`, `auto_extract_metadata`)

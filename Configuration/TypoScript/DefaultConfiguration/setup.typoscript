@@ -1,0 +1,59 @@
+plugin.tx_responsiveimages.settings.variants >
+plugin.tx_responsiveimages.settings.variants.default {
+  croppingVariantKey = default
+  srcset {
+    10 {
+      width = 360
+      height =
+    }
+    20 {
+      width = 720
+      height =
+    }
+    30 {
+      width = 1024
+      height =
+    }
+    40 {
+      width = 1440
+      height =
+    }
+    50 {
+      width = 1680
+      height =
+    }
+    60 {
+      width = 1920
+      height =
+    }
+    70 {
+      width = 2560
+      height =
+    }
+  }
+  sizes {
+    10 {
+      viewportMediaCondition = (min-width: 421px)
+      assumedImageWidth = 100vw
+    }
+    20 {
+      # Last element is the default element and does not need a viewportMediaCondition
+      assumedImageWidth = 100vw
+    }
+  }
+}
+
+plugin.tx_responsiveimages.settings.variants.half < .default
+plugin.tx_responsiveimages.settings.variants.half.10.assumedImageWidth = 50vw
+
+plugin.tx_responsiveimages.settings.variants.third < .default
+plugin.tx_responsiveimages.settings.variants.third.10.assumedImageWidth = 33.33333vw
+
+plugin.tx_responsiveimages.settings.variants.quarter < .default
+plugin.tx_responsiveimages.settings.variants.quarter.10.assumedImageWidth = 25vw
+
+plugin.tx_responsiveimages.settings.variants.two-thirds < .default
+plugin.tx_responsiveimages.settings.variants.two-thirds.10.assumedImageWidth = 66.66666vw
+
+plugin.tx_responsiveimages.settings.variants.three-quarters < .default
+plugin.tx_responsiveimages.settings.variants.three-quarters.10.assumedImageWidth = 75vw
