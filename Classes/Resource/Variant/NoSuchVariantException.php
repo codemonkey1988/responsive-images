@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Codemonkey1988\ResponsiveImages\Resource\Service;
+namespace Codemonkey1988\ResponsiveImages\Resource\Variant;
 
 use Codemonkey1988\ResponsiveImages\Exception;
 

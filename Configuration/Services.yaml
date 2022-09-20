@@ -1,4 +1,32 @@
 services:
+  _defaults:
+    autowire: false
+    autoconfigure: true
+    public: false
+
+  Codemonkey1988\ResponsiveImages\:
+    resource: '../Classes/*'
+
+  Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariantFactory:
+    public: true
+    shared: true
+    arguments:
+      - '@TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer'
+      - '@TYPO3\CMS\Extbase\Configuration\ConfigurationManager'
+
+  Codemonkey1988\ResponsiveImages\Resource\Variant\PictureVariantsRegistry:
+    public: true
+    shared: true
+    arguments:
+      - '@Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariantFactory'
+
+  Codemonkey1988\ResponsiveImages\Resource\Service\ImageService:
+    public: true
+    shared: true
+
+  Codemonkey1988\ResponsiveImages\ViewHelpers\ImageViewHelper:
+    autowire: true
+
   Codemonkey1988\ResponsiveImages\EventListener\SkipImageProcessing:
     tags:
       - name: event.listener

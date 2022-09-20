@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace Codemonkey1988\ResponsiveImages\Resource\Rendering;
 
 use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
-use Codemonkey1988\ResponsiveImages\Resource\Service\NoSuchVariantException;
-use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
-use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
+use Codemonkey1988\ResponsiveImages\Resource\Variant\NoSuchVariantException;
+use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariant;
+use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureVariantsRegistry;
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
@@ -54,9 +54,7 @@ class ResponsiveImageRenderer implements FileRendererInterface
         } catch (NoSuchVariantException $e) {
             return false;
         }
-
         return $enabled
-            && $config !== null
             && $environmentService->isEnvironmentInFrontendMode()
             && in_array($file->getMimeType(), $config->getMimeTypes());
     }
@@ -78,7 +76,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
         ) {
             $options[self::OPTIONS_IMAGE_RELATIVE_WIDTH_KEY] = (float)$GLOBALS['TSFE']->register[self::REGISTER_IMAGE_RELATIVE_WIDTH_KEY];
         }
-
         try {
             $config = $this->getConfig();
         } catch (NoSuchVariantException $e) {
@@ -92,7 +89,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
             'file' => $file,
             'options' => $options,
         ]);
-
         return $view->render('pictureTag');
     }
 
@@ -103,13 +99,11 @@ class ResponsiveImageRenderer implements FileRendererInterface
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class, $GLOBALS['TSFE']->cObj);
-
         if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['view.'])) {
             $view->setTemplateRootPaths($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['view.']['templateRootPaths.']);
             $view->setPartialRootPaths($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['view.']['partialRootPaths.']);
             $view->setLayoutRootPaths($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['view.']['layoutRootPaths.']);
         }
-
         return $view;
     }
 
@@ -120,7 +114,8 @@ class ResponsiveImageRenderer implements FileRendererInterface
     protected function getConfig(): PictureImageVariant
     {
         $imageVariantConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
-        $registry = PictureVariantsRegistry::getInstance();
+        /** @var PictureVariantsRegistry $registry */
+        $registry = GeneralUtility::makeInstance(PictureVariantsRegistry::class);
 
         if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])
             && $registry->imageVariantKeyExists(
@@ -129,7 +124,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
         ) {
             $imageVariantConfigKey = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY];
         }
-
         return $registry->getImageVariant($imageVariantConfigKey);
     }
 
@@ -139,6 +133,8 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     protected function isAnimatedGif(FileInterface $file): bool
     {
-        return GeneralUtility::makeInstance(ImageService::class)->isAnimatedGif($file);
+        /** @var ImageService $imageService */
+        $imageService = GeneralUtility::makeInstance(ImageService::class);
+        return $imageService->isAnimatedGif($file);
     }
 }

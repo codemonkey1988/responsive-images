@@ -7,9 +7,9 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
+namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Variant;
 
-use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
+use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariant;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
