@@ -31,7 +31,6 @@ class ImageViewHelper extends BaseImageViewHelper
 
         $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg', false);
         $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale?', false);
-        $this->registerTagAttribute('grayscale', 'bool', 'Should be image be rendered as greyscale?', false);
     }
 
     /**
@@ -113,14 +112,7 @@ class ImageViewHelper extends BaseImageViewHelper
     {
         $additionalParameters = '';
 
-        if ($this->arguments['grayscale']) {
-            trigger_error(
-                'Option grayscale will be removed soon. Please use greyscale instead',
-                E_USER_DEPRECATED
-            );
-
-            $additionalParameters .= ' -colorspace Gray';
-        } elseif ($this->arguments['greyscale']) {
+        if ($this->arguments['greyscale']) {
             $additionalParameters .= ' -colorspace Gray';
         }
 
