@@ -81,7 +81,7 @@ class ResponsiveImageTest extends FunctionalTestCase
             'EXT:responsive_images/Tests/Functional/Fixtures/config/noPictureTag/pageConfig.typoscript'
         );
 
-        self::assertSame('<img src="/fileadmin/example.jpg" width="1920" height="1056" alt="" />', $result);
+        self::assertSame('<img loading="lazy" src="/fileadmin/example.jpg" width="1920" height="1056" alt="" />', $result);
     }
 
     /**
