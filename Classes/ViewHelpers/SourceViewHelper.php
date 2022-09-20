@@ -25,18 +25,11 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'source';
 
-    /**
-     * @var VariantFactory
-     */
     protected VariantFactory $variantFactory;
 
-    /**
-     * @var AttributeRenderer
-     */
     protected AttributeRenderer $attributeRenderer;
 
     /**
-     * @param VariantFactory $variantFactory
      * @required
      */
     public function setVariantFactory(VariantFactory $variantFactory): void
@@ -45,7 +38,6 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @param AttributeRenderer $attributeRenderer
      * @required
      */
     public function setAttributeRenderer(AttributeRenderer $attributeRenderer): void
@@ -62,6 +54,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
         $this->registerArgument('image', 'object', 'A FAL image object', true);
         $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.', false);
+        $this->registerArgument('cropVariantKey', 'string', 'Use the given crop variant for srcset rendering.', false, 'default');
     }
 
     /**
@@ -80,7 +73,11 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         }
 
         $this->tag->addAttribute('type', $variant->getConfig()['type'] ?? $image->getMimeType());
-        $this->tag->addAttribute('srcset', $this->attributeRenderer->renderSrcset($image, $variant));
+        $this->tag->addAttribute('srcset', $this->attributeRenderer->renderSrcset(
+            $image,
+            $variant,
+            $this->arguments['cropVariantKey']
+        ));
         if (strlen($media) > 0) {
             $this->tag->addAttribute('media', $media);
         }

@@ -14,9 +14,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test class for \Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility
- */
 class ConfigurationServiceTest extends UnitTestCase
 {
     /**
@@ -27,7 +24,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function extensionEnabledByDefault()
+    public function extensionEnabledByDefault(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->disableOriginalConstructor()
@@ -43,7 +40,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function processingEnabledByDefault()
+    public function processingEnabledByDefault(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->disableOriginalConstructor()
@@ -59,7 +56,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function extensionDisabledByTypoScript()
+    public function extensionDisabledByTypoScript(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->disableOriginalConstructor()
@@ -75,7 +72,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function processingDisabledByTypoScript()
+    public function processingDisabledByTypoScript(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->disableOriginalConstructor()

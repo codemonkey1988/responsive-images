@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "responsive_images" Extension for TYPO3 CMS.
  *
@@ -11,22 +13,19 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
 
 use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
  */
-class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
+class LoadRegisterViewHelperTest extends UnitTestCase
 {
-    /**
-     * @var MockObject|TypoScriptFrontendController
-     */
-    protected $tsfe;
+    protected MockObject $tsfe;
 
-    /**
-     * Set up
-     */
+    protected MockObject $renderingContext;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,12 +33,15 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
             ->disableOriginalConstructor()
             ->getMock();
         $GLOBALS['TSFE'] = $this->tsfe;
+        $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
      * @test
      */
-    public function initializeArgumentsRegistersExpectedArguments()
+    public function initializeArgumentsRegistersExpectedArguments(): void
     {
         $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
             ->onlyMethods(['registerArgument'])
@@ -54,85 +56,53 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
-     * Test if the variable is set via the viewhelper.
-     *
      * @test
      */
-    public function variableIsSet()
+    public function registerStackIsSetAndKeptWhenNoContentIsRendered(): void
     {
-        $registerVariableName = 'TEST_VARIABLE';
-        $registerVariableValue = 'Some value';
-
-        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
-            ->onlyMethods(['renderChildren'])
-            ->getMock();
-        $this->injectDependenciesIntoViewHelper($viewHelper);
-        $viewHelper->setArguments([
-            'key' => $registerVariableName,
-            'value' => $registerVariableValue,
-        ]);
-        $viewHelper->render();
-
-        self::assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
+        $arguments = [
+            'key' => 'TEST_VARIABLE',
+            'value' => 'Some value',
+        ];
+        $closure = \Closure::bind(static function() {
+            return '';
+        }, null);
+        self::assertArrayNotHasKey('TEST_VARIABLE', $GLOBALS['TSFE']->register);
+        LoadRegisterViewHelper::renderStatic($arguments, $closure, $this->renderingContext);
+        self::assertEquals('Some value', $GLOBALS['TSFE']->register['TEST_VARIABLE']);
     }
 
     /**
      * @test
      */
-    public function childrenBeingRendered()
+    public function registerStackIsSetAndRemovedAfterContentIsRendered(): void
     {
-        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
-            ->onlyMethods(['renderChildren'])
-            ->getMock();
-        $viewHelper->expects(self::once())->method('renderChildren')->willReturn('<content>');
-        $this->injectDependenciesIntoViewHelper($viewHelper);
-        $viewHelper->setArguments([
-            'key' => 'foo',
-            'value' => 'bar',
-        ]);
-        $viewHelper->render();
+        $arguments = [
+            'key' => 'TEST_VARIABLE',
+            'value' => 'Some value',
+        ];
+        $closure = \Closure::bind(static function() {
+            UnitTestCase::assertSame('Some value', $GLOBALS['TSFE']->register['TEST_VARIABLE']);
+            return '<content>';
+        }, null);
+        self::assertArrayNotHasKey('TEST_VARIABLE', $GLOBALS['TSFE']->register);
+        LoadRegisterViewHelper::renderStatic($arguments, $closure, $this->renderingContext);
+        self::assertArrayNotHasKey('TEST_VARIABLE', $GLOBALS['TSFE']->register);
     }
 
     /**
      * @test
      */
-    public function variableIsSetInChildrenContext()
+    public function childrenContentGivenIsRenderedAndReturned(): void
     {
-        $registerVariableName = 'TEST_VARIABLE';
-        $registerVariableValue = 'Some value';
-
-        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
-            ->onlyMethods(['renderChildren'])
-            ->getMock();
-        $viewHelper->expects(self::any())->method('renderChildren')->willReturnCallback(function () use ($registerVariableName, $registerVariableValue) {
-            $this->assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
-        });
-        $this->injectDependenciesIntoViewHelper($viewHelper);
-        $viewHelper->setArguments([
-            'key' => $registerVariableName,
-            'value' => $registerVariableValue,
-        ]);
-        $viewHelper->render();
-    }
-
-    /**
-     * @test
-     */
-    public function variableIsUnsetAfterChildrenRendered()
-    {
-        $registerVariableName = 'TEST_VARIABLE';
-
-        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
-            ->onlyMethods(['renderChildren'])
-            ->getMock();
-        $viewHelper->expects(self::any())->method('renderChildren')->willReturn('<content>');
-        $this->injectDependenciesIntoViewHelper($viewHelper);
-        $viewHelper->setArguments([
-            'key' => $registerVariableName,
-            'value' => 'bar',
-        ]);
-        $viewHelper->render();
-
-        self::assertArrayNotHasKey($registerVariableName, $GLOBALS['TSFE']->register);
+        $arguments = [
+            'key' => 'TEST_VARIABLE',
+            'value' => 'Some value',
+        ];
+        $closure = \Closure::bind(static function() {
+            return '<content>';
+        }, null);
+        $renderedContent = LoadRegisterViewHelper::renderStatic($arguments, $closure, $this->renderingContext);
+        self::assertSame('<content>', $renderedContent);
     }
 }

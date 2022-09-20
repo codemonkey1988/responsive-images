@@ -30,35 +30,36 @@ class LoadRegisterViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('key', 'string', 'Key for adding value to register stack', false, 'IMAGE_VARIANT_KEY');
-        $this->registerArgument('value', 'string', 'Value that should be added to register stack', true);
+        $this->registerArgument(
+            'key',
+            'string',
+            'Key for adding value to register stack',
+            false,
+            'IMAGE_VARIANT_KEY'
+        );
+        $this->registerArgument(
+            'value',
+            'string',
+            'Value that should be added to register stack',
+            true
+        );
     }
 
-    /**
-     * Renders the viewhelper.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): string {
         $key = $arguments['key'];
         $value = $arguments['value'];
-
         array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
         $GLOBALS['TSFE']->register[$key] = $value;
-
         $content = $renderChildrenClosure();
-
         if ($content) {
             // Restore register when content was rendered
             $GLOBALS['TSFE']->register = array_pop($GLOBALS['TSFE']->registerStack);
-
             return $content;
         }
-
         return '';
     }
 }

@@ -7,58 +7,45 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
+namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Service;
 
 use Codemonkey1988\ResponsiveImages\Service\ImageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test class for \Codemonkey1988\ResponsiveImages\Resource\Service\ImageService
- */
 class ImageServiceTest extends UnitTestCase
 {
     /**
-     * @var ImageService
+     * @test
      */
-    protected $subject;
-
-    protected function setUp(): void
+    public function isAnimatedGif(): void
     {
-        parent::setUp();
+        $imageService = new ImageService();
+        $fileMock = $this->createConfiguredMock(
+            File::class,
+            [
+                'getMimeType' => 'image/gif',
+                'getForLocalProcessing' => __DIR__ . '/../Fixtures/animated.gif',
+            ]
+        );
 
-        $this->subject = new ImageService();
+        self::assertTrue($imageService->isAnimatedGif($fileMock));
     }
 
     /**
      * @test
      */
-    public function isAnimtedGif()
+    public function isNotAnimatedGif(): void
     {
+        $imageService = new ImageService();
         $fileMock = $this->createConfiguredMock(
             File::class,
             [
                 'getMimeType' => 'image/gif',
-                'getContents' => file_get_contents(__DIR__ . '/Assets/animated.gif'),
+                'getForLocalProcessing' => __DIR__ . '/../Fixtures/typo3.gif',
             ]
         );
 
-        self::assertTrue($this->subject->isAnimatedGif($fileMock));
-    }
-
-    /**
-     * @test
-     */
-    public function isNotAnimatedGif()
-    {
-        $fileMock = $this->createConfiguredMock(
-            File::class,
-            [
-                'getMimeType' => 'image/gif',
-                'getContents' => file_get_contents(__DIR__ . '/Assets/typo3.gif'),
-            ]
-        );
-
-        self::assertFalse($this->subject->isAnimatedGif($fileMock));
+        self::assertFalse($imageService->isAnimatedGif($fileMock));
     }
 }

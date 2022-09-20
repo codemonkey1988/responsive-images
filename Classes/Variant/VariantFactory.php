@@ -199,7 +199,7 @@ class VariantFactory implements LoggerAwareInterface
      * @deprecated Using configurations for responsive_images is deprecated. Use settings.variants instea
      * @param array $settings
      */
-    private function buildConfiguration(array $settings): void
+    protected function buildConfiguration(array $settings): void
     {
         if (array_key_exists('configuration.', $settings) && is_array($settings['configuration.'])) {
             foreach ($settings['configuration.'] as $key => $config) {

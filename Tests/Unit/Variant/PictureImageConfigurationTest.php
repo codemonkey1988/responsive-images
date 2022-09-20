@@ -7,7 +7,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Variant;
+namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Variant;
 
 use Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration;
 use PHPUnit\Framework\MockObject\MockObject;
