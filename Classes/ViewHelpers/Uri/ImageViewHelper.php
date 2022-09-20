@@ -26,10 +26,6 @@ class ImageViewHelper extends BaseImageViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-
-        // Re-register this argument. In TYPO3 v9, there is no default value. When dropping v9 support, this line can be removed.
-        $this->overrideArgument('src', 'string', 'src', false, '');
-
         $this->registerArgument('quality', 'int', 'Specifies the image quality for jpeg', false);
         $this->registerArgument('greyscale', 'bool', 'Should be image be rendered as greyscale?', false, false);
     }
