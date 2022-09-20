@@ -61,7 +61,7 @@ class AttributeRenderer
 
         foreach ($allProcessingInstructions as $key => $processingInstructions) {
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-            $imageUri = $this->imageService->getImageUri($processedImage, (bool)$variant->getConfig()['absolute'] ?? false);
+            $imageUri = $this->imageService->getImageUri($processedImage, (bool)($variant->getConfig()['absolute'] ?? false));
             $prefix = $processedImage->getProperty('width') . 'w';
             if (isset($variant->getConfig()['srcset.'][$key . '.']['prefix'])) {
                 $prefix = isset($variant->getConfig()['srcset.'][$key . '.']['prefix']);
@@ -119,7 +119,7 @@ class AttributeRenderer
     {
         $processingInstructions = [];
 
-        foreach ($variant->getConfig()['srcset.'] ?? [] as $key => $srcset) {
+        foreach ($variant->getConfig()['providedImageSizes.'] ?? [] as $key => $srcset) {
             $key = rtrim($key, '.');
             if (!MathUtility::canBeInterpretedAsInteger($key)) {
                 throw new Exception('Keys for variant srcset configuration needs to be numeric', 1624200902);
