@@ -1,0 +1,64 @@
+<html data-namespace-typo3-fluid="true"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:ri="http://typo3.org/ns/Codemonkey1988/ResponsiveImages/ViewHelpers">
+
+<f:comment><!--
+    This is just an example template. Feel free to create you own.
+
+    Usage of this template:
+    1. Add the extensions partial path "EXT:responsive_images/Resources/Private/Partials/" to your partialRootPaths
+    2. Render the partial to get a picture tag with <f:render partial="PictureTag" arguments="{arguments}" />
+       See below for available option.
+
+   Available options in this partial:
+   image: <FileInterface> - required - The image to render - either a file or file reference object
+   imageWidth: <string> - optional - The default image width
+   imageHeight: <string> - optional - The default image height
+   imageMaxWidth: <int> - optional - The default image max width
+   imageMaxHeight: <int> - optional - The default image max height
+   imageDefaultCropVariant: <string> - optional - The crop variant that should be used fpr rendering the fallback image
+   cropVariants: <array<string, string>> - optional - An array with cropVariants and media queries that should be rendered as source tags.
+                 Example: {mobile: '(max-width: 767px)', tablet: '(min-width: 768px)', desktop: '(min-width: 1280px)'}
+   imgClass: <string> - optional - A CSS class string that should be added to the img tag
+   variant: <string> - optional - An existing responsive images variant key that should be used for rendering
+--></f:comment>
+
+<f:if condition="{variant}">
+    <f:then>
+        <ri:loadRegister value="col-6">
+            <f:render section="PictureTag" arguments="{_all}" />
+        </ri:loadRegister>
+    </f:then>
+    <f:else>
+        <f:render section="PictureTag" arguments="{_all}" />
+    </f:else>
+</f:if>
+
+<f:section name="PictureTag">
+    <picture>
+        <f:render section="SourceTags" arguments="{_all}" />
+        <f:image image="{image}"
+                 cropVariant="{f:if(condition: imageDefaultCropVariant, then: imageDefaultCropVariant, else: 'default')}"
+                 width="{imageWidth}"
+                 height="{imageHeight}"
+                 maxWidth="{imageMaxWidth}"
+                 maxHeight="{imageMaxHeight}"
+                 class="{imgClass}"
+        />
+    </picture>
+</f:section>
+
+<f:section name="SourceTags">
+    <f:if condition="{cropVariants}">
+        <f:then>
+            <f:for each="{cropVariants}" as="media" key="cropVariant">
+                <ri:source image="{image}" cropVariantKey="{cropVariant}" media="{media}" />
+            </f:for>
+        </f:then>
+        <f:else>
+            <ri:source image="{image}" cropVariantKey="default" media="(max-width: 700px)" />
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

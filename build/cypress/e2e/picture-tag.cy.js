@@ -7,7 +7,7 @@ describe('A website user visits the homepage', () => {
 
     cy.visit('/')
 
-    cy.get('img:first')
+    cy.get('img.image-1')
       .should('be.visible')
       .and(($img) => {
         expect($img[0].naturalWidth).to.be.eq(584)
@@ -22,7 +22,7 @@ describe('A website user visits the homepage', () => {
 
     cy.visit('/')
 
-    cy.get('img:first')
+    cy.get('img.image-1')
       .should('be.visible')
       .and(($img) => {
         expect($img[0].naturalWidth).to.be.eq(375)
@@ -37,7 +37,7 @@ describe('A website user visits the homepage', () => {
 
     cy.visit('/')
 
-    cy.get('img:first')
+    cy.get('img.image-1')
       .should('be.visible')
       .and(($img) => {
         expect($img[0].naturalWidth).to.be.eq(375)
@@ -52,7 +52,7 @@ describe('A website user visits the homepage', () => {
 
     cy.visit('/')
 
-    cy.get('img:first')
+    cy.get('img.image-1')
       .should('be.visible')
       .and(($img) => {
         expect($img[0].naturalWidth).to.be.eq(420)
