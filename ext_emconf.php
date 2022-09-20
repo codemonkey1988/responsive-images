@@ -18,8 +18,6 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [],
     ],
     'state' => 'stable',
-    'uploadfolder' => false,
-    'createDirs' => '',
     'clearCacheOnLoad' => true,
     'author' => 'Tim Schreiner',
     'author_email' => 'schreiner.tim@gmail.com',

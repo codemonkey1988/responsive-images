@@ -23,6 +23,7 @@ namespace Codemonkey1988\ResponsiveImages\Resource\Rendering;
  *
  */
 
+use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry;
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
@@ -139,6 +140,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     protected function isAnimatedGif(FileInterface $file): bool
     {
-        return GeneralUtility::makeInstance(\Codemonkey1988\ResponsiveImages\Resource\Service\ImageService::class)->isAnimatedGif($file);
+        return GeneralUtility::makeInstance(ImageService::class)->isAnimatedGif($file);
     }
 }
