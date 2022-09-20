@@ -9,14 +9,12 @@
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Variant;
 
-use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariant;
-use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariantFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration;
+use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PictureImageVariantFactoryTest extends UnitTestCase
+class VariantFactoryTest extends UnitTestCase
 {
     /**
      * @var bool
@@ -35,13 +33,7 @@ class PictureImageVariantFactoryTest extends UnitTestCase
                         'configuration.' => [
                             'default.' => [
                                 'defaultWidth' => '1920',
-                                'defaultWidth.' => [
-                                    'intval' => '1',
-                                ],
                                 'defaultHeight' => '1080',
-                                'defaultHeight.' => [
-                                    'intval' => '1',
-                                ],
                                 'mimeTypes' => 'image/jpeg,image/gif,image/png',
                                 'sources.' => [
                                     'small.' => [
@@ -50,26 +42,12 @@ class PictureImageVariantFactoryTest extends UnitTestCase
                                         'sizes.' => [
                                             '1x.' => [
                                                 'width' => '480',
-                                                'width.' => [
-                                                    'intval' => '1',
-                                                ],
                                                 'height' => '320',
-                                                'height.' => [
-                                                    'intval' => '1',
-                                                ],
                                                 'quality' => '65',
                                             ],
                                             '2x.' => [
-                                                'width' => '480*2',
-                                                'width.' => [
-                                                    'intval' => '1',
-                                                    'prioriCalc' => '1'
-                                                ],
-                                                'height' => '320*2',
-                                                'height.' => [
-                                                    'intval' => '1',
-                                                    'prioriCalc' => '1',
-                                                ],
+                                                'width' => '960',
+                                                'height' => '640',
                                                 'quality' => '40',
                                             ],
                                         ],
@@ -80,13 +58,7 @@ class PictureImageVariantFactoryTest extends UnitTestCase
                                         'sizes.' => [
                                             '1x.' => [
                                                 'width' => '1920',
-                                                'width.' => [
-                                                    'intval' => '1',
-                                                ],
                                                 'height' => '1080',
-                                                'height.' => [
-                                                    'intval' => '1',
-                                                ],
                                                 'quality' => '80',
                                             ],
                                         ],
@@ -99,17 +71,17 @@ class PictureImageVariantFactoryTest extends UnitTestCase
             ],
         ];
 
+        self::expectDeprecation();
+
         $configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getConfiguration'])
             ->getMock();
         $configurationManager->method('getConfiguration')->willReturn($typoScript);
-        /** @var ContentObjectRenderer $contentObjectRenderer */
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $factory = new PictureImageVariantFactory($contentObjectRenderer, $configurationManager);
+        $factory = new VariantFactory($configurationManager);
         $variant = $factory->get('default');
 
-        self::assertInstanceOf(PictureImageVariant::class, $variant);
+        self::assertInstanceOf(PictureImageConfiguration::class, $variant);
         self::assertSame('1920', $variant->getDefaultWidth());
         self::assertSame('1080', $variant->getDefaultHeight());
         self::assertSame(['image/jpeg', 'image/gif', 'image/png'], $variant->getMimeTypes());

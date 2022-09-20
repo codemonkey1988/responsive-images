@@ -9,13 +9,14 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Codemonkey1988\ResponsiveImages\Resource\Rendering;
+namespace Codemonkey1988\ResponsiveImages\Rendering;
 
-use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
-use Codemonkey1988\ResponsiveImages\Resource\Variant\NoSuchVariantException;
-use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariant;
-use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureVariantsRegistry;
 use Codemonkey1988\ResponsiveImages\Service\ConfigurationService;
+use Codemonkey1988\ResponsiveImages\Service\ImageService;
+use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
+use Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration;
+use Codemonkey1988\ResponsiveImages\Variant\Variant;
+use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class to render a picture tag with different sources and a fallback image.
+ * @deprecated This class is deprecated and will be removed in 4.0. Please migrate your configuration to variants.
  */
 class ResponsiveImageRenderer implements FileRendererInterface
 {
@@ -48,18 +50,26 @@ class ResponsiveImageRenderer implements FileRendererInterface
     protected ImageService $imageService;
 
     /**
+     * @var VariantFactory
+     */
+    protected VariantFactory $variantFactory;
+
+    /**
      * @param ConfigurationService $configurationService
      * @param EnvironmentService $environmentService
      * @param ImageService $imageService
+     * @param VariantFactory $variantFactory
      */
     public function __construct(
         ConfigurationService $configurationService,
         EnvironmentService $environmentService,
-        ImageService $imageService
+        ImageService $imageService,
+        VariantFactory $variantFactory
     ) {
         $this->configurationService = $configurationService;
         $this->environmentService = $environmentService;
         $this->imageService = $imageService;
+        $this->variantFactory = $variantFactory;
     }
 
     /**
@@ -135,23 +145,32 @@ class ResponsiveImageRenderer implements FileRendererInterface
     }
 
     /**
-     * @return PictureImageVariant
+     * @return Variant
      * @throws NoSuchVariantException
      */
-    protected function getConfig(): PictureImageVariant
+    protected function getConfig(): Variant
     {
-        $imageVariantConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
-        /** @var PictureVariantsRegistry $registry */
-        $registry = GeneralUtility::makeInstance(PictureVariantsRegistry::class);
+        $key = self::DEFAULT_IMAGE_VARIANT_KEY;
+        $variant = $this->variantFactory->get($key);
 
-        if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])
-            && $registry->imageVariantKeyExists(
-                $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY]
-            )
-        ) {
-            $imageVariantConfigKey = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY];
+        if (isset($GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY])) {
+            try {
+                $key = $GLOBALS['TSFE']->register[self::REGISTER_IMAGE_VARIANT_KEY];
+                $variant = $this->variantFactory->get($key);
+            } catch (NoSuchVariantException $e) {
+                $key = self::DEFAULT_IMAGE_VARIANT_KEY;
+                $variant = $this->variantFactory->get($key);
+            }
         }
-        return $registry->getImageVariant($imageVariantConfigKey);
+
+        if (!$variant instanceof PictureImageConfiguration) {
+            throw new NoSuchVariantException(
+                'No configuration found for key "' . $key . '". Found variant config instead. Please use ImageViewHelper or SourceViewHelper instead.',
+                1624132564
+            );
+        }
+
+        return $variant;
     }
 
     /**

@@ -7,7 +7,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Resource\Rendering;
+namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Rendering;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -35,9 +35,9 @@ class ResponsiveImageTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../../Fixtures/sys_file_storage.xml');
-        $this->importDataSet(__DIR__ . '/../../Fixtures/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../../Fixtures/pages.xml');
+        $this->importDataSet(__DIR__ . '/../Fixtures/sys_file_storage.xml');
+        $this->importDataSet(__DIR__ . '/../Fixtures/sys_file.xml');
+        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
 
         /** @var Connection $connection */
         $connection = $this->getConnectionPool()->getConnectionForTable('sys_file_processedfile');

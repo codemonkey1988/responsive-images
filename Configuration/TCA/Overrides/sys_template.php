@@ -26,7 +26,7 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'responsive_images',
     'Configuration/TypoScript/DefaultConfiguration',
-    'Responsive images default configuration (optional)'
+    'Deprecated: Responsive images default configuration (optional)'
 );
 
 /**

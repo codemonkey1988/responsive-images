@@ -30,7 +30,7 @@ class LoadRegisterViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('key', 'string', 'Key for adding value to register stack', true);
+        $this->registerArgument('key', 'string', 'Key for adding value to register stack', false, 'IMAGE_VARIANT_KEY');
         $this->registerArgument('value', 'string', 'Value that should be added to register stack', true);
     }
 

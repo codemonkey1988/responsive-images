@@ -1,44 +1,42 @@
 services:
   _defaults:
-    autowire: false
+    autowire: true
     autoconfigure: true
     public: false
 
   Codemonkey1988\ResponsiveImages\:
     resource: '../Classes/*'
 
-  Codemonkey1988\ResponsiveImages\Resource\Rendering\ResponsiveImageRenderer:
-    public: true
-    shared: true
-    arguments:
-      - '@Codemonkey1988\ResponsiveImages\Service\ConfigurationService'
-      - '@TYPO3\CMS\Extbase\Service\EnvironmentService'
-      - '@Codemonkey1988\ResponsiveImages\Resource\Service\ImageService'
+  Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration:
+    autowire: false
 
-  Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariantFactory:
+  Codemonkey1988\ResponsiveImages\Rendering\ResponsiveImageRenderer:
     public: true
     shared: true
-    arguments:
-      - '@TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer'
-      - '@TYPO3\CMS\Extbase\Configuration\ConfigurationManager'
 
-  Codemonkey1988\ResponsiveImages\Resource\Variant\PictureVariantsRegistry:
-    public: true
+  Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer:
     shared: true
-    arguments:
-      - '@Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariantFactory'
+
+  Codemonkey1988\ResponsiveImages\Variant\VariantFactory:
+    shared: true
 
   Codemonkey1988\ResponsiveImages\Service\ConfigurationService:
-    public: true
     shared: true
-    arguments:
-      - '@TYPO3\CMS\Extbase\Configuration\ConfigurationManager'
+
+  Codemonkey1988\ResponsiveImages\Service\ImageService:
+    shared: true
+
+  Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant:
+    alias: Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration
+    public: true
 
   Codemonkey1988\ResponsiveImages\Resource\Service\ImageService:
-    shared: true
+    alias: Codemonkey1988\ResponsiveImages\Service\ImageService
+    public: true
 
-  Codemonkey1988\ResponsiveImages\ViewHelpers\ImageViewHelper:
-    autowire: true
+  Codemonkey1988\ResponsiveImages\Resource\Service\PictureVariantsRegistry:
+    alias: Codemonkey1988\ResponsiveImages\Variant\PictureImageConfigurationRegistry
+    public: true
 
   Codemonkey1988\ResponsiveImages\EventListener\SkipImageProcessing:
     tags:

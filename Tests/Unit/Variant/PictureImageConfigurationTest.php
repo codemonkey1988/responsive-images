@@ -9,14 +9,14 @@
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Variant;
 
-use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariant;
+use Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant
  */
-class PictureImageVariantTest extends UnitTestCase
+class PictureImageConfigurationTest extends UnitTestCase
 {
     /**
      * Test if the default width can be set.
@@ -25,8 +25,10 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function settingDefaultWidthWillWork()
     {
-        /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = new PictureImageVariant('test', []);
+        self::expectDeprecation();
+
+        /** @var PictureImageConfiguration|MockObject $pictureImagePictureImageConfiguration */
+        $pictureImageVariant = new PictureImageConfiguration('test', []);
         $pictureImageVariant->setDefaultWidth('2000');
 
         self::assertEquals('2000', $pictureImageVariant->getDefaultWidth());
@@ -39,8 +41,10 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function settingDefaultHeightWillWork()
     {
-        /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = new PictureImageVariant('test', []);
+        self::expectDeprecation();
+
+        /** @var PictureImageConfiguration|MockObject $pictureImageVariant */
+        $pictureImageVariant = new PictureImageConfiguration('test', []);
         $pictureImageVariant->setDefaultHeight('700');
 
         self::assertEquals('700', $pictureImageVariant->getDefaultHeight());
@@ -53,6 +57,8 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function addSingleSourceConfig()
     {
+        self::expectDeprecation();
+
         $media = '(max-width: 64em)';
         $srcsets = [
             '1x' => ['width' => '1280c', 'height' => '600c', 'quality' => '80'],
@@ -66,8 +72,8 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = new PictureImageVariant('test', []);
+        /** @var PictureImageConfiguration|MockObject $pictureImageVariant */
+        $pictureImageVariant = new PictureImageConfiguration('test', []);
         $pictureImageVariant->addSourceConfig($media, $srcsets);
 
         self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
@@ -81,6 +87,8 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function addMultipleSourceConfig()
     {
+        self::expectDeprecation();
+
         $media1 = '(max-width: 64em)';
         $media2 = '(max-width: 40em)';
         $srcset1 = [
@@ -104,8 +112,8 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = new PictureImageVariant('test', []);
+        /** @var PictureImageConfiguration|MockObject $pictureImageVariant */
+        $pictureImageVariant = new PictureImageConfiguration('test', []);
         $pictureImageVariant->addSourceConfig($media1, $srcset1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2);
 
@@ -120,6 +128,8 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function addSingleSourceConfigWithCroppingVariantKey()
     {
+        self::expectDeprecation();
+
         $croppingVariantKey = 'mobile';
         $media = '(max-width: 64em)';
         $srcsets = [
@@ -134,8 +144,8 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = new PictureImageVariant('test', []);
+        /** @var PictureImageConfiguration|MockObject $pictureImageVariant */
+        $pictureImageVariant = new PictureImageConfiguration('test', []);
         $pictureImageVariant->addSourceConfig($media, $srcsets, $croppingVariantKey);
 
         self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
@@ -149,6 +159,8 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function addMultipleSourceConfigWithCroppingVariantKey()
     {
+        self::expectDeprecation();
+
         $croppingVariantKey1 = 'mobile';
         $croppingVariantKey2 = 'desktop';
         $media1 = '(max-width: 64em)';
@@ -174,8 +186,8 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = new PictureImageVariant('test', []);
+        /** @var PictureImageConfiguration|MockObject $pictureImageVariant */
+        $pictureImageVariant = new PictureImageConfiguration('test', []);
         $pictureImageVariant->addSourceConfig($media1, $srcset1, $croppingVariantKey1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2, $croppingVariantKey2);
 

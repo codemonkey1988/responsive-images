@@ -47,7 +47,7 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper->expects(self::exactly(2))
             ->method('registerArgument')
             ->withConsecutive(
-                ['key', 'string', self::anything(), true],
+                ['key', 'string', self::anything(), false],
                 ['value', 'string', self::anything(), true]
             );
         $viewHelper->initializeArguments();

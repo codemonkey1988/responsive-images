@@ -11,23 +11,71 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\ViewHelpers;
 
-use Codemonkey1988\ResponsiveImages\Service\ConfigurationService;
+use Codemonkey1988\ResponsiveImages\Exception;
+use Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer;
+use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
+use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper as BaseImageViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 class ImageViewHelper extends BaseImageViewHelper
 {
+    /**
+     * @var VariantFactory
+     */
+    protected VariantFactory $variantFactory;
+
+    /**
+     * @var AttributeRenderer
+     */
+    protected AttributeRenderer $attributeRenderer;
+
+    /**
+     * @param VariantFactory $variantFactory
+     * @required
+     */
+    public function setVariantFactory(VariantFactory $variantFactory): void
+    {
+        $this->variantFactory = $variantFactory;
+    }
+
+    /**
+     * @param AttributeRenderer $attributeRenderer
+     * @required
+     */
+    public function setAttributeRenderer(AttributeRenderer $attributeRenderer): void
+    {
+        $this->attributeRenderer = $attributeRenderer;
+    }
+
     /**
      * Initialize arguments.
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg', false);
-        $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale?', false);
+        $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg (deprecated)', false);
+        $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale? (deprecated)', false);
+        $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.', false);
+    }
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        if ($this->hasArgument('quality')) {
+            trigger_error(
+                'Argument "quality" in ' . __CLASS__ . ' is deprecated and will be removed in responsive_images 4.0.',
+                E_USER_DEPRECATED
+            );
+        }
+        if ($this->hasArgument('greyscale')) {
+            trigger_error(
+                'Argument "greyscale" in ' . __CLASS__ . ' is deprecated and will be removed in responsive_images 4.0.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 
     /**
@@ -35,7 +83,7 @@ class ImageViewHelper extends BaseImageViewHelper
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
      *
-     * @throws Exception
+     * @throws Exception|NoSuchVariantException
      * @return string Rendered tag
      */
     public function render()
@@ -73,7 +121,6 @@ class ImageViewHelper extends BaseImageViewHelper
                     'maxHeight' => $this->arguments['maxHeight'],
                     'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
                     'additionalParameters' => $this->generateAdditionalProcessingParameters(),
-                    'skipProcessing' => !$this->isProcessingEnabled(),
                 ];
                 if (!empty($this->arguments['fileExtension'] ?? '')) {
                     $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
@@ -114,9 +161,23 @@ class ImageViewHelper extends BaseImageViewHelper
                 throw new Exception($e->getMessage(), 1509741914, $e);
             }
         }
+
+        $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
+        $srcset = $this->attributeRenderer->renderSrcset($image, $variant, $cropVariant);
+        $sizes = $this->attributeRenderer->renderSizes($variant);
+        if (strlen($srcset) > 0) {
+            $this->tag->addAttribute('srcset', $srcset);
+        }
+        if (strlen($sizes) > 0) {
+            $this->tag->addAttribute('sizes', $sizes);
+        }
+
         return $this->tag->render();
     }
 
+    /**
+     * @return string
+     */
     protected function generateAdditionalProcessingParameters(): string
     {
         $additionalParameters = '';
@@ -130,15 +191,5 @@ class ImageViewHelper extends BaseImageViewHelper
         }
 
         return $additionalParameters;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isProcessingEnabled(): bool
-    {
-        /** @var ConfigurationService $configurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        return $configurationService->isProcessingEnabled();
     }
 }

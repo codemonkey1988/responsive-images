@@ -15,6 +15,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Blank lines removal ViewHelper
+ * @deprecated
  */
 class RemoveNewLineViewHelper extends AbstractViewHelper
 {
@@ -33,6 +34,11 @@ class RemoveNewLineViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        trigger_error(
+            'ViewHelper' . __CLASS__ . ' is deprecated and wil lbe removed in responsive_image 4.0',
+            E_USER_DEPRECATED
+        );
+
         return str_replace("\n", '', $renderChildrenClosure());
     }
 }

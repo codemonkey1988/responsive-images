@@ -11,14 +11,15 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\ViewHelpers\Uri;
 
-use Codemonkey1988\ResponsiveImages\Service\ConfigurationService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\ImageViewHelper as BaseImageViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
+/**
+ * @deprecated
+ */
 class ImageViewHelper extends BaseImageViewHelper
 {
     /**
@@ -42,6 +43,11 @@ class ImageViewHelper extends BaseImageViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        trigger_error(
+            'ViewHelper' . __CLASS__ . ' is deprecated and wil lbe removed in responsive_image 4.0',
+            E_USER_DEPRECATED
+        );
+
         $src = (string)$arguments['src'];
         $image = $arguments['image'];
         $treatIdAsReference = (bool)$arguments['treatIdAsReference'];
@@ -77,7 +83,6 @@ class ImageViewHelper extends BaseImageViewHelper
                 'maxHeight' => $arguments['maxHeight'],
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
                 'additionalParameters' => self::generateAdditionalProcessingParameters($arguments),
-                'skipProcessing' => !self::isProcessingEnabled(),
             ];
             if (!empty($arguments['fileExtension'])) {
                 $processingInstructions['fileExtension'] = $arguments['fileExtension'];
@@ -117,15 +122,5 @@ class ImageViewHelper extends BaseImageViewHelper
         }
 
         return $additionalParameters;
-    }
-
-    /**
-     * @return bool
-     */
-    protected static function isProcessingEnabled(): bool
-    {
-        /** @var ConfigurationService $configurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        return $configurationService->isProcessingEnabled();
     }
 }
