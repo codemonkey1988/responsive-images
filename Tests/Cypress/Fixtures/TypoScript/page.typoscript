@@ -1,0 +1,17 @@
+page = PAGE
+page.100 = CONTENT
+page.100 {
+  table = tt_content
+  select {
+    orderBy = sorting
+    where = {#colPos}=0
+  }
+}
+
+page.headerData.10 = TEXT
+page.headerData.10 {
+  wrap = <style>|</style>
+  value = html,body { margin: 0; padding: 0; } img { width: 100%; height: auto; }
+}
+
+lib.contentElement.partialRootPaths.1663513618 = EXT:responsive_images/Resources/Private/Partials

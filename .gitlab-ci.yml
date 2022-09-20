@@ -111,7 +111,7 @@ cypress-tests:
     - ddev start -y
     - ddev composer require typo3/minimal="$TYPO3_VERSION"
     - ddev typo3cms install:setup --skip-integrity-check
-    - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/dump.sql
+    - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/test-data.sql
     - nvm install 18 && nvm use 18
     - cd $CI_PROJECT_DIR/build/ && npm ci && npx cypress install
   script:
