@@ -80,6 +80,8 @@ functional-tests:
     typo3DatabaseName: typo3_test
     typo3DatabaseDriver: mysqli
   script:
+    - apk add --no-cache imagemagick
+    - docker-php-ext-install mysqli
     - .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional/
   parallel:
     matrix:
