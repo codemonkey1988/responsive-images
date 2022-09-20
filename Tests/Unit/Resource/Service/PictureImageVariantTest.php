@@ -10,7 +10,8 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
 
 use Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Service\PictureImageVariant
@@ -24,7 +25,7 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function settingDefaultWidthWillWork()
     {
-        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        /** @var PictureImageVariant|MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->setDefaultWidth('2000');
 
@@ -38,7 +39,7 @@ class PictureImageVariantTest extends UnitTestCase
      */
     public function settingDefaultHeightWillWork()
     {
-        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        /** @var PictureImageVariant|MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->setDefaultHeight('700');
 
@@ -65,7 +66,7 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        /** @var PictureImageVariant|MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media, $srcsets);
 
@@ -103,7 +104,7 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        /** @var PictureImageVariant|MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media1, $srcset1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2);
@@ -133,7 +134,7 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        /** @var PictureImageVariant|MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media, $srcsets, $croppingVariantKey);
 
@@ -173,7 +174,7 @@ class PictureImageVariantTest extends UnitTestCase
             ],
         ];
 
-        /** @var PictureImageVariant|\PHPUnit_Framework_MockObject_MockObject $pictureImageVariant */
+        /** @var PictureImageVariant|MockObject $pictureImageVariant */
         $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
         $pictureImageVariant->addSourceConfig($media1, $srcset1, $croppingVariantKey1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2, $croppingVariantKey2);

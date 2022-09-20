@@ -15,4 +15,11 @@
         <sha1>f177bc09d2ded98398b7813ecb68f220f1f6f20a</sha1>
         <size>125662</size>
     </sys_file>
+    <sys_file_metadata>
+        <uid>1</uid>
+        <pid>0</pid>
+        <file>1</file>
+        <width>1920</width>
+        <height>1056</height>
+    </sys_file_metadata>
 </dataset>

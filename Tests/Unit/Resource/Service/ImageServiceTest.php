@@ -10,8 +10,8 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Resource\Service;
 
 use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Resource\Service\ImageService
@@ -23,7 +23,7 @@ class ImageServiceTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

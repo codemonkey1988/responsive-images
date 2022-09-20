@@ -10,8 +10,9 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
 
 use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
-use Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
@@ -19,23 +20,19 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @var MockObject|TypoScriptFrontendController
      */
     protected $tsfe;
 
     /**
      * Set up
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->tsfe = $this->getAccessibleMock(
-            TypoScriptFrontendController::class,
-            ['dummy'],
-            [],
-            '',
-            false
-        );
+        $this->tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $GLOBALS['TSFE'] = $this->tsfe;
     }
 
@@ -44,10 +41,15 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
      */
     public function initializeArgumentsRegistersExpectedArguments()
     {
-        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['registerArgument']);
-        $viewHelper->expects(self::at(0))->method('registerArgument')->with('key', 'string', self::anything(), true);
-        $viewHelper->expects(self::at(1))->method('registerArgument')->with('value', 'string', self::anything(), true);
+        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
+            ->onlyMethods(['registerArgument'])
+            ->getMock();
+        $viewHelper->expects(self::exactly(2))
+            ->method('registerArgument')
+            ->withConsecutive(
+                ['key', 'string', self::anything(), true],
+                ['value', 'string', self::anything(), true]
+            );
         $viewHelper->initializeArguments();
     }
 
@@ -61,11 +63,9 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
         $registerVariableName = 'TEST_VARIABLE';
         $registerVariableValue = 'Some value';
 
-        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-        $viewHelper = $this->getAccessibleMock(
-            LoadRegisterViewHelper::class,
-            ['renderChildren']
-        );
+        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
+            ->onlyMethods(['renderChildren'])
+            ->getMock();
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments([
             'key' => $registerVariableName,
@@ -81,8 +81,9 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
      */
     public function childrenBeingRendered()
     {
-        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
+        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
+            ->onlyMethods(['renderChildren'])
+            ->getMock();
         $viewHelper->expects(self::once())->method('renderChildren')->willReturn('<content>');
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments([
@@ -100,8 +101,9 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
         $registerVariableName = 'TEST_VARIABLE';
         $registerVariableValue = 'Some value';
 
-        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
+        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
+            ->onlyMethods(['renderChildren'])
+            ->getMock();
         $viewHelper->expects(self::any())->method('renderChildren')->willReturnCallback(function () use ($registerVariableName, $registerVariableValue) {
             $this->assertEquals($registerVariableValue, $GLOBALS['TSFE']->register[$registerVariableName]);
         });
@@ -120,8 +122,9 @@ class LoadRegisterViewHelperTest extends ViewHelperBaseTestcase
     {
         $registerVariableName = 'TEST_VARIABLE';
 
-        /** @var LoadRegisterViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-        $viewHelper = $this->getAccessibleMock(LoadRegisterViewHelper::class, ['renderChildren']);
+        $viewHelper = $this->getMockBuilder(LoadRegisterViewHelper::class)
+            ->onlyMethods(['renderChildren'])
+            ->getMock();
         $viewHelper->expects(self::any())->method('renderChildren')->willReturn('<content>');
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments([

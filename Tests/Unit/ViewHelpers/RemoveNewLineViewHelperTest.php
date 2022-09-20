@@ -10,7 +10,7 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
 
 use Codemonkey1988\ResponsiveImages\ViewHelpers\RemoveNewLineViewHelper;
-use Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\RemoveNewLineViewHelper
@@ -22,8 +22,9 @@ class RemoveNewLineViewHelperTest extends ViewHelperBaseTestcase
      */
     public function newLinesAreRemoved()
     {
-        /** @var RemoveNewLineViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-        $viewHelper = $this->getAccessibleMock(RemoveNewLineViewHelper::class, ['renderChildren']);
+        $viewHelper = $this->getMockBuilder(RemoveNewLineViewHelper::class)
+            ->onlyMethods(['renderChildren'])
+            ->getMock();
         $viewHelper->expects(self::once())->method('renderChildren')->willReturn("\n<content>\n\n</content>\n");
         $this->injectDependenciesIntoViewHelper($viewHelper);
 

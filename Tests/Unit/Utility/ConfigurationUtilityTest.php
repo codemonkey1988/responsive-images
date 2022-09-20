@@ -10,15 +10,22 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Utility;
 
 use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility
  */
 class ConfigurationUtilityTest extends UnitTestCase
 {
+    /**
+     * @var bool
+     */
+    protected $resetSingletonInstances = true;
+
     /**
      * Test is the default extension config is loaded correctly.
      *
@@ -130,8 +137,11 @@ class ConfigurationUtilityTest extends UnitTestCase
         $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $tsfeMock->tmpl = new TemplateService();
+        $tsfeMock->tmpl = GeneralUtility::makeInstance(TemplateService::class, null, $packageManagerMock);
         $tsfeMock->tmpl->setup = [
             'plugin.' => [
                 'tx_responsiveimages.' => [
@@ -169,8 +179,11 @@ class ConfigurationUtilityTest extends UnitTestCase
         $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $tsfeMock->tmpl = new TemplateService();
+        $tsfeMock->tmpl = GeneralUtility::makeInstance(TemplateService::class, null, $packageManagerMock);
         $tsfeMock->tmpl->setup = [
             'plugin.' => [
                 'tx_responsiveimages.' => [
