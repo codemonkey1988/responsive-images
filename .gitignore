@@ -1,4 +1,5 @@
 /.idea
+/.ddev
 /composer.lock
 /.php_cs.cache
 /.Build
