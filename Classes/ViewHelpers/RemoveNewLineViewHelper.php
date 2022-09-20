@@ -27,12 +27,12 @@ class RemoveNewLineViewHelper extends AbstractViewHelper
 
     /**
      * @param array $arguments
-     * @param \Closure $childClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $childClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return str_replace("\n", '', $childClosure());
+        return str_replace("\n", '', $renderChildrenClosure());
     }
 }
