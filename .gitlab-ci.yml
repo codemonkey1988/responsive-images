@@ -3,16 +3,40 @@ stages:
   - test
   - mirror
 
-.composer-install:
+lint-php:
+  stage: lint
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
+  except:
+    - master
+  script:
+    - find . -name \*.php ! -path "./.Build/*" -exec php -d display_errors=stderr -l {} > /dev/null \;
+  parallel:
+    matrix:
+      - PHP_VERSION: ['7.4', '8.0']
+
+codestyle-php:
+  stage: lint
+  except:
+    - master
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
   before_script:
     - mkdir -p .composer/cache
     - COMPOSER_CACHE_DIR=.composer/cache composer install
+  script:
+    - .Build/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff --diff-format=udiff
   cache:
     key: composer-cache
     paths:
       - .composer/cache
 
-.install-typo3:
+unit-tests:
+  stage: test
+  except:
+    - master
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
+  variables:
+    TYPO3_VERSION: ^10.4
+    PHP_VERSION: "7.4"
   before_script:
     - mkdir -p .composer/cache
     - |
@@ -26,46 +50,18 @@ stages:
         typo3/cms-frontend="$TYPO3_VERSION" \
         typo3/cms-install="$TYPO3_VERSION"
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
-
-lint-php:
-  stage: lint
-  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
-  except:
-    - master
-  script:
-    - find . -name \*.php ! -path "./.Build/*" -exec php -d display_errors=stderr -l {} > /dev/null \;
-  parallel:
-    matrix:
-      - PHP_VERSION: ['7.4', '8.0']
-
-codestyle-php:
-  extends: .composer-install
-  stage: lint
-  except:
-    - master
-  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
-  script:
-    - .Build/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff --diff-format=udiff
-
-unit-tests:
-  extends:
-    - .composer-install
-    - .install-typo3
-  stage: test
-  except:
-    - master
-  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
   script:
     - .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
   parallel:
     matrix:
       - TYPO3_VERSION: '^10.4'
         PHP_VERSION: [ '7.4' ]
+  cache:
+    key: composer-cache
+    paths:
+      - .composer/cache
 
 functional-tests:
-  extends:
-    - .composer-install
-    - .install-typo3
   stage: test
   except:
     - master
@@ -79,6 +75,21 @@ functional-tests:
     typo3DatabasePassword: $MYSQL_ROOT_PASSWORD
     typo3DatabaseName: typo3_test
     typo3DatabaseDriver: mysqli
+    TYPO3_VERSION: ^10.4
+    PHP_VERSION: "7.4"
+  before_script:
+    - mkdir -p .composer/cache
+    - |
+      COMPOSER_CACHE_DIR=.composer/cache composer require \
+        typo3/cms-backend="$TYPO3_VERSION" \
+        typo3/cms-recordlist="$TYPO3_VERSION" \
+        typo3/cms-core="$TYPO3_VERSION" \
+        typo3/cms-extbase="$TYPO3_VERSION" \
+        typo3/cms-extensionmanager="$TYPO3_VERSION" \
+        typo3/cms-fluid="$TYPO3_VERSION" \
+        typo3/cms-frontend="$TYPO3_VERSION" \
+        typo3/cms-install="$TYPO3_VERSION"
+    - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - apk add --no-cache imagemagick
     - docker-php-ext-install mysqli
@@ -87,6 +98,10 @@ functional-tests:
     matrix:
       - TYPO3_VERSION: '^10.4'
         PHP_VERSION: [ '7.4' ]
+  cache:
+    key: composer-cache
+    paths:
+      - .composer/cache
 
 mirror:
   stage: mirror
