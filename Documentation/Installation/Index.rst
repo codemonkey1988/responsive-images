@@ -10,4 +10,4 @@ This extension can be installed by using composer:
 
    composer require codemonkey1988/responsive-images
 
-Continue this :ref:`configuration`.
+Continue with :ref:`configuration`.
