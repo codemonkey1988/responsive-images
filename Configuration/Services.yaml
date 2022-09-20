@@ -13,8 +13,5 @@ services:
   Codemonkey1988\ResponsiveImages\Variant\VariantFactory:
     public: true
 
-  Codemonkey1988\ResponsiveImages\Service\ConfigurationService:
-    public: true
-
   Codemonkey1988\ResponsiveImages\Service\ImageService:
     shared: true

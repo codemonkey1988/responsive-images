@@ -1,6 +1,0 @@
-plugin.tx_responsiveimages {
-    settings {
-        # cat=basic; type=boolean; label= Enabling the extension
-        enabled = 1
-    }
-}
