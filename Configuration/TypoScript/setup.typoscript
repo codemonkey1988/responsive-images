@@ -68,18 +68,4 @@ plugin.tx_responsiveimages {
       }
     }
   }
-  view {
-    templateRootPaths {
-      0 = EXT:responsive_images/Resources/Private/Templates
-      1 = {$plugin.tx_responsiveimages.view.templateRootPath}
-    }
-    partialRootPaths {
-      0 = EXT:responsive_images/Resources/Private/Partials
-      1 = {$plugin.tx_responsiveimages.view.partialRootPath}
-    }
-    layoutRootPaths {
-      0 = EXT:responsive_images/Resources/Private/Layouts
-      1 = {$plugin.tx_responsiveimages.view.layoutRootPath}
-    }
-  }
 }
