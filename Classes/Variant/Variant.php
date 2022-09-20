@@ -14,7 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\Variant;
 /**
  * Class to store configuration for different picture tag configurations.
  *
- * @phpstan-type TConfig array{
+ * @phpstan-type Config array{
  *     type?: string,
  *     media?: string,
  *     absolute?: string,
@@ -41,14 +41,14 @@ class Variant
     protected string $key;
 
     /**
-     * @var TConfig
+     * @var Config
      */
     protected array $config;
 
     /**
      * PictureImageVariant constructor.
      *
-     * @param TConfig $config
+     * @param Config $config
      */
     public function __construct(string $key, array $config)
     {
@@ -62,7 +62,7 @@ class Variant
     }
 
     /**
-     * @return TConfig
+     * @return Config
      */
     public function getConfig(): array
     {

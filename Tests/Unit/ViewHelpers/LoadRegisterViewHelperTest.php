@@ -12,26 +12,28 @@ declare(strict_types=1);
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\ViewHelpers;
 
 use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
  */
 class LoadRegisterViewHelperTest extends UnitTestCase
 {
-    protected MockObject $tsfe;
+    protected \stdClass $tsfe;
 
-    protected MockObject $renderingContext;
+    /**
+     * @var RenderingContextInterface
+     */
+    protected RenderingContextInterface $renderingContext;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->tsfe = new \stdClass();
+        $this->tsfe->registerStack = [];
+        $this->tsfe->register = [];
         $GLOBALS['TSFE'] = $this->tsfe;
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
             ->disableOriginalConstructor()

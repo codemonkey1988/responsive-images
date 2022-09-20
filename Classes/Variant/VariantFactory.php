@@ -23,7 +23,6 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
  *
  * @phpstan-type Settings array{
  *     'variants.'?: array<string, mixed>,
- *     'configuration.'?: array<string, mixed>
  * }
  */
 class VariantFactory implements LoggerAwareInterface
@@ -38,12 +37,6 @@ class VariantFactory implements LoggerAwareInterface
      */
     protected array $variants = [];
 
-    /**
-     * @var array<string, PictureImageConfiguration>
-     * @deprecated
-     */
-    protected array $configuration = [];
-
     public function __construct(ConfigurationManager $configurationManager)
     {
         try {
@@ -56,7 +49,6 @@ class VariantFactory implements LoggerAwareInterface
         }
 
         $this->buildVariants($settings);
-        $this->buildConfiguration($settings);
     }
 
     public function has(string $key): bool
@@ -78,96 +70,11 @@ class VariantFactory implements LoggerAwareInterface
             $key = $this->getKeyFromRegistry();
         }
 
-        if (array_key_exists($key, $this->configuration)) {
-            if ($this->logger !== null) {
-                $this->logger->info('Using deprecated configuration with key "' . $key . '".');
-            }
-            return $this->configuration[$key];
-        }
         if (array_key_exists($key, $this->variants)) {
             return $this->variants[$key];
         }
 
         throw new NoSuchVariantException('No configuration or variant found with key "' . $key . '".', 1623538021);
-    }
-
-    /**
-     * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
-     */
-    public function addConfiguration(PictureImageConfiguration $configuration): void
-    {
-        trigger_error(
-            'This method will be removed in 4.0. Please use variants and register them using TypoScript.',
-            E_USER_DEPRECATED
-        );
-        $this->configuration[$configuration->getKey()] = $configuration;
-    }
-
-    /**
-     * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
-     */
-    public function hasConfiguration(string $key): bool
-    {
-        trigger_error(
-            'This method will be removed in 4.0. Please use variants and register them using TypoScript.',
-            E_USER_DEPRECATED
-        );
-        return array_key_exists($key, $this->configuration);
-    }
-
-    /**
-     * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
-     */
-    public function getConfiguration(string $key): ?PictureImageConfiguration
-    {
-        trigger_error(
-            'This method will be removed in 4.0. Please use variants and register them using TypoScript.',
-            E_USER_DEPRECATED
-        );
-        if ($this->hasConfiguration($key)) {
-            return $this->configuration[$key];
-        }
-
-        return null;
-    }
-
-    /**
-     * @return array<string, PictureImageConfiguration>
-     * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
-     */
-    public function getAllConfiguration(): array
-    {
-        trigger_error(
-            'This method will be removed in 4.0. Please use variants and register them using TypoScript.',
-            E_USER_DEPRECATED
-        );
-        return $this->configuration;
-    }
-
-    /**
-     * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
-     */
-    public function removeConfiguration(string $key): void
-    {
-        trigger_error(
-            'This method will be removed in 4.0. Please use variants and register them using TypoScript.',
-            E_USER_DEPRECATED
-        );
-        if ($this->hasConfiguration($key)) {
-            unset($this->configuration[$key]);
-        }
-    }
-
-    /**
-     * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
-     */
-    public function truncateConfiguration(): void
-    {
-        trigger_error(
-            'This method will be removed in 4.0. Please use variants and register them using TypoScript.',
-            E_USER_DEPRECATED
-        );
-        $this->configuration = [];
     }
 
     /**
@@ -180,24 +87,6 @@ class VariantFactory implements LoggerAwareInterface
                 $key = rtrim($key, '.');
                 $this->variants[$key] = GeneralUtility::makeInstance(
                     Variant::class,
-                    $key,
-                    $config
-                );
-            }
-        }
-    }
-
-    /**
-     * @deprecated Using configurations for responsive_images is deprecated. Use settings.variants instea
-     * @param Settings $settings
-     */
-    protected function buildConfiguration(array $settings): void
-    {
-        if (array_key_exists('configuration.', $settings) && is_array($settings['configuration.'])) {
-            foreach ($settings['configuration.'] as $key => $config) {
-                $key = rtrim($key, '.');
-                $this->configuration[$key] = GeneralUtility::makeInstance(
-                    PictureImageConfiguration::class,
                     $key,
                     $config
                 );

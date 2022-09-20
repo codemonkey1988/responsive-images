@@ -166,9 +166,6 @@ class ImageViewHelper extends BaseImageViewHelper
         return $this->tag->render();
     }
 
-    /**
-     * @return string
-     */
     protected function generateAdditionalProcessingParameters(): string
     {
         $additionalParameters = '';

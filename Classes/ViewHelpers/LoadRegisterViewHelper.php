@@ -46,10 +46,7 @@ class LoadRegisterViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array{
-     *     key: string,
-     *     value: string
-     * } $arguments
+     * @param array{key: string, value: string} $arguments
      */
     public static function renderStatic(
         array $arguments,

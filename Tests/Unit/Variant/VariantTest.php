@@ -17,15 +17,6 @@ class VariantTest extends UnitTestCase
     /**
      * @test
      */
-    public function createNewInstanceWithoutArgumentsExpectsError(): void
-    {
-        self::expectError();
-        new Variant();
-    }
-
-    /**
-     * @test
-     */
     public function createNewInstanceWithArguments(): void
     {
         $variant = new Variant('test', ['foo' => 'bar']);
