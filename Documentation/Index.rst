@@ -1,14 +1,35 @@
-
-.. _start:
+.. include:: /Includes.rst.txt
 
 =============================================================
 Responsive Images
 =============================================================
 
+:Extension key:
+   responsive_images
+
+:Package name:
+   codemonkey1988/responsive-images
+
+:Version:
+   |release|
+
+:Language:
+   en
+
+:Author:
+   Tim Schreiner
+
+:License:
+   This document is published under the
+   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   license.
+
+:Rendered:
+   |today|
+
 Extension for TYPO3 that adds the option to define centralized
 configurations for picture tags and render them using Fluid ViewHelpers.
 Configurations are defined using TypoScript.
-
 
 About this extension
 ====================
@@ -32,4 +53,5 @@ Upgrading from v2
 
    Installation/Index
    Usage/Index
+   Reference/Index
    Upgrade/Index
