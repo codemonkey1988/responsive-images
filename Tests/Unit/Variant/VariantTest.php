@@ -12,6 +12,9 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @covers \Codemonkey1988\ResponsiveImages\Variant\Variant
+ */
 class VariantTest extends UnitTestCase
 {
     /**

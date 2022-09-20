@@ -15,6 +15,9 @@ use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @covers \Codemonkey1988\ResponsiveImages\Variant\VariantFactory
+ */
 class VariantFactoryTest extends UnitTestCase
 {
     /**

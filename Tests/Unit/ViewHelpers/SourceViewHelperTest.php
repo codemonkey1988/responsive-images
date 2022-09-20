@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
+/**
+ * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\SourceViewHelper
+ */
 class SourceViewHelperTest extends UnitTestCase
 {
     protected MockObject $variantFactory;

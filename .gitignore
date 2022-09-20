@@ -2,6 +2,7 @@
 /composer.lock
 /.php_cs.cache
 /.Build
+/.cache
 /var
 /config
 /Tests/Functional/Fixtures/fileadmin/typo3temp

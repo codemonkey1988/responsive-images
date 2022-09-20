@@ -13,6 +13,9 @@ use Codemonkey1988\ResponsiveImages\Service\ImageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @covers \Codemonkey1988\ResponsiveImages\Service\ImageService
+ */
 class ImageServiceTest extends UnitTestCase
 {
     /**

@@ -14,6 +14,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @covers \Codemonkey1988\ResponsiveImages\Service\ConfigurationService
+ */
 class ConfigurationServiceTest extends UnitTestCase
 {
     /**

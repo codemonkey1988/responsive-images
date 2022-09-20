@@ -17,7 +17,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * Test class for \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
+ * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
  */
 class LoadRegisterViewHelperTest extends UnitTestCase
 {

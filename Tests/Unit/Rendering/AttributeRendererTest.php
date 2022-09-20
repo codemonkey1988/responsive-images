@@ -18,6 +18,9 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @covers \Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer
+ */
 class AttributeRendererTest extends UnitTestCase
 {
     protected MockObject $imageServiceMock;
