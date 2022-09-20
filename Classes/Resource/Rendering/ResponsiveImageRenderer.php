@@ -15,7 +15,7 @@ use Codemonkey1988\ResponsiveImages\Resource\Service\ImageService;
 use Codemonkey1988\ResponsiveImages\Resource\Variant\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureImageVariant;
 use Codemonkey1988\ResponsiveImages\Resource\Variant\PictureVariantsRegistry;
-use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
+use Codemonkey1988\ResponsiveImages\Service\ConfigurationService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +33,36 @@ class ResponsiveImageRenderer implements FileRendererInterface
     const OPTIONS_IMAGE_RELATIVE_WIDTH_KEY = 'relativeScalingWidth';
 
     /**
+     * @var ConfigurationService
+     */
+    protected ConfigurationService $configurationService;
+
+    /**
+     * @var EnvironmentService
+     */
+    protected EnvironmentService $environmentService;
+
+    /**
+     * @var ImageService
+     */
+    protected ImageService $imageService;
+
+    /**
+     * @param ConfigurationService $configurationService
+     * @param EnvironmentService $environmentService
+     * @param ImageService $imageService
+     */
+    public function __construct(
+        ConfigurationService $configurationService,
+        EnvironmentService $environmentService,
+        ImageService $imageService
+    ) {
+        $this->configurationService = $configurationService;
+        $this->environmentService = $environmentService;
+        $this->imageService = $imageService;
+    }
+
+    /**
      * @return int
      */
     public function getPriority(): int
@@ -46,16 +76,13 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file): bool
     {
-        /** @var EnvironmentService $environmentService */
-        $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
-        $enabled = ConfigurationUtility::isEnabled();
         try {
             $config = $this->getConfig();
         } catch (NoSuchVariantException $e) {
             return false;
         }
-        return $enabled
-            && $environmentService->isEnvironmentInFrontendMode()
+        return $this->configurationService->isEnabled()
+            && $this->environmentService->isEnvironmentInFrontendMode()
             && in_array($file->getMimeType(), $config->getMimeTypes());
     }
 
@@ -133,8 +160,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     protected function isAnimatedGif(FileInterface $file): bool
     {
-        /** @var ImageService $imageService */
-        $imageService = GeneralUtility::makeInstance(ImageService::class);
-        return $imageService->isAnimatedGif($file);
+        return $this->imageService->isAnimatedGif($file);
     }
 }

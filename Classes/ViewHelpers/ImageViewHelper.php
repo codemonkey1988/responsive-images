@@ -11,9 +11,10 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\ViewHelpers;
 
-use Codemonkey1988\ResponsiveImages\Utility\ConfigurationUtility;
+use Codemonkey1988\ResponsiveImages\Service\ConfigurationService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper as BaseImageViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -72,7 +73,7 @@ class ImageViewHelper extends BaseImageViewHelper
                     'maxHeight' => $this->arguments['maxHeight'],
                     'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
                     'additionalParameters' => $this->generateAdditionalProcessingParameters(),
-                    'skipProcessing' => !ConfigurationUtility::isProcessingEnabled(),
+                    'skipProcessing' => !$this->isProcessingEnabled(),
                 ];
                 if (!empty($this->arguments['fileExtension'] ?? '')) {
                     $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
@@ -129,5 +130,15 @@ class ImageViewHelper extends BaseImageViewHelper
         }
 
         return $additionalParameters;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isProcessingEnabled(): bool
+    {
+        /** @var ConfigurationService $configurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        return $configurationService->isProcessingEnabled();
     }
 }

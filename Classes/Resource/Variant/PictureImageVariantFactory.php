@@ -47,8 +47,7 @@ class PictureImageVariantFactory
 
         try {
             $typoScript = $configurationManager->getConfiguration(
-                ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
-                'responsive_images'
+                ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $this->settings = $typoScript['plugin.']['tx_responsiveimages.']['settings.']['configuration.'] ?? [];
         } catch (InvalidConfigurationTypeException $e) {
