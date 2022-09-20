@@ -55,6 +55,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('image', 'object', 'A FAL image object', true);
         $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.', false);
         $this->registerArgument('cropVariantKey', 'string', 'Use the given crop variant for srcset rendering.', false, 'default');
+        $this->registerArgument('media', 'string', 'Value for the media attribute (overwrites media value from variant config)', false);
     }
 
     /**
@@ -65,6 +66,9 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     {
         $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
         $media = $variant->getConfig()['media'] ?? '';
+        if (is_string($this->arguments['media']) && $this->arguments['media'] !== '') {
+            $media = $this->arguments['media'];
+        }
         $sizes = $this->attributeRenderer->renderSizes($variant);
         /** @var File $image */
         $image = $this->arguments['image'];
