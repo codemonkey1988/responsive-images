@@ -2,6 +2,7 @@ plugin.tx_responsiveimages.settings.configuration {
     default {
         defaultWidth = 1920
         defaultHeight =
+        mimeTypes = image/jpeg,image/gif,image/png
         sources {
             smartphone {
                 media = (max-width: 40em)

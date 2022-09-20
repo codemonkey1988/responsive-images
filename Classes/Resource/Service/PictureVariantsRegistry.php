@@ -95,63 +95,7 @@ class PictureVariantsRegistry implements SingletonInterface
         }
 
         foreach ($plainConfig as $key => $imageVariantConfig) {
-            $this->configs[$key] = self::generateImageVariantFromTypoScript($key, $imageVariantConfig);
+            $this->configs[$key] = GeneralUtility::makeInstance(PictureImageVariant::class, $key, $imageVariantConfig);
         }
-    }
-
-    /**
-     * @param string $key
-     * @param array $config
-     * @return PictureImageVariant
-     */
-    protected static function generateImageVariantFromTypoScript(string $key, array $config): PictureImageVariant
-    {
-        $imageVariant = GeneralUtility::makeInstance(PictureImageVariant::class, $key);
-
-        if (!empty($config['defaultWidth'])) {
-            $imageVariant->setDefaultWidth($config['defaultWidth']);
-        }
-        if (!empty($config['defaultHeight'])) {
-            $imageVariant->setDefaultHeight($config['defaultHeight']);
-        }
-
-        if (!empty($config['sources']) && is_array($config['sources'])) {
-            foreach ($config['sources'] as $source) {
-                list($media, $sourceConfigs, $croppingVariantKey) = self::generateSourceConfigForImageVariant($source);
-
-                if ($media && $sourceConfigs) {
-                    $imageVariant->addSourceConfig($media, $sourceConfigs, $croppingVariantKey);
-                }
-            }
-        }
-
-        return $imageVariant;
-    }
-
-    /**
-     * @param array $source
-     * @return array
-     */
-    protected static function generateSourceConfigForImageVariant(array $source): array
-    {
-        $sourceConfig = [
-            0 => '',
-            1 => [],
-            2 => 'default',
-        ];
-
-        if (empty($source['media']) || empty($source['sizes'])) {
-            return $sourceConfig;
-        }
-
-        $sourceConfig[0] = $source['media'];
-        foreach ($source['sizes'] as $density => $imageConfig) {
-            $sourceConfig[1][$density] = $imageConfig;
-        }
-        if (!empty($source['croppingVariantKey'])) {
-            $sourceConfig[2] = $source['croppingVariantKey'];
-        }
-
-        return $sourceConfig;
     }
 }

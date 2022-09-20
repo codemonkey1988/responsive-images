@@ -26,7 +26,7 @@ class PictureImageVariantTest extends UnitTestCase
     public function settingDefaultWidthWillWork()
     {
         /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant = new PictureImageVariant('test', []);
         $pictureImageVariant->setDefaultWidth('2000');
 
         self::assertEquals('2000', $pictureImageVariant->getDefaultWidth());
@@ -40,7 +40,7 @@ class PictureImageVariantTest extends UnitTestCase
     public function settingDefaultHeightWillWork()
     {
         /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant = new PictureImageVariant('test', []);
         $pictureImageVariant->setDefaultHeight('700');
 
         self::assertEquals('700', $pictureImageVariant->getDefaultHeight());
@@ -67,7 +67,7 @@ class PictureImageVariantTest extends UnitTestCase
         ];
 
         /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant = new PictureImageVariant('test', []);
         $pictureImageVariant->addSourceConfig($media, $srcsets);
 
         self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
@@ -105,7 +105,7 @@ class PictureImageVariantTest extends UnitTestCase
         ];
 
         /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant = new PictureImageVariant('test', []);
         $pictureImageVariant->addSourceConfig($media1, $srcset1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2);
 
@@ -135,7 +135,7 @@ class PictureImageVariantTest extends UnitTestCase
         ];
 
         /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant = new PictureImageVariant('test', []);
         $pictureImageVariant->addSourceConfig($media, $srcsets, $croppingVariantKey);
 
         self::assertTrue(is_array($pictureImageVariant->getAllSourceConfig()));
@@ -175,7 +175,7 @@ class PictureImageVariantTest extends UnitTestCase
         ];
 
         /** @var PictureImageVariant|MockObject $pictureImageVariant */
-        $pictureImageVariant = $this->getAccessibleMock(PictureImageVariant::class, ['__construct'], ['test']);
+        $pictureImageVariant = new PictureImageVariant('test', []);
         $pictureImageVariant->addSourceConfig($media1, $srcset1, $croppingVariantKey1);
         $pictureImageVariant->addSourceConfig($media2, $srcset2, $croppingVariantKey2);
 

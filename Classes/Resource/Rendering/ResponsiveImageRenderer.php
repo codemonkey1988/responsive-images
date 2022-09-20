@@ -45,16 +45,15 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file): bool
     {
-        /** @var EnvironmentService $evironmentService */
-        $evironmentService = GeneralUtility::makeInstance(EnvironmentService::class);
-        $registry = PictureVariantsRegistry::getInstance();
-        $supportedMimeTypes = ConfigurationUtility::getExtensionConfig()['supportedMimeTypes'];
-
+        /** @var EnvironmentService $environmentService */
+        $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $enabled = ConfigurationUtility::isEnabled();
+        $config = $this->getConfig();
 
-        return $enabled && $evironmentService->isEnvironmentInFrontendMode()
-            && $registry->imageVariantKeyExists(self::DEFAULT_IMAGE_VARIANT_KEY)
-            && GeneralUtility::inList($supportedMimeTypes, $file->getMimeType());
+        return $enabled
+            && $config !== null
+            && $environmentService->isEnvironmentInFrontendMode()
+            && in_array($file->getMimeType(), $config->getMimeTypes());
     }
 
     /**
@@ -92,6 +91,7 @@ class ResponsiveImageRenderer implements FileRendererInterface
      */
     protected function initializeView(): StandaloneView
     {
+        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class, $GLOBALS['TSFE']->cObj);
 
         if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_responsiveimages.']['view.'])) {
@@ -104,9 +104,9 @@ class ResponsiveImageRenderer implements FileRendererInterface
     }
 
     /**
-     * @return PictureImageVariant
+     * @return PictureImageVariant|null
      */
-    protected function getConfig(): PictureImageVariant
+    protected function getConfig(): ?PictureImageVariant
     {
         $imageVarientConfigKey = self::DEFAULT_IMAGE_VARIANT_KEY;
         $registry = PictureVariantsRegistry::getInstance();
