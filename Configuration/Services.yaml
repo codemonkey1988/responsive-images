@@ -1,0 +1,6 @@
+services:
+  Codemonkey1988\ResponsiveImages\EventListener\SkipImageProcessing:
+    tags:
+      - name: event.listener
+        identifier: 'skipImageProcessing'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent
