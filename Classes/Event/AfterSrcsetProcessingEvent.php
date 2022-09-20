@@ -18,29 +18,18 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 final class AfterSrcsetProcessingEvent implements StoppableEventInterface
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected array $srcset;
 
-    /**
-     * @var FileInterface
-     */
     protected FileInterface $image;
 
-    /**
-     * @var Variant
-     */
     protected Variant $variant;
 
-    /**
-     * @var bool
-     */
     private bool $stopRendering = false;
 
     /**
-     * @param array $srcset
-     * @param FileInterface $image
-     * @param Variant $variant
+     * @param array<string, string> $srcset
      */
     public function __construct(
         array $srcset,
@@ -53,7 +42,7 @@ final class AfterSrcsetProcessingEvent implements StoppableEventInterface
     }
 
     /**
-     * @param array $srcset
+     * @param array<string, string> $srcset
      */
     public function setSrcset(array $srcset): void
     {
@@ -61,24 +50,18 @@ final class AfterSrcsetProcessingEvent implements StoppableEventInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getSrcset(): array
     {
         return $this->srcset;
     }
 
-    /**
-     * @return FileInterface
-     */
     public function getImage(): FileInterface
     {
         return $this->image;
     }
 
-    /**
-     * @return Variant
-     */
     public function getVariant(): Variant
     {
         return $this->variant;
@@ -92,9 +75,6 @@ final class AfterSrcsetProcessingEvent implements StoppableEventInterface
         return $this->stopRendering;
     }
 
-    /**
-     * @param bool $stopRendering
-     */
     public function setStopRendering(bool $stopRendering): void
     {
         $this->stopRendering = $stopRendering;

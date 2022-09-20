@@ -133,7 +133,7 @@ class PictureImageConfiguration extends Variant
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getMimeTypes(): array
     {
@@ -141,8 +141,7 @@ class PictureImageConfiguration extends Variant
     }
 
     /**
-     * @param array $mimeTypes
-     * @return Variant
+     * @param string[] $mimeTypes
      */
     public function setMimeTypes(array $mimeTypes): self
     {

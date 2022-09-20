@@ -64,7 +64,7 @@ class LoadRegisterViewHelperTest extends UnitTestCase
             'key' => 'TEST_VARIABLE',
             'value' => 'Some value',
         ];
-        $closure = \Closure::bind(static function() {
+        $closure = \Closure::bind(static function () {
             return '';
         }, null);
         self::assertArrayNotHasKey('TEST_VARIABLE', $GLOBALS['TSFE']->register);
@@ -81,7 +81,7 @@ class LoadRegisterViewHelperTest extends UnitTestCase
             'key' => 'TEST_VARIABLE',
             'value' => 'Some value',
         ];
-        $closure = \Closure::bind(static function() {
+        $closure = \Closure::bind(static function () {
             UnitTestCase::assertSame('Some value', $GLOBALS['TSFE']->register['TEST_VARIABLE']);
             return '<content>';
         }, null);
@@ -99,7 +99,7 @@ class LoadRegisterViewHelperTest extends UnitTestCase
             'key' => 'TEST_VARIABLE',
             'value' => 'Some value',
         ];
-        $closure = \Closure::bind(static function() {
+        $closure = \Closure::bind(static function () {
             return '<content>';
         }, null);
         $renderedContent = LoadRegisterViewHelper::renderStatic($arguments, $closure, $this->renderingContext);

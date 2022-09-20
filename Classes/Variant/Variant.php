@@ -13,24 +13,42 @@ namespace Codemonkey1988\ResponsiveImages\Variant;
 
 /**
  * Class to store configuration for different picture tag configurations.
+ *
+ * @phpstan-type TConfig array{
+ *     type?: string,
+ *     media?: string,
+ *     absolute?: string,
+ *     'srcset.'?: array<string, array{
+ *         prefix?: string,
+ *     }>,
+ *     'sizes.'?: array<string, array{
+ *         assumedImageWidth?: string,
+ *         viewportMediaCondition?: string,
+ *     }>,
+ *     'providedImageSizes.'?: array<string, array{
+ *         width?: string|null,
+ *         height?: string|null,
+ *         minWidth?: string|null,
+ *         minHeight?: string|null,
+ *         maxWidth?: string|null,
+ *         maxHeight?: string|null,
+ *         quality?: string|null
+ *     }>
+ * }
  */
 class Variant
 {
-    /**
-     * @var string
-     */
     protected string $key;
 
     /**
-     * @var array
+     * @var TConfig
      */
     protected array $config;
 
     /**
      * PictureImageVariant constructor.
      *
-     * @param string $key
-     * @param array $config
+     * @param TConfig $config
      */
     public function __construct(string $key, array $config)
     {
@@ -38,16 +56,13 @@ class Variant
         $this->config = $config;
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
     /**
-     * @return array
+     * @return TConfig
      */
     public function getConfig(): array
     {

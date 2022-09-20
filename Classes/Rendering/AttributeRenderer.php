@@ -16,27 +16,30 @@ use Codemonkey1988\ResponsiveImages\Event\BeforeSrcsetProcessingEvent;
 use Codemonkey1988\ResponsiveImages\Exception;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 
+/**
+ * @phpstan-type TProcessingInstructions array{
+ *     width: string|int|null,
+ *     height: string|int|null,
+ *     minWidth: string|int|null,
+ *     minHeight: string|int|null,
+ *     maxWidth: string|int|null,
+ *     maxHeight: string|int|null,
+ *     crop: Area|null,
+ *     additionalParameters?: string
+ * }
+ */
 class AttributeRenderer
 {
-    /**
-     * @var ImageService
-     */
     protected ImageService $imageService;
 
-    /**
-     * @var EventDispatcherInterface
-     */
     protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @param ImageService $imageService
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(ImageService $imageService, EventDispatcherInterface $eventDispatcher)
     {
         $this->imageService = $imageService;
@@ -44,10 +47,6 @@ class AttributeRenderer
     }
 
     /**
-     * @param FileInterface $image
-     * @param Variant $variant
-     * @param string $cropVariant
-     * @return string
      * @throws Exception
      */
     public function renderSrcset(FileInterface $image, Variant $variant, string $cropVariant = 'default'): string
@@ -64,7 +63,7 @@ class AttributeRenderer
             $imageUri = $this->imageService->getImageUri($processedImage, (bool)($variant->getConfig()['absolute'] ?? false));
             $prefix = $processedImage->getProperty('width') . 'w';
             if (isset($variant->getConfig()['srcset.'][$key . '.']['prefix'])) {
-                $prefix = isset($variant->getConfig()['srcset.'][$key . '.']['prefix']);
+                $prefix = $variant->getConfig()['srcset.'][$key . '.']['prefix'];
             }
             $srcset[$key] = sprintf('%s %s', $imageUri, $prefix);
         }
@@ -77,8 +76,6 @@ class AttributeRenderer
     }
 
     /**
-     * @param Variant $variant
-     * @return string
      * @throws Exception
      */
     public function renderSizes(Variant $variant): string
@@ -109,10 +106,7 @@ class AttributeRenderer
     }
 
     /**
-     * @param FileInterface $image
-     * @param Variant $variant
-     * @param string $cropVariant
-     * @return array
+     * @return array<string, TProcessingInstructions>
      * @throws Exception
      */
     protected function buildProcessingInstructions(FileInterface $image, Variant $variant, string $cropVariant): array
@@ -141,7 +135,7 @@ class AttributeRenderer
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
             ];
             if (array_key_exists('quality', $srcset) && MathUtility::canBeInterpretedAsInteger($srcset['quality'])) {
-                $processingInstructions['additionalParameters'] = ' -quality ' . $srcset['quality'];
+                $processingInstructions[$key]['additionalParameters'] = ' -quality ' . $srcset['quality'];
             }
         }
         ksort($processingInstructions);

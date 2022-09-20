@@ -20,6 +20,11 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
  * Class to store configuration for different picture tag configurations.
+ *
+ * @phpstan-type Settings array{
+ *     'variants.'?: array<string, mixed>,
+ *     'configuration.'?: array<string, mixed>
+ * }
  */
 class VariantFactory implements LoggerAwareInterface
 {
@@ -29,19 +34,16 @@ class VariantFactory implements LoggerAwareInterface
     const REGISTER_IMAGE_VARIANT_KEY = 'IMAGE_VARIANT_KEY';
 
     /**
-     * @var array
+     * @var array<string, Variant>
      */
     protected array $variants = [];
 
     /**
-     * @var array
+     * @var array<string, PictureImageConfiguration>
      * @deprecated
      */
     protected array $configuration = [];
 
-    /**
-     * @param ConfigurationManager $configurationManager
-     */
     public function __construct(ConfigurationManager $configurationManager)
     {
         try {
@@ -57,10 +59,6 @@ class VariantFactory implements LoggerAwareInterface
         $this->buildConfiguration($settings);
     }
 
-    /**
-     * @param string $key
-     * @return bool
-     */
     public function has(string $key): bool
     {
         try {
@@ -72,8 +70,6 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @param string|null $key
-     * @return Variant
      * @throws NoSuchVariantException
      */
     public function get(?string $key = null): Variant
@@ -83,7 +79,9 @@ class VariantFactory implements LoggerAwareInterface
         }
 
         if (array_key_exists($key, $this->configuration)) {
-            $this->logger->info('Using deprecated configuration with key "' . $key . '".');
+            if ($this->logger !== null) {
+                $this->logger->info('Using deprecated configuration with key "' . $key . '".');
+            }
             return $this->configuration[$key];
         }
         if (array_key_exists($key, $this->variants)) {
@@ -94,7 +92,6 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @param PictureImageConfiguration $configuration
      * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
      */
     public function addConfiguration(PictureImageConfiguration $configuration): void
@@ -107,8 +104,6 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @param string $key
-     * @return bool
      * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
      */
     public function hasConfiguration(string $key): bool
@@ -121,8 +116,6 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @param string $key
-     * @return PictureImageConfiguration|null
      * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
      */
     public function getConfiguration(string $key): ?PictureImageConfiguration
@@ -139,7 +132,7 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @return array
+     * @return array<string, PictureImageConfiguration>
      * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
      */
     public function getAllConfiguration(): array
@@ -152,7 +145,6 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @param string $key
      * @deprecated This method will be removed in 4.0. Please use variants and register them using TypoScript.
      */
     public function removeConfiguration(string $key): void
@@ -179,7 +171,7 @@ class VariantFactory implements LoggerAwareInterface
     }
 
     /**
-     * @param array $settings
+     * @param Settings $settings
      */
     protected function buildVariants(array $settings): void
     {
@@ -197,7 +189,7 @@ class VariantFactory implements LoggerAwareInterface
 
     /**
      * @deprecated Using configurations for responsive_images is deprecated. Use settings.variants instea
-     * @param array $settings
+     * @param Settings $settings
      */
     protected function buildConfiguration(array $settings): void
     {
@@ -213,9 +205,6 @@ class VariantFactory implements LoggerAwareInterface
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getKeyFromRegistry(): string
     {
         $key = self::DEFAULT_IMAGE_VARIANT_KEY;

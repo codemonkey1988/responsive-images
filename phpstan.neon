@@ -1,0 +1,20 @@
+parameters:
+  level: 8
+  paths:
+    - Classes
+    - Configuration
+    - Tests
+    - ext_emconf.php
+    - ext_localconf.php
+  excludePaths:
+    analyseAndScan:
+      - Classes/Rendering/ResponsiveImageRenderer.php
+      - Classes/Variant/PictureImageConfiguration.php
+      - Classes/Variant/PictureImageConfigurationRegistry.php
+      - Classes/ViewHelpers/RemoveNewLineViewHelper.php
+      - Classes/ViewHelpers/Uri/ImageViewHelper.php
+      - Tests/*
+
+
+includes:
+	- .Build/vendor/saschaegerer/phpstan-typo3/extension.neon

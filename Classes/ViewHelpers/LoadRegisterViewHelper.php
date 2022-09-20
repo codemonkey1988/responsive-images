@@ -27,7 +27,7 @@ class LoadRegisterViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -45,6 +45,12 @@ class LoadRegisterViewHelper extends AbstractViewHelper
         );
     }
 
+    /**
+     * @param array{
+     *     key: string,
+     *     value: string
+     * } $arguments
+     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,

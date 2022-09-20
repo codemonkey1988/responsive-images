@@ -17,6 +17,8 @@ use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Variant\PictureImageConfiguration;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,11 +42,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
     protected ConfigurationService $configurationService;
 
     /**
-     * @var EnvironmentService
-     */
-    protected EnvironmentService $environmentService;
-
-    /**
      * @var ImageService
      */
     protected ImageService $imageService;
@@ -56,34 +53,24 @@ class ResponsiveImageRenderer implements FileRendererInterface
 
     /**
      * @param ConfigurationService $configurationService
-     * @param EnvironmentService $environmentService
      * @param ImageService $imageService
      * @param VariantFactory $variantFactory
      */
     public function __construct(
         ConfigurationService $configurationService,
-        EnvironmentService $environmentService,
         ImageService $imageService,
         VariantFactory $variantFactory
     ) {
         $this->configurationService = $configurationService;
-        $this->environmentService = $environmentService;
         $this->imageService = $imageService;
         $this->variantFactory = $variantFactory;
     }
 
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return 5;
     }
 
-    /**
-     * @param FileInterface $file
-     * @return bool
-     */
     public function canRender(FileInterface $file): bool
     {
         try {
@@ -91,20 +78,29 @@ class ResponsiveImageRenderer implements FileRendererInterface
         } catch (NoSuchVariantException $e) {
             return false;
         }
+
+        if (version_compare(TYPO3_branch, '10.4', '==')) {
+            $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
+            return $this->configurationService->isEnabled()
+                && $environmentService->isEnvironmentInFrontendMode()
+                && in_array($file->getMimeType(), $config->getMimeTypes());
+        }
+
+        $isFrontendRequest = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+
         return $this->configurationService->isEnabled()
-            && $this->environmentService->isEnvironmentInFrontendMode()
+            && $isFrontendRequest
             && in_array($file->getMimeType(), $config->getMimeTypes());
     }
 
     /**
      * Renders a responsive image tag.
      *
-     * @param FileInterface $file
      * @param int|string $width
      * @param int|string $height
      * @param array $options
      * @param bool $usedPathsRelativeToCurrentScript
-     * @return string
      */
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false): string
     {
@@ -129,9 +125,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
         return $view->render('pictureTag');
     }
 
-    /**
-     * @return StandaloneView
-     */
     protected function initializeView(): StandaloneView
     {
         /** @var StandaloneView $view */
@@ -173,10 +166,6 @@ class ResponsiveImageRenderer implements FileRendererInterface
         return $variant;
     }
 
-    /**
-     * @param FileInterface $file
-     * @return bool
-     */
     protected function isAnimatedGif(FileInterface $file): bool
     {
         return $this->imageService->isAnimatedGif($file);

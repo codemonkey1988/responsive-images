@@ -17,13 +17,10 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 class ConfigurationService
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $settings;
 
-    /**
-     * @param ConfigurationManager $configurationManager
-     */
     public function __construct(ConfigurationManager $configurationManager)
     {
         try {
@@ -36,9 +33,6 @@ class ConfigurationService
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         if (isset($this->settings['enabled'])) {
@@ -47,9 +41,6 @@ class ConfigurationService
         return  true;
     }
 
-    /**
-     * @return bool
-     */
     public function isProcessingEnabled(): bool
     {
         if (isset($this->settings['processing'])) {

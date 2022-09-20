@@ -45,10 +45,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->attributeRenderer = $attributeRenderer;
     }
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -60,13 +57,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * @throws Exception|NoSuchVariantException
-     * @return string Rendered tag
      */
-    public function render()
+    public function render(): string
     {
         $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
         $media = $variant->getConfig()['media'] ?? '';
-        if (is_string($this->arguments['media']) && $this->arguments['media'] !== '') {
+        if (is_string($this->arguments['media'] ?? false) && $this->arguments['media'] !== '') {
             $media = $this->arguments['media'];
         }
         $sizes = $this->attributeRenderer->renderSizes($variant);
@@ -80,7 +76,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('srcset', $this->attributeRenderer->renderSrcset(
             $image,
             $variant,
-            $this->arguments['cropVariantKey']
+            $this->arguments['cropVariantKey'] ?? ''
         ));
         if (strlen($media) > 0) {
             $this->tag->addAttribute('media', $media);

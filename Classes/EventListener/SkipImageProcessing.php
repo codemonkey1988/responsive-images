@@ -16,22 +16,13 @@ use TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent;
 
 class SkipImageProcessing
 {
-    /**
-     * @var ConfigurationService
-     */
     protected ConfigurationService $configurationService;
 
-    /**
-     * @param ConfigurationService $configurationService
-     */
     public function __construct(ConfigurationService $configurationService)
     {
         $this->configurationService = $configurationService;
     }
 
-    /**
-     * @param BeforeFileProcessingEvent $event
-     */
     public function __invoke(BeforeFileProcessingEvent $event): void
     {
         if (!$this->configurationService->isProcessingEnabled()) {

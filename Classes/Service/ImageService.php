@@ -21,25 +21,27 @@ class ImageService
     /**
      * Checks if the given file is an aniamted gif.
      * See https://secure.php.net/manual/en/function.imagecreatefromgif.php#59787
-     *
-     * @param FileInterface $file
-     * @return bool
      */
     public function isAnimatedGif(FileInterface $file): bool
     {
         if ($file->getMimeType() === 'image/gif') {
-            $filecontents = $file->getContents();
+            $fileContent = file_get_contents($file->getForLocalProcessing());
+
+            if ($fileContent === false) {
+                return false;
+            }
+
             $strLoc = 0;
             $count = 0;
 
             // There is no point in continuing after we find a 2nd frame
             while ($count < 2) {
-                $where1 = strpos($filecontents, "\x00\x21\xF9\x04", $strLoc);
+                $where1 = strpos($fileContent, "\x00\x21\xF9\x04", $strLoc);
                 if ($where1 === false) {
                     break;
                 }
                 $strLoc = $where1 + 1;
-                $where2 = strpos($filecontents, "\x00\x2C", $strLoc);
+                $where2 = strpos($fileContent, "\x00\x2C", $strLoc);
                 if ($where2 === false) {
                     break;
                 }

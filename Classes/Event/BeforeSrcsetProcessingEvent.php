@@ -11,42 +11,31 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Event;
 
+use Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
 
+/**
+ * @phpstan-import-type TProcessingInstructions from AttributeRenderer
+ */
 final class BeforeSrcsetProcessingEvent implements StoppableEventInterface
 {
     /**
-     * @var array
+     * @var array<string, TProcessingInstructions>
      */
     protected array $processingInstructions;
 
-    /**
-     * @var FileInterface
-     */
     protected FileInterface $image;
 
-    /**
-     * @var Variant
-     */
     protected Variant $variant;
 
-    /**
-     * @var string
-     */
     protected string $cropVariant;
 
-    /**
-     * @var bool
-     */
     private bool $stopRendering = false;
 
     /**
-     * @param array $processingInstructions
-     * @param FileInterface $image
-     * @param Variant $variant
-     * @param string $cropVariant
+     * @param array<string, TProcessingInstructions> $processingInstructions
      */
     public function __construct(
         array $processingInstructions,
@@ -61,7 +50,7 @@ final class BeforeSrcsetProcessingEvent implements StoppableEventInterface
     }
 
     /**
-     * @param array $processingInstructions
+     * @param array<string, TProcessingInstructions> $processingInstructions
      */
     public function setProcessingInstructions(array $processingInstructions): void
     {
@@ -69,32 +58,23 @@ final class BeforeSrcsetProcessingEvent implements StoppableEventInterface
     }
 
     /**
-     * @return array
+     * @return array<string, TProcessingInstructions>
      */
     public function getProcessingInstructions(): array
     {
         return $this->processingInstructions;
     }
 
-    /**
-     * @return FileInterface
-     */
     public function getImage(): FileInterface
     {
         return $this->image;
     }
 
-    /**
-     * @return Variant
-     */
     public function getVariant(): Variant
     {
         return $this->variant;
     }
 
-    /**
-     * @return string
-     */
     public function getCropVariant(): string
     {
         return $this->cropVariant;
@@ -108,9 +88,6 @@ final class BeforeSrcsetProcessingEvent implements StoppableEventInterface
         return $this->stopRendering;
     }
 
-    /**
-     * @param bool $stopRendering
-     */
     public function setStopRendering(bool $stopRendering): void
     {
         $this->stopRendering = $stopRendering;

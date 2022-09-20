@@ -21,18 +21,11 @@ use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper as BaseImageViewHelper;
 
 class ImageViewHelper extends BaseImageViewHelper
 {
-    /**
-     * @var VariantFactory
-     */
     protected VariantFactory $variantFactory;
 
-    /**
-     * @var AttributeRenderer
-     */
     protected AttributeRenderer $attributeRenderer;
 
     /**
-     * @param VariantFactory $variantFactory
      * @required
      */
     public function setVariantFactory(VariantFactory $variantFactory): void
@@ -41,7 +34,6 @@ class ImageViewHelper extends BaseImageViewHelper
     }
 
     /**
-     * @param AttributeRenderer $attributeRenderer
      * @required
      */
     public function setAttributeRenderer(AttributeRenderer $attributeRenderer): void
@@ -49,18 +41,15 @@ class ImageViewHelper extends BaseImageViewHelper
         $this->attributeRenderer = $attributeRenderer;
     }
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg (deprecated)', false);
-        $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale? (deprecated)', false);
-        $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.', false);
+        $this->registerTagAttribute('quality', 'int', 'Specifies the image quality for jpeg (deprecated)');
+        $this->registerTagAttribute('greyscale', 'bool', 'Should be image be rendered as greyscale? (deprecated)');
+        $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.');
     }
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -84,11 +73,11 @@ class ImageViewHelper extends BaseImageViewHelper
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
      *
      * @throws Exception|NoSuchVariantException
-     * @return string Rendered tag
      */
-    public function render()
+    public function render(): string
     {
         $src = (string)$this->arguments['src'];
+        $cropVariant = 'default';
         if (($src === '' && $this->arguments['image'] === null) || ($src !== '' && $this->arguments['image'] !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1382284106);
         }
@@ -131,7 +120,7 @@ class ImageViewHelper extends BaseImageViewHelper
                 if (!$this->tag->hasAttribute('data-focus-area')) {
                     $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
                     if (!$focusArea->isEmpty()) {
-                        $this->tag->addAttribute('data-focus-area', $focusArea->makeAbsoluteBasedOnFile($image));
+                        $this->tag->addAttribute('data-focus-area', $focusArea->makeAbsoluteBasedOnFile($image)->asArray());
                     }
                 }
                 $this->tag->addAttribute('src', $imageUri);
@@ -162,14 +151,16 @@ class ImageViewHelper extends BaseImageViewHelper
             }
         }
 
-        $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
-        $srcset = $this->attributeRenderer->renderSrcset($image, $variant, $cropVariant);
-        $sizes = $this->attributeRenderer->renderSizes($variant);
-        if (strlen($srcset) > 0) {
-            $this->tag->addAttribute('srcset', $srcset);
-        }
-        if (strlen($sizes) > 0) {
-            $this->tag->addAttribute('sizes', $sizes);
+        if (isset($image)) {
+            $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
+            $srcset = $this->attributeRenderer->renderSrcset($image, $variant, $cropVariant);
+            $sizes = $this->attributeRenderer->renderSizes($variant);
+            if (strlen($srcset) > 0) {
+                $this->tag->addAttribute('srcset', $srcset);
+            }
+            if (strlen($sizes) > 0) {
+                $this->tag->addAttribute('sizes', $sizes);
+            }
         }
 
         return $this->tag->render();

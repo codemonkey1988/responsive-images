@@ -12,7 +12,6 @@ if (!defined('TYPO3_MODE')) {
 }
 
 call_user_func(function () {
-    /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
-    $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
+    $rendererRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);
     $rendererRegistry->registerRendererClass(\Codemonkey1988\ResponsiveImages\Rendering\ResponsiveImageRenderer::class);
 });
