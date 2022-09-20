@@ -39,24 +39,15 @@ unit-tests:
     PHP_VERSION: "7.4"
   before_script:
     - mkdir -p .composer/cache
-    - |
-      COMPOSER_CACHE_DIR=.composer/cache composer require \
-        typo3/cms-backend="$TYPO3_VERSION" \
-        typo3/cms-recordlist="$TYPO3_VERSION" \
-        typo3/cms-core="$TYPO3_VERSION" \
-        typo3/cms-extbase="$TYPO3_VERSION" \
-        typo3/cms-extensionmanager="$TYPO3_VERSION" \
-        typo3/cms-fluid="$TYPO3_VERSION" \
-        typo3/cms-frontend="$TYPO3_VERSION" \
-        typo3/cms-install="$TYPO3_VERSION"
+    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/minimal="$TYPO3_VERSION"
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - .Build/bin/phpunit --colors -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/
   parallel:
     matrix:
-      - TYPO3_VERSION: '^11.2'
+      - TYPO3_VERSION: '^11'
         PHP_VERSION: [ '7.4', '8.0' ]
-      - TYPO3_VERSION: '^10.4'
+      - TYPO3_VERSION: '^10'
         PHP_VERSION: [ '7.4' ]
   cache:
     key: composer-cache
@@ -81,25 +72,15 @@ functional-tests:
     PHP_VERSION: "7.4"
   before_script:
     - mkdir -p .composer/cache
-    - |
-      COMPOSER_CACHE_DIR=.composer/cache composer require \
-        typo3/cms-backend="$TYPO3_VERSION" \
-        typo3/cms-recordlist="$TYPO3_VERSION" \
-        typo3/cms-core="$TYPO3_VERSION" \
-        typo3/cms-extbase="$TYPO3_VERSION" \
-        typo3/cms-extensionmanager="$TYPO3_VERSION" \
-        typo3/cms-fluid="$TYPO3_VERSION" \
-        typo3/cms-frontend="$TYPO3_VERSION" \
-        typo3/cms-install="$TYPO3_VERSION"
+    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/minimal="$TYPO3_VERSION"
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
-    - docker-php-ext-install mysqli
     - .Build/bin/phpunit --colors -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/
   parallel:
     matrix:
-      - TYPO3_VERSION: '^11.2'
+      - TYPO3_VERSION: '^11'
         PHP_VERSION: [ '7.4', '8.0' ]
-      - TYPO3_VERSION: '^10.4'
+      - TYPO3_VERSION: '^10'
         PHP_VERSION: [ '7.4' ]
   cache:
     key: composer-cache

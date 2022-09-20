@@ -7,13 +7,13 @@
  * LICENSE file that was distributed with this source code.
  */
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['responsive_images'] = [
     'title' => 'Responsive Images',
     'description' => 'Adds responsive images support for many browser types to TYPO3 using the picture tag.',
     'category' => 'fe',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.99-11.2.99',
+            'typo3' => '10.4.0-1.4.99 || 11.4.0-11.4.99',
         ],
         'conflicts' => [],
     ],
