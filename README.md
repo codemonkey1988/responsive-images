@@ -13,4 +13,4 @@ on the rendering context in FE.
 2. Activate extension in extension manager
 3. Optional: Add TypoScript template *Responsive images default configuration (optional)* or *Responsive images bootstrap configuration (optional)*
 
-See full documentation at <Link to TYPO3 documentation>
+See full documentation at [https://docs.typo3.org/p/codemonkey1988/responsive-images/main/en-us/](https://docs.typo3.org/p/codemonkey1988/responsive-images/main/en-us/)
