@@ -22,5 +22,5 @@ $EM_CONF['responsive_images'] = [
     'author' => 'Tim Schreiner',
     'author_email' => 'dev@tim-schreiner.de',
     'author_company' => '',
-    'version' => '3.0.0',
+    'version' => '3.0.1',
 ];
