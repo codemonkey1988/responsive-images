@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.600408">
-    <testsuite name="Responsive Images" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.600408">
-      <testsuite name="Codemonkey1988\ResponsiveImages\Tests\Functional\Rendering\AttributeRendererTest" file="/var/www/html/Tests/Functional/Rendering/AttributeRendererTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.600408">
-        <testcase name="givenPngFileExtensionForJpegImageWillResultInPngImage" class="Codemonkey1988\ResponsiveImages\Tests\Functional\Rendering\AttributeRendererTest" classname="Codemonkey1988.ResponsiveImages.Tests.Functional.Rendering.AttributeRendererTest" file="/var/www/html/Tests/Functional/Rendering/AttributeRendererTest.php" line="46" assertions="1" time="1.600408"/>
+  <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.708309">
+    <testsuite name="Responsive Images" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.708309">
+      <testsuite name="Codemonkey1988\ResponsiveImages\Tests\Functional\Rendering\AttributeRendererTest" file="/var/www/html/Tests/Functional/Rendering/AttributeRendererTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.708309">
+        <testcase name="givenPngFileExtensionForJpegImageWillResultInPngImage" class="Codemonkey1988\ResponsiveImages\Tests\Functional\Rendering\AttributeRendererTest" classname="Codemonkey1988.ResponsiveImages.Tests.Functional.Rendering.AttributeRendererTest" file="/var/www/html/Tests/Functional/Rendering/AttributeRendererTest.php" line="46" assertions="1" time="1.708309"/>
       </testsuite>
     </testsuite>
   </testsuite>
