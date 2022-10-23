@@ -1,0 +1,45 @@
+<html data-namespace-typo3-fluid="true"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:ri="http://typo3.org/ns/Codemonkey1988/ResponsiveImages/ViewHelpers"
+>
+
+<f:if condition="{variant}">
+    <f:then>
+        <ri:loadRegister value="{variant}">
+            <f:render section="PictureTag" arguments="{_all}" />
+        </ri:loadRegister>
+    </f:then>
+    <f:else>
+        <f:render section="PictureTag" arguments="{_all}" />
+    </f:else>
+</f:if>
+
+<f:section name="PictureTag">
+    <picture>
+        <f:render section="SourceTags" arguments="{_all}" />
+        <f:image image="{image}"
+                 cropVariant="{f:if(condition: imageDefaultCropVariant, then: imageDefaultCropVariant, else: 'default')}"
+                 width="{imageWidth}"
+                 height="{imageHeight}"
+                 maxWidth="{imageMaxWidth}"
+                 maxHeight="{imageMaxHeight}"
+                 class="{imgClass}"
+                 loading="lazy"
+        />
+    </picture>
+</f:section>
+
+<f:section name="SourceTags">
+    <f:if condition="{cropVariants}">
+        <f:then>
+            <f:for each="{cropVariants}" as="media" key="cropVariant">
+                <ri:source image="{image}" cropVariantKey="{cropVariant}" media="{media}" />
+            </f:for>
+        </f:then>
+        <f:else>
+            <ri:source image="{image}" cropVariantKey="default" media="(max-width: 700px)" />
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

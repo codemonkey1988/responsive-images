@@ -1,5 +1,6 @@
 <html data-namespace-typo3-fluid="true"
       xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:ri="http://typo3.org/ns/Codemonkey1988/ResponsiveImages/ViewHelpers"
 >
 
 <f:comment><!--
@@ -23,6 +24,39 @@
    variant: <string> - optional - An existing responsive images variant key that should be used for rendering
 --></f:comment>
 
-<f:render partial="MediaTypes/Image" arguments="{_all}"/>
+<f:comment><!-- See \TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_* --></f:comment>
+<f:switch expression="{image.type}">
+    <f:case value="0">
+        <f:comment><!-- Unknown --></f:comment>
+        <f:comment><!-- No rendering defined for type "unknown" yet --></f:comment>
+    </f:case>
+    <f:case value="1">
+        <f:comment><!-- Text --></f:comment>
+        <f:comment><!-- No rendering defined for type "text" yet --></f:comment>
+    </f:case>
+    <f:case value="2">
+        <f:comment><!-- Image --></f:comment>
+        <ri:ifAnimatedGif image="{image}">
+            <f:then>
+                <f:render partial="MediaTypes/AnimatedImage" arguments="{_all}"/>
+            </f:then>
+            <f:else>
+                <f:render partial="MediaTypes/Image" arguments="{_all}"/>
+            </f:else>
+        </ri:ifAnimatedGif>
+    </f:case>
+    <f:case value="3">
+        <f:comment><!-- Audio --></f:comment>
+        <f:render partial="MediaTypes/Audio" arguments="{_all}"/>
+    </f:case>
+    <f:case value="4">
+        <f:comment><!-- Video --></f:comment>
+        <f:render partial="MediaTypes/Video" arguments="{_all}"/>
+    </f:case>
+    <f:case value="5">
+        <f:comment><!-- Application --></f:comment>
+        <f:render partial="MediaTypes/Application" arguments="{_all}"/>
+    </f:case>
+</f:switch>
 
 </html>
