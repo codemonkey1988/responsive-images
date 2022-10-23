@@ -14,11 +14,14 @@ namespace Codemonkey1988\ResponsiveImages\Rendering;
 use Codemonkey1988\ResponsiveImages\Event\AfterSrcsetProcessingEvent;
 use Codemonkey1988\ResponsiveImages\Event\BeforeSrcsetProcessingEvent;
 use Codemonkey1988\ResponsiveImages\Exception;
+use Codemonkey1988\ResponsiveImages\Exception\InvalidImageException;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 
@@ -30,12 +33,15 @@ use TYPO3\CMS\Extbase\Service\ImageService;
  *     minHeight: string|int|null,
  *     maxWidth: string|int|null,
  *     maxHeight: string|int|null,
- *     crop: Area|null,
- *     additionalParameters?: string
+ *     crop: \TYPO3\CMS\Core\Imaging\ImageManipulation\Area|null,
+ *     additionalParameters?: string,
+ *     fileExtension?: string
  * }
  */
-class AttributeRenderer
+class AttributeRenderer implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     protected ImageService $imageService;
 
     protected EventDispatcherInterface $eventDispatcher;
@@ -49,9 +55,22 @@ class AttributeRenderer
     /**
      * @throws Exception
      */
-    public function renderSrcset(FileInterface $image, Variant $variant, string $cropVariant = 'default'): string
-    {
-        $allProcessingInstructions = $this->buildProcessingInstructions($image, $variant, $cropVariant);
+    public function renderSrcset(
+        FileInterface $image,
+        Variant $variant,
+        string $cropVariant = 'default',
+        ?string $fileExtension = null
+    ): string {
+        try {
+            $this->validateFileExtension($fileExtension);
+        } catch (InvalidImageException $e) {
+            if ($this->logger !== null) {
+                $this->logger->warning(sprintf('Unable to use given file extension %s. %s', $fileExtension, $e->getMessage()));
+            }
+            $fileExtension = null;
+        }
+
+        $allProcessingInstructions = $this->buildProcessingInstructions($image, $variant, $cropVariant, $fileExtension);
         $srcset = [];
 
         $event = new BeforeSrcsetProcessingEvent($allProcessingInstructions, $image, $variant, $cropVariant);
@@ -109,8 +128,12 @@ class AttributeRenderer
      * @return array<string, TProcessingInstructions>
      * @throws Exception
      */
-    protected function buildProcessingInstructions(FileInterface $image, Variant $variant, string $cropVariant): array
-    {
+    protected function buildProcessingInstructions(
+        FileInterface $image,
+        Variant $variant,
+        string $cropVariant,
+        ?string $fileExtension
+    ): array {
         $processingInstructions = [];
 
         foreach ($variant->getConfig()['providedImageSizes.'] ?? [] as $key => $srcset) {
@@ -134,9 +157,23 @@ class AttributeRenderer
                 'maxHeight' => $srcset['maxHeight'] ?? null,
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
             ];
+
+            if ($fileExtension !== null) {
+                $processingInstructions[$key]['fileExtension'] = $fileExtension;
+            }
         }
         ksort($processingInstructions);
 
         return $processingInstructions;
+    }
+
+    /**
+     * @throws InvalidImageException
+     */
+    private function validateFileExtension(?string $fileExtension): void
+    {
+        if (is_string($fileExtension) && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
+            throw new InvalidImageException('', 1666529839, null, $fileExtension);
+        }
     }
 }

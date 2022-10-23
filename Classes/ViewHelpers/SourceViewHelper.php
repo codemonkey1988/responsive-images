@@ -50,9 +50,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument('image', 'object', 'A FAL image object', true);
-        $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.', false);
+        $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.');
         $this->registerArgument('cropVariantKey', 'string', 'Use the given crop variant for srcset rendering.', false, 'default');
-        $this->registerArgument('media', 'string', 'Value for the media attribute (overwrites media value from variant config)', false);
+        $this->registerArgument('media', 'string', 'Value for the media attribute (overwrites media value from variant config)');
+        $this->registerArgument('fileExtension', 'string', 'The target file extension - only works with image extensions');
     }
 
     /**
@@ -76,7 +77,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('srcset', $this->attributeRenderer->renderSrcset(
             $image,
             $variant,
-            $this->arguments['cropVariantKey'] ?? ''
+            $this->arguments['cropVariantKey'] ?? '',
+            $this->arguments['fileExtension'] ?? null
         ));
         if (strlen($media) > 0) {
             $this->tag->addAttribute('media', $media);
