@@ -96,6 +96,57 @@ unit-tests:
         coverage_format: cobertura
         path: build/reports/cobertura-unit.xml
 
+functional-tests:
+  stage: test
+  except:
+    - master
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
+  services:
+    - mysql:8.0
+  variables:
+    MYSQL_ROOT_PASSWORD: root
+    typo3DatabaseHost: mysql
+    typo3DatabaseUsername: root
+    typo3DatabasePassword: $MYSQL_ROOT_PASSWORD
+    typo3DatabaseName: typo3_test
+    typo3DatabaseDriver: mysqli
+  before_script:
+    - docker-php-ext-install mysqli
+    - docker-php-ext-enable xdebug
+    - echo -e "xdebug.mode=coverage" > /usr/local/etc/php/conf.d/xdebug_coverage.ini
+    - mkdir -p .composer/cache
+    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/minimal="$TYPO3_VERSION"
+    - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
+  script:
+    - |
+      .Build/bin/phpunit \
+        -c FunctionalTests.xml \
+        --colors \
+        --testdox \
+        --coverage-html build/reports/coverage-functional-html/ \
+        --coverage-cobertura build/reports/cobertura-functional.xml \
+        --coverage-clover build/reports/clover-functional.xml
+  parallel:
+    matrix:
+      - TYPO3_VERSION: '^11'
+        PHP_VERSION: [ '7.4', '8.0', '8.1' ]
+      - TYPO3_VERSION: '^10'
+        PHP_VERSION: [ '7.4' ]
+  cache:
+    key: composer-cache
+    paths:
+      - .composer/cache
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build/reports/
+    when: always
+    reports:
+      junit: build/reports/phpunit-functional.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: build/reports/cobertura-functional.xml
+
 cypress-tests:
   stage: test
   only:

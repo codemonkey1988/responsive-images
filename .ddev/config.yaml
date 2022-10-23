@@ -30,6 +30,11 @@ web_environment:
 - TYPO3_INSTALL_SITE_SETUP_TYPE=site
 - TYPO3_INSTALL_SITE_BASE_URL=https://t3ext-responsive-images.ddev.site
 - TYPO3_INSTALL_WEB_SERVER_CONFIG=none
+# Functional Testing
+- typo3DatabaseName=functional
+- typo3DatabaseHost=db
+- typo3DatabaseUsername=root
+- typo3DatabasePassword=root
 nodejs_version: "18"
 
 

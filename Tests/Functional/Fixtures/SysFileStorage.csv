@@ -1,0 +1,23 @@
+sys_file_storage,,,,,,,,,,
+,uid,pid,name,driver,is_default,is_browsable,is_public,is_writable,is_online,auto_extract_metadata,configuration
+,1,0,"fileadmin","Local",1,1,1,1,1,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+    <data>
+        <sheet index=""sDEF"">
+            <language index=""lDEF"">
+                <field index=""basePath"">
+                    <value index=""vDEF"">typo3conf/ext/responsive_images/Tests/Cypress/Fixtures/Storage/</value>
+                </field>
+                <field index=""pathType"">
+                    <value index=""vDEF"">relative</value>
+                </field>
+                <field index=""caseSensitive"">
+                    <value index=""vDEF"">1</value>
+                </field>
+                <field index=""baseUri"">
+                    <value index=""vDEF""></value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>"
