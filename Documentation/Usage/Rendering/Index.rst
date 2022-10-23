@@ -84,3 +84,6 @@ SourceViewHelper
 This ViewHelper renders a source tag for usage in a picture tag.
 The arguments `cropVariantKey` and `media` can be provided to archive
 different image cropping for different image sizes.
+
+There is an option to specify the target extension for the given file.
+This may come in handy when providing webp images for the users.
