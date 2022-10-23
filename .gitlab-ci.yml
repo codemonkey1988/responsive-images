@@ -149,9 +149,8 @@ functional-tests:
 
 cypress-tests:
   stage: test
-  only:
-    - main
-    - v3
+  except:
+    - master
   interruptible: true
   variables:
     GIT_STRATEGY: clone
