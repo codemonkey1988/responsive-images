@@ -55,3 +55,4 @@ Upgrading from v2
    Usage/Index
    Reference/Index
    Upgrade/Index
+   Changelog/Index
