@@ -20,15 +20,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class VariantFactoryTest extends UnitTestCase
 {
-    /**
-     * @var bool
-     */
-    protected $resetSingletonInstances = true;
-
     private VariantFactory $subject;
 
     protected function setUp(): void
     {
+        $this->resetSingletonInstances = true;
+
         parent::setUp();
 
         $typoScript = [

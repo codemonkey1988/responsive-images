@@ -64,7 +64,9 @@ unit-tests:
     - docker-php-ext-enable xdebug
     - echo -e "xdebug.mode=coverage" > /usr/local/etc/php/conf.d/xdebug_coverage.ini
     - mkdir -p .composer/cache
-    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/minimal="$TYPO3_VERSION"
+    # Remove typo3-console because it is not needed here and currently not compatible with v12.
+    - COMPOSER_CACHE_DIR=.composer/cache composer remove --dev --no-update helhum/typo3-console && rm -f composer.lock
+    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION "
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - |
@@ -77,9 +79,11 @@ unit-tests:
         --coverage-clover build/reports/clover-unit.xml
   parallel:
     matrix:
-      - TYPO3_VERSION: '^11'
+      - TYPO3_VERSION: '~12.0.0'
+        PHP_VERSION: [ '8.1' ]
+      - TYPO3_VERSION: '^11.5'
         PHP_VERSION: [ '7.4', '8.0', '8.1' ]
-      - TYPO3_VERSION: '^10'
+      - TYPO3_VERSION: '^10.4'
         PHP_VERSION: [ '7.4' ]
   cache:
     key: composer-cache
@@ -115,7 +119,9 @@ functional-tests:
     - docker-php-ext-enable xdebug
     - echo -e "xdebug.mode=coverage" > /usr/local/etc/php/conf.d/xdebug_coverage.ini
     - mkdir -p .composer/cache
-    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/minimal="$TYPO3_VERSION"
+    # Remove typo3-console because it is not needed here and currently not compatible with v12.
+    - COMPOSER_CACHE_DIR=.composer/cache composer remove --dev --no-update helhum/typo3-console && rm -f composer.lock
+    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION"
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - |
@@ -128,9 +134,11 @@ functional-tests:
         --coverage-clover build/reports/clover-functional.xml
   parallel:
     matrix:
-      - TYPO3_VERSION: '^11'
+      - TYPO3_VERSION: '~12.0.0'
+        PHP_VERSION: [ '8.1' ]
+      - TYPO3_VERSION: '^11.5'
         PHP_VERSION: [ '7.4', '8.0', '8.1' ]
-      - TYPO3_VERSION: '^10'
+      - TYPO3_VERSION: '^10.4'
         PHP_VERSION: [ '7.4' ]
   cache:
     key: composer-cache
@@ -176,7 +184,7 @@ cypress-tests:
         DATABASE: [ 'mariadb:10.8' ]
       - TYPO3_VERSION: '^10'
         PHP_VERSION: [ '7.4' ]
-        DATABASE: [ 'mariadb:10.5' ]
+        DATABASE: [ 'mariadb:10.3' ]
   artifacts:
     expire_in: 1 day
     paths:

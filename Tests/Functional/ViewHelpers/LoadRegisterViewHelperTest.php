@@ -20,6 +20,9 @@ class LoadRegisterViewHelperTest extends ViewHelperTestCase
 {
     protected function setUp(): void
     {
+        $this->testExtensionsToLoad = [
+            'typo3conf/ext/responsive_images',
+        ];
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->registerStack = [];

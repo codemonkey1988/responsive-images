@@ -12,21 +12,22 @@
     {
       "name": "Tim Schreiner",
       "role": "Developer",
-	  "email": "dev@tim-schreiner.de"
+	    "email": "dev@tim-schreiner.de"
     }
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "typo3/cms-core": "^10.4 || ^11.5"
+    "typo3/cms-core": "^10.4 || ^11.5 || ~12.0.0"
   },
   "require-dev": {
-    "typo3/cms-filelist": "^10.4 || ^11.5",
     "friendsofphp/php-cs-fixer": "^3.11",
-	"phpstan/phpstan": "^1.8.5",
-	"saschaegerer/phpstan-typo3": "^1.1.2",
-    "typo3/testing-framework": "^6.16.6",
-    "typo3/cms-fluid-styled-content": "^10.4 || ^11.5",
-    "helhum/typo3-console": "^6.7.4 || ^7.1.2"
+    "helhum/typo3-console": "^6.7.4 || ^7.1.2",
+    "phpstan/phpstan": "^1.8.5",
+    "saschaegerer/phpstan-typo3": "^1.1.2",
+    "typo3/cms-filelist": "^10.4 || ^11.5 || ~12.0.0",
+    "typo3/cms-fluid-styled-content": "^10.4 || ^11.5 || ~12.0.0",
+    "typo3/testing-framework": "^6.16.6 || 7.x-dev",
+    "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1"
   },
   "autoload": {
     "psr-4": {

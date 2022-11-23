@@ -20,14 +20,14 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class AttributeRendererTest extends FunctionalTestCase
 {
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/responsive_images'
-    ];
-
     private AttributeRenderer $subject;
 
     protected function setUp(): void
     {
+        $this->testExtensionsToLoad = [
+            'typo3conf/ext/responsive_images'
+        ];
+
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/BeUsers.csv');

@@ -8,6 +8,7 @@ Changelog
 3.1.0
 ~~~~~
 
+* FEATURE: Add compatibility for TYPO3 12.0
 * FEATURE: Allow setting the target file extension in SourceViewHelper
 * TASK: Add info about specifying the file extension in SourceViewHelper
 * TASK: Add changelog to documentation

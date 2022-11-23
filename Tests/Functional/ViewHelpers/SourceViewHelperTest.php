@@ -19,24 +19,17 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 class SourceViewHelperTest extends ViewHelperTestCase
 {
-    /**
-     * @var array<int, non-empty-string>
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/responsive_images',
-    ];
-
-    /**
-     * @var array<string, mixed>
-     */
-    protected $configurationToUseInTestInstance = [
-        'FE' => [
-            'defaultTypoScript_setup' => '@import \'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/\'',
-        ],
-    ];
-
     protected function setUp(): void
     {
+        $this->testExtensionsToLoad = [
+            'typo3conf/ext/responsive_images',
+        ];
+        $this->configurationToUseInTestInstance = [
+            'FE' => [
+                'defaultTypoScript_setup' => '@import \'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/\'',
+            ],
+        ];
+
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/BeUsers.csv');
