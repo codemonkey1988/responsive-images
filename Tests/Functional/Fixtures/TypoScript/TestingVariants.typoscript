@@ -1,0 +1,26 @@
+plugin.tx_responsiveimages.settings.variants >
+plugin.tx_responsiveimages.settings.variants.default {
+  croppingVariantKey = default
+  providedImageSizes {
+    10 {
+      width = 1000
+    }
+  }
+  sizes {
+    10 {
+      viewportMediaCondition = (min-width: 971px)
+      assumedImageWidth = 585px
+    }
+    20 {
+      viewportMediaCondition = (min-width: 751px)
+      assumedImageWidth = 485px
+    }
+    30 {
+      viewportMediaCondition = (min-width: 421px)
+      assumedImageWidth = 375px
+    }
+    40 {
+      assumedImageWidth = 420px
+    }
+  }
+}

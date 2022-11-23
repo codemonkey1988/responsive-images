@@ -5,6 +5,8 @@ parameters:
     - Configuration
     - Tests
     - ext_emconf.php
+  excludePaths:
+    - Tests/Functional/ViewHelpers/ViewHelperTestCase.php
 
 includes:
 	- .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
