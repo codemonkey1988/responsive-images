@@ -15,9 +15,9 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
- * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\SourceViewHelper
+ * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\ImageViewHelper
  */
-class SourceViewHelperTest extends ViewHelperTestCase
+class ImageViewHelperTest extends ViewHelperTestCase
 {
     protected function setUp(): void
     {
@@ -43,17 +43,37 @@ class SourceViewHelperTest extends ViewHelperTestCase
     /**
      * @test
      */
-    public function renderGivenVariantWithSrcsetAndSizes(): void
+    public function missingSrcsetVariantWillRenderDefaultImgTag(): void
     {
         $image =  $this->get(FileRepository::class)->findByUid(1);
-        $template = '<r:source image="{image}" />';
+        $template = '<r:image image="{image}" srcsetVariantKey="does-not-exist" />';
         $context = $this->buildRenderingContext();
         $context->getVariableProvider()->add('image', $image);
         $context->getTemplatePaths()->setTemplateSource($template);
         $templateView = new TemplateView($context);
 
         $renderedTag = $templateView->render();
-        $expected = '<source type="image/jpeg" ' .
+        $expected = '<img src="typo3conf/ext/responsive_images/Tests/Functional/Fixtures/Storage/test.jpg" ' .
+            'width="1920" height="1080" alt="" />';
+
+        self::assertSame($expected, $renderedTag);
+    }
+
+    /**
+     * @test
+     */
+    public function givenSrcsetVariantKeyWillRenderImgTagWithSrcsetAndSizesAttribute(): void
+    {
+        $image =  $this->get(FileRepository::class)->findByUid(1);
+        $template = '<r:image image="{image}" srcsetVariantKey="default" />';
+        $context = $this->buildRenderingContext();
+        $context->getVariableProvider()->add('image', $image);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $templateView = new TemplateView($context);
+
+        $renderedTag = $templateView->render();
+        $expected = '<img src="typo3conf/ext/responsive_images/Tests/Functional/Fixtures/Storage/test.jpg" ' .
+            'width="1920" height="1080" alt="" ' .
             'srcset="typo3conf/ext/responsive_images/Tests/Functional/Fixtures/Storage/_processed_/e/8/csm_test_750b6486c1.jpg 1000w" ' .
             'sizes="(min-width: 971px) 585px, (min-width: 751px) 485px, (min-width: 421px) 375px, 420px" />';
 

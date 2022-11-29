@@ -155,14 +155,17 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (isset($image)) {
-            $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
-            $srcset = $this->attributeRenderer->renderSrcset($image, $variant, $cropVariant);
-            $sizes = $this->attributeRenderer->renderSizes($variant);
-            if (strlen($srcset) > 0) {
-                $this->tag->addAttribute('srcset', $srcset);
-            }
-            if (strlen($sizes) > 0) {
-                $this->tag->addAttribute('sizes', $sizes);
+            try {
+                $variant = $this->variantFactory->get($this->arguments['srcsetVariantKey']);
+                $srcset = $this->attributeRenderer->renderSrcset($image, $variant, $cropVariant);
+                $sizes = $this->attributeRenderer->renderSizes($variant);
+                if (strlen($srcset) > 0) {
+                    $this->tag->addAttribute('srcset', $srcset);
+                }
+                if (strlen($sizes) > 0) {
+                    $this->tag->addAttribute('sizes', $sizes);
+                }
+            } catch (NoSuchVariantException $e) {
             }
         }
 

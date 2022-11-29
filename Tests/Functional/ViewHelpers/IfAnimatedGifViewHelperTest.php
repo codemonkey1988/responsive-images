@@ -15,21 +15,15 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
- * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\SourceViewHelper
+ * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\IfAnimatedGifViewHelper
  */
-class SourceViewHelperTest extends ViewHelperTestCase
+class IfAnimatedGifViewHelperTest extends ViewHelperTestCase
 {
     protected function setUp(): void
     {
         $this->testExtensionsToLoad = [
             'typo3conf/ext/responsive_images',
         ];
-        $this->configurationToUseInTestInstance = [
-            'FE' => [
-                'defaultTypoScript_setup' => '@import \'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/\'',
-            ],
-        ];
-
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/BeUsers.csv');
@@ -43,20 +37,34 @@ class SourceViewHelperTest extends ViewHelperTestCase
     /**
      * @test
      */
-    public function renderGivenVariantWithSrcsetAndSizes(): void
+    public function givenJpgFileWillRenderElsePart(): void
     {
         $image =  $this->get(FileRepository::class)->findByUid(1);
-        $template = '<r:source image="{image}" />';
+        $template = '<r:ifAnimatedGif image="{image}"><f:then>Animated</f:then><f:else>Not animated</f:else></r:ifAnimatedGif>';
         $context = $this->buildRenderingContext();
         $context->getVariableProvider()->add('image', $image);
         $context->getTemplatePaths()->setTemplateSource($template);
         $templateView = new TemplateView($context);
 
         $renderedTag = $templateView->render();
-        $expected = '<source type="image/jpeg" ' .
-            'srcset="typo3conf/ext/responsive_images/Tests/Functional/Fixtures/Storage/_processed_/e/8/csm_test_750b6486c1.jpg 1000w" ' .
-            'sizes="(min-width: 971px) 585px, (min-width: 751px) 485px, (min-width: 421px) 375px, 420px" />';
 
-        self::assertSame($expected, $renderedTag);
+        self::assertSame('Not animated', $renderedTag);
+    }
+
+    /**
+     * @test
+     */
+    public function givenAnimatedGifFileWillRenderThenPart(): void
+    {
+        $image =  $this->get(FileRepository::class)->findByUid(2);
+        $template = '<r:ifAnimatedGif image="{image}"><f:then>Animated</f:then><f:else>Not animated</f:else></r:ifAnimatedGif>';
+        $context = $this->buildRenderingContext();
+        $context->getVariableProvider()->add('image', $image);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $templateView = new TemplateView($context);
+
+        $renderedTag = $templateView->render();
+
+        self::assertSame('Animated', $renderedTag);
     }
 }

@@ -6,7 +6,7 @@ sys_file_storage,,,,,,,,,,
         <sheet index=""sDEF"">
             <language index=""lDEF"">
                 <field index=""basePath"">
-                    <value index=""vDEF"">typo3conf/ext/responsive_images/Tests/Cypress/Fixtures/Storage/</value>
+                    <value index=""vDEF"">typo3conf/ext/responsive_images/Tests/Functional/Fixtures/Storage/</value>
                 </field>
                 <field index=""pathType"">
                     <value index=""vDEF"">relative</value>

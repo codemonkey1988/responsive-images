@@ -1,3 +1,4 @@
 sys_file,,,,,,,,,,,
 ,uid,pid,storage,type,identifier,identifier_hash,folder_hash,extension,mime_type,name,sha1,size
 ,1,0,1,"2","/test.jpg","c775fc8846d87615cdcbfb07ffda204fc7fe0003","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","jpg","image/jpeg","test.jpg","5b30340f6adf1d2316cee2ecb276df132cd5dd30",54846
+,2,0,1,"2","/animated.gif","71e1282fb1dca4f3bff6180863c08a718b58960e","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8","gif","image/gif","animated.gif","4493e43ca8cdc428046387708c3364cddb0ed3d2",8232
