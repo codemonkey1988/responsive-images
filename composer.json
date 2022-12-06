@@ -48,23 +48,23 @@
     "allow-plugins": true
   },
   "scripts": {
-	"prepare-release": [
-		"rm -f .editorconfig",
-		"rm -f .gitattributes",
-		"rm -f .gitignore",
-		"rm -f .gitlab-ci.yml",
-		"rm -f .php-cs-fixer.dist.php",
-		"rm -f phpstan.neon",
-		"rm -f UnitTests.xml",
-		"rm -f FunctionalTests.xml",
-		"rm -rf .ddev/",
-		"rm -rf build/",
-		"rm -rf Tests/"
-	],
-	"phpcsfixer": "php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff",
-	"phpstan": "phpstan analyse --ansi --no-progress --memory-limit=1024M --configuration=phpstan.neon",
-	"phpunit": "phpunit --color -c UnitTests.xml",
-	"phpunit-functional": "phpunit --color -c FunctionalTests.xml",
+	  "prepare-release": [
+		  "rm -f .editorconfig",
+		  "rm -f .gitattributes",
+		  "rm -f .gitignore",
+      "rm -f .gitlab-ci.yml",
+      "rm -f .php-cs-fixer.dist.php",
+      "rm -f phpstan.neon",
+      "rm -f UnitTests.xml",
+      "rm -f FunctionalTests.xml",
+      "rm -rf .ddev/",
+      "rm -rf build/",
+      "rm -rf Tests/"
+    ],
+    "phpcsfixer": "php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --using-cache=no --diff",
+    "phpstan": "phpstan analyse --ansi --no-progress --memory-limit=1024M --configuration=phpstan.neon",
+    "phpunit": "phpunit --color -c UnitTests.xml",
+    "phpunit-functional": "phpunit --color -c FunctionalTests.xml",
     "post-autoload-dump": [
       "mkdir -p .Build/Web/typo3conf/ext/",
       "[ -L .Build/Web/typo3conf/ext/responsive_images ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/responsive_images"
