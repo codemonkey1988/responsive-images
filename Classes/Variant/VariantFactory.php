@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Codemonkey1988\ResponsiveImages\Variant;
 
 use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,13 +40,26 @@ class VariantFactory implements LoggerAwareInterface
 
     public function __construct(ConfigurationManager $configurationManager)
     {
-        try {
-            $typoScript = $configurationManager->getConfiguration(
-                ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-            );
-            $settings = $typoScript['plugin.']['tx_responsiveimages.']['settings.'] ?? [];
-        } catch (InvalidConfigurationTypeException $e) {
-            $settings = [];
+        $settings = null;
+
+        if (class_exists('\TYPO3\CMS\Core\TypoScript\FrontendTypoScript')) {
+            /** @phpstan-ignore-next-line @var \TYPO3\CMS\Core\TypoScript\FrontendTypoScript|null $frontendTypoScript */
+            $frontendTypoScript = $this->getTypo3Request()->getAttribute('frontend.typoscript');
+            if ($frontendTypoScript !== null) {
+                $typoScript = $frontendTypoScript->getSetupArray();
+                $settings = $typoScript['plugin.']['tx_responsiveimages.']['settings.'] ?? [];
+            }
+        }
+
+        if ($settings === null) {
+            try {
+                $typoScript = $configurationManager->getConfiguration(
+                    ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+                );
+                $settings = $typoScript['plugin.']['tx_responsiveimages.']['settings.'] ?? [];
+            } catch (InvalidConfigurationTypeException $e) {
+                $settings = [];
+            }
         }
 
         $this->buildVariants($settings);
@@ -103,5 +117,10 @@ class VariantFactory implements LoggerAwareInterface
         }
 
         return $key;
+    }
+
+    private function getTypo3Request(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

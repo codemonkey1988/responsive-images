@@ -34,10 +34,12 @@ php:phpstan:
   stage: lint
   except:
     - master
-  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php7.4
+  image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php$PHP_VERSION
   before_script:
     - mkdir -p .composer/cache
-    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/minimal="$TYPO3_VERSION"
+    # Remove typo3-console because it is not needed here and currently not compatible with v12.
+    - COMPOSER_CACHE_DIR=.composer/cache composer remove --dev --no-update helhum/typo3-console && rm -f composer.lock
+    - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION"
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - composer phpstan
@@ -47,6 +49,8 @@ php:phpstan:
       - .composer/cache
   parallel:
     matrix:
+      - TYPO3_VERSION: '^12'
+        PHP_VERSION: [ '8.1' ]
       - TYPO3_VERSION: '^11'
         PHP_VERSION: [ '7.4', '8.0', '8.1' ]
       - TYPO3_VERSION: '^10'
@@ -79,7 +83,7 @@ unit-tests:
         --coverage-clover build/reports/clover-unit.xml
   parallel:
     matrix:
-      - TYPO3_VERSION: '~12.0.0'
+      - TYPO3_VERSION: '~12.1.0'
         PHP_VERSION: [ '8.1' ]
       - TYPO3_VERSION: '^11.5'
         PHP_VERSION: [ '7.4', '8.0', '8.1' ]
@@ -134,7 +138,7 @@ functional-tests:
         --coverage-clover build/reports/clover-functional.xml
   parallel:
     matrix:
-      - TYPO3_VERSION: '~12.0.0'
+      - TYPO3_VERSION: '~12.1.0'
         PHP_VERSION: [ '8.1' ]
       - TYPO3_VERSION: '^11.5'
         PHP_VERSION: [ '7.4', '8.0', '8.1' ]

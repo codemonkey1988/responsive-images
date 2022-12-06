@@ -5,6 +5,11 @@
 Changelog
 =========
 
+3.1.1
+~~~~~
+
+* TASK: Add compatibility for TYPO3 12.1
+
 3.1.0
 ~~~~~
 
