@@ -15,6 +15,7 @@ namespace Codemonkey1988\ResponsiveImages\Variant;
  * Class to store configuration for different picture tag configurations.
  *
  * @phpstan-type Config array{
+ *     croppingVariantKey?: string,
  *     type?: string,
  *     media?: string,
  *     absolute?: string,

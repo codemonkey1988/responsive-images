@@ -24,3 +24,17 @@ plugin.tx_responsiveimages.settings.variants.default {
     }
   }
 }
+
+plugin.tx_responsiveimages.settings.variants.large {
+  croppingVariantKey = large
+  providedImageSizes {
+    10 {
+      width = 1000
+    }
+  }
+  sizes {
+    10 {
+      assumedImageWidth = 100vw
+    }
+  }
+}
