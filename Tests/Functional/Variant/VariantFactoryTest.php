@@ -12,6 +12,15 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -26,13 +35,14 @@ class VariantFactoryTest extends FunctionalTestCase
         $this->testExtensionsToLoad = [
             'typo3conf/ext/responsive_images'
         ];
-        $this->configurationToUseInTestInstance = [
-            'FE' => [
-                'defaultTypoScript_setup' => '@import \'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/\'',
-            ],
-        ];
 
         parent::setUp();
+
+        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.1.0', '>=')) {
+            $this->initializeTypoScriptV12();
+        } else {
+            $this->initializeTypoScript();
+        }
 
         $this->subject = $this->get(VariantFactory::class);
     }
@@ -98,5 +108,40 @@ class VariantFactoryTest extends FunctionalTestCase
 
         self::assertInstanceOf(Variant::class, $variant);
         self::assertSame('large', $variant->getConfig()['croppingVariantKey'] ?? '');
+    }
+
+    private function initializeTypoScript(): void
+    {
+        $typoScript = (string)file_get_contents(__DIR__ . '/../Fixtures/TypoScript/TestingVariants.typoscript');
+        $typoScriptParser = GeneralUtility::makeInstance(TypoScriptParser::class);
+        $typoScriptParser->parse($typoScript);
+
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->tmpl = new \stdClass();
+        $GLOBALS['TSFE']->tmpl->setup = $typoScriptParser->setup;
+
+        $request = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        // Required for TYPO3 v10
+        $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
+        $environmentService->setFrontendMode(true);
+    }
+
+    private function initializeTypoScriptV12(): void
+    {
+        $typoScript = (string)file_get_contents(__DIR__ . '/../Fixtures/TypoScript/TestingVariants.typoscript');
+        $typoScriptFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
+        $astBuilder = GeneralUtility::makeInstance(AstBuilder::class);
+        $rootNode = $typoScriptFactory->parseFromString($typoScript, $astBuilder);
+
+        $frontendTypoScript = new FrontendTypoScript($rootNode, []);
+        $frontendTypoScript->setSetupArray($rootNode->toArray());
+
+        $request = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $request
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
 }
