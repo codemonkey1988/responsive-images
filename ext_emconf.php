@@ -13,7 +13,7 @@ $EM_CONF['responsive_images'] = [
     'category' => 'fe',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-12.1.99',
+            'typo3' => '10.4.0-12.2.99',
         ],
         'conflicts' => [],
     ],
@@ -22,5 +22,5 @@ $EM_CONF['responsive_images'] = [
     'author' => 'Tim Schreiner',
     'author_email' => 'dev@tim-schreiner.de',
     'author_company' => '',
-    'version' => '3.1.0',
+    'version' => '3.1.1',
 ];
