@@ -179,6 +179,8 @@ cypress-tests:
     - nvm install 18 && nvm use 18
     - cd $CI_PROJECT_DIR/build/ && npm ci && npx cypress install
   script:
+    # Restarting ddev again - this needs to be done for some reason.
+    - ddev start
     - cd $CI_PROJECT_DIR/build/ && npx cypress run --headless --e2e --browser chrome
   after_script:
     -  ddev rm -RO
