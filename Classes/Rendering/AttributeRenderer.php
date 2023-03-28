@@ -138,7 +138,7 @@ class AttributeRenderer implements LoggerAwareInterface
 
         foreach ($variant->getConfig()['providedImageSizes.'] ?? [] as $key => $srcset) {
             $key = rtrim($key, '.');
-            if (!MathUtility::canBeInterpretedAsInteger($key)) {
+            if (!preg_match('/^\d+$/', $key)) {
                 throw new Exception('Keys for variant srcset configuration needs to be numeric', 1624200902);
             }
             $cropString = null;
