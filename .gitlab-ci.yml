@@ -49,7 +49,7 @@ php:phpstan:
       - .composer/cache
   parallel:
     matrix:
-      - TYPO3_VERSION: '~12.3.0'
+      - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2' ]
       - TYPO3_VERSION: '^11'
         PHP_VERSION: [ '7.4', '8.0', '8.1', '8.2' ]
@@ -83,7 +83,7 @@ unit-tests:
         --coverage-clover build/reports/clover-unit.xml
   parallel:
     matrix:
-      - TYPO3_VERSION: '~12.3.0'
+      - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2' ]
       - TYPO3_VERSION: '^11.5'
         PHP_VERSION: [ '7.4', '8.0', '8.1', '8.2' ]
@@ -123,8 +123,6 @@ functional-tests:
     - docker-php-ext-enable xdebug
     - echo -e "xdebug.mode=coverage" > /usr/local/etc/php/conf.d/xdebug_coverage.ini
     - mkdir -p .composer/cache
-    # Remove typo3-console because it is not needed here and currently not compatible with v12.
-    - COMPOSER_CACHE_DIR=.composer/cache composer remove --dev --no-update helhum/typo3-console && rm -f composer.lock
     - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION"
     - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
@@ -138,7 +136,7 @@ functional-tests:
         --coverage-clover build/reports/clover-functional.xml
   parallel:
     matrix:
-      - TYPO3_VERSION: '~12.3.0'
+      - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2' ]
       - TYPO3_VERSION: '^11.5'
         PHP_VERSION: [ '7.4', '8.0', '8.1', '8.2' ]
@@ -192,6 +190,45 @@ cypress-tests:
       - TYPO3_VERSION: '^10'
         PHP_VERSION: [ '7.4' ]
         DATABASE: [ 'mariadb:10.3' ]
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build/cypress/screenshots/
+      - build/reports/
+    when: always
+    reports:
+      junit: build/reports/cypress-integration*.xml
+
+cypress-tests-v12:
+  stage: test
+  except:
+    - master
+  interruptible: true
+  variables:
+    GIT_STRATEGY: clone
+  tags:
+    - ddev
+  before_script:
+    - mkdir -p $CI_PROJECT_DIR/.Build/Web/typo3conf/
+    - ddev config --auto --php-version=$PHP_VERSION --omit-containers=dba --database=$DATABASE
+    - ddev start -y
+    - ddev composer require typo3/minimal="$TYPO3_VERSION"
+    - ddev composer require helhum/typo3-console
+    - ddev typo3 install:setup --skip-integrity-check
+    - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/test-data-v12.sql
+    - nvm install 18 && nvm use 18
+    - cd $CI_PROJECT_DIR/build/ && npm ci && npx cypress install
+  script:
+    # Restarting ddev again - this needs to be done for some reason.
+    - ddev start
+    - cd $CI_PROJECT_DIR/build/ && npx cypress run --headless --e2e --browser chrome
+  after_script:
+    -  ddev rm -RO
+  parallel:
+    matrix:
+      - TYPO3_VERSION: '^12'
+        PHP_VERSION: [ '8.2' ]
+        DATABASE: [ 'mariadb:10.8' ]
   artifacts:
     expire_in: 1 day
     paths:
