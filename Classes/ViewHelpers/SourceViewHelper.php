@@ -29,18 +29,12 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
 
     protected AttributeRenderer $attributeRenderer;
 
-    /**
-     * @required
-     */
-    public function setVariantFactory(VariantFactory $variantFactory): void
+    public function injectVariantFactory(VariantFactory $variantFactory): void
     {
         $this->variantFactory = $variantFactory;
     }
 
-    /**
-     * @required
-     */
-    public function setAttributeRenderer(AttributeRenderer $attributeRenderer): void
+    public function injectAttributeRenderer(AttributeRenderer $attributeRenderer): void
     {
         $this->attributeRenderer = $attributeRenderer;
     }
