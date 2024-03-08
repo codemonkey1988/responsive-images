@@ -171,7 +171,7 @@ cypress-tests:
     - ddev config --auto --php-version=$PHP_VERSION --omit-containers=dba --database=$DATABASE
     - ddev start -y
     - ddev composer require typo3/minimal="$TYPO3_VERSION"
-    - ddev composer require helhum/typo3-console
+    - ddev composer require helhum/typo3-console -W
     - ddev typo3cms install:setup --skip-integrity-check
     - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/test-data.sql
     - nvm install 18 && nvm use 18
