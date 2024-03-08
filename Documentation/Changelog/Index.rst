@@ -5,6 +5,16 @@
 Changelog
 =========
 
+3.1.3
+~~~~~
+
+* BUGFIX: Fixes an issue with symfony/dependency-injection v7
+
+3.1.2
+~~~~~
+
+* TASK: Add compatibility for TYPO3 12.4
+
 3.1.1
 ~~~~~
 
