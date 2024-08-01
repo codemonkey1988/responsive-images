@@ -101,7 +101,7 @@ class AttributeRenderer implements LoggerAwareInterface
     {
         $sizes = [];
 
-        foreach ($variant->getConfig()['sizes.'] ?? []  as $key => $size) {
+        foreach ($variant->getConfig()['sizes.'] ?? [] as $key => $size) {
             $key = rtrim($key, '.');
             if (!MathUtility::canBeInterpretedAsInteger($key)) {
                 throw new Exception('Keys for variant sizes configuration needs to be numeric', 1624200902);

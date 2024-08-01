@@ -1,0 +1,39 @@
+{
+  "name": "responsive-images/development",
+  "type": "project",
+  "repositories": {
+    "0": {
+      "type": "path",
+      "url": "packages/*"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "ResponsiveImages\\Development\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "DDEV User",
+      "email": "nobody@example.com"
+    }
+  ],
+  "require": {
+    "codemonkey1988/responsive-images": "@dev",
+    "typo3/cms-backend": "^12.4",
+    "typo3/cms-core": "^12.4",
+    "typo3/cms-extbase": "^12.4",
+    "typo3/cms-extensionmanager": "^12.4",
+    "typo3/cms-filelist": "^12.4",
+    "typo3/cms-fluid": "^12.4",
+    "typo3/cms-fluid-styled-content": "^12.4",
+    "typo3/cms-frontend": "^12.4",
+    "typo3/cms-install": "^12.4"
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/cms-composer-installers": true,
+      "typo3/class-alias-loader": true
+    }
+  }
+}

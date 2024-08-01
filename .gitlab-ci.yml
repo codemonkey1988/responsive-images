@@ -40,7 +40,6 @@ php:phpstan:
     # Remove typo3-console because it is not needed here and currently not compatible with v12.
     - COMPOSER_CACHE_DIR=.composer/cache composer remove --dev --no-update helhum/typo3-console && rm -f composer.lock
     - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION"
-    - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - composer phpstan
   cache:
@@ -64,7 +63,6 @@ unit-tests:
     # Remove typo3-console because it is not needed here and currently not compatible with v12.
     - COMPOSER_CACHE_DIR=.composer/cache composer remove --dev --no-update helhum/typo3-console && rm -f composer.lock
     - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION "
-    - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - |
       .Build/bin/phpunit \
@@ -113,7 +111,6 @@ functional-tests:
     - echo -e "xdebug.mode=coverage" > /usr/local/etc/php/conf.d/xdebug_coverage.ini
     - mkdir -p .composer/cache
     - COMPOSER_CACHE_DIR=.composer/cache composer require typo3/cms-core="$TYPO3_VERSION"
-    - echo '<?php return [];' > .Build/Web/typo3conf/LocalConfiguration.php
   script:
     - |
       .Build/bin/phpunit \
@@ -147,26 +144,40 @@ cypress-tests:
   except:
     - master
   interruptible: true
+  resource_group: ddev
   variables:
     GIT_STRATEGY: clone
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/responsive-images/packages/responsive-images
+    CI_PROJECT_ROOT_DIR: $CI_BUILDS_DIR/responsive-images
   tags:
     - ddev
   before_script:
-    - mkdir -p $CI_PROJECT_DIR/.Build/Web/typo3conf/
-    - ddev config --auto --php-version=$PHP_VERSION --omit-containers=dba --database=$DATABASE
+    - ddev rm -RO t3ext-responsive-images || true
+    - cd $CI_PROJECT_ROOT_DIR
+    - cp $CI_PROJECT_DIR/Tests/Cypress/Fixtures/Composer/v12.json $CI_PROJECT_ROOT_DIR/composer.json
+    - |
+        ddev config \
+        --auto \
+        --php-version=$PHP_VERSION \
+        --database=$DATABASE \
+        --project-name="t3ext-responsive-images" \
+        --docroot="public" \
+        --project-type="typo3" \
+        --nodejs-version=18 \
+        --web-environment="TYPO3_DB_DRIVER=mysqli,TYPO3_DB_USERNAME=db,TYPO3_DB_PASSWORD=db,TYPO3_DB_DBNAME=db,TYPO3_DB_HOST=db,TYPO3_DB_PORT=3306,TYPO3_SETUP_ADMIN_EMAIL=dev@tim-schreiner.de,TYPO3_SETUP_ADMIN_USERNAME=administrator,TYPO3_SETUP_ADMIN_PASSWORD=P@ssw0rd,TYPO3_INSTALL_SITE_NAME=responsive-images-cypress,TYPO3_SETUP_CREATE_SITE=https://t3ext-responsive-images.ddev.site,TYPO3_SERVER_TYPE=other"
     - ddev start -y
-    - ddev composer require typo3/minimal="$TYPO3_VERSION"
-    - ddev composer require helhum/typo3-console
-    - ddev typo3 install:setup --skip-integrity-check
-    - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/test-data-v12.sql
+    - ddev composer update
+    - ddev typo3 setup --no-interaction --force
+    - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/test-data.sql
+    - source $HOME/.nvm/nvm.sh
     - nvm install 18 && nvm use 18
     - cd $CI_PROJECT_DIR/build/ && npm ci && npx cypress install
   script:
     # Restarting ddev again - this needs to be done for some reason.
-    - ddev start
+    - cd $CI_PROJECT_ROOT_DIR && ddev start
     - cd $CI_PROJECT_DIR/build/ && npx cypress run --headless --e2e --browser chrome
   after_script:
-    -  ddev rm -RO
+    - ddev rm -RO t3ext-responsive-images || true
   parallel:
     matrix:
       - TYPO3_VERSION: '^12'
