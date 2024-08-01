@@ -13,21 +13,27 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Rendering;
 
 use Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+#[CoversClass(AttributeRenderer::class)]
 class AttributeRendererTest extends FunctionalTestCase
 {
+    /**
+     * @var non-empty-string[]
+     */
+    protected array $testExtensionsToLoad = [
+        'codemonkey1988/responsive-images',
+    ];
+
     private AttributeRenderer $subject;
 
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad = [
-            'typo3conf/ext/responsive_images'
-        ];
-
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/BeUsers.csv');
@@ -40,9 +46,7 @@ class AttributeRendererTest extends FunctionalTestCase
         $this->subject = $this->get(AttributeRenderer::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenPngFileExtensionForJpegImageWillResultInPngImage(): void
     {
         /** @var FileInterface $image */

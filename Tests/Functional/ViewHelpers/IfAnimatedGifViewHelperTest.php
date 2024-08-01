@@ -11,19 +11,17 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\ViewHelpers;
 
+use Codemonkey1988\ResponsiveImages\ViewHelpers\IfAnimatedGifViewHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\IfAnimatedGifViewHelper
- */
+#[CoversClass(IfAnimatedGifViewHelper::class)]
 class IfAnimatedGifViewHelperTest extends ViewHelperTestCase
 {
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad = [
-            'typo3conf/ext/responsive_images',
-        ];
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/BeUsers.csv');
@@ -34,9 +32,7 @@ class IfAnimatedGifViewHelperTest extends ViewHelperTestCase
         $this->setUpBackendUser(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenJpgFileWillRenderElsePart(): void
     {
         $image =  $this->get(FileRepository::class)->findByUid(1);
@@ -51,9 +47,7 @@ class IfAnimatedGifViewHelperTest extends ViewHelperTestCase
         self::assertSame('Not animated', $renderedTag);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenAnimatedGifFileWillRenderThenPart(): void
     {
         $image =  $this->get(FileRepository::class)->findByUid(2);

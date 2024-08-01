@@ -11,18 +11,17 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\ViewHelpers;
 
+use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper
- */
+#[CoversClass(LoadRegisterViewHelper::class)]
 class LoadRegisterViewHelperTest extends ViewHelperTestCase
 {
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad = [
-            'typo3conf/ext/responsive_images',
-        ];
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->registerStack = [];
@@ -32,7 +31,7 @@ class LoadRegisterViewHelperTest extends ViewHelperTestCase
     /**
      * @return array<string, array<string, string>>
      */
-    public function renderingViewHelperWithoutContentWillSetRegisterDataProvider(): array
+    public static function renderingViewHelperWithoutContentWillSetRegisterDataProvider(): array
     {
         return  [
             'Only set value' => [
@@ -48,10 +47,8 @@ class LoadRegisterViewHelperTest extends ViewHelperTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderingViewHelperWithoutContentWillSetRegisterDataProvider
-     */
+    #[Test]
+    #[DataProvider('renderingViewHelperWithoutContentWillSetRegisterDataProvider')]
     public function renderingViewHelperWithoutContentWillSetRegister(
         string $template,
         string $expectedKey,
@@ -66,9 +63,7 @@ class LoadRegisterViewHelperTest extends ViewHelperTestCase
         self::assertEquals($expectedValue, $GLOBALS['TSFE']->register[$expectedKey]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerStackIsSetAndRemovedAfterContentIsRendered(): void
     {
         $template = '<r:loadRegister value="my-value">Test</r:loadRegister>';
@@ -81,9 +76,7 @@ class LoadRegisterViewHelperTest extends ViewHelperTestCase
         self::assertArrayNotHasKey('IMAGE_VARIANT_KEY', $GLOBALS['TSFE']->register);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function childrenContentGivenIsRenderedAndReturned(): void
     {
         $template = '<r:loadRegister value="my-value">Test</r:loadRegister>';

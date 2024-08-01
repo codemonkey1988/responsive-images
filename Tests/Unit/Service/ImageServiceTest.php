@@ -10,17 +10,15 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Service;
 
 use Codemonkey1988\ResponsiveImages\Service\ImageService;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\Service\ImageService
- */
+#[CoversClass(ImageService::class)]
 class ImageServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isAnimatedGif(): void
     {
         $imageService = new ImageService();
@@ -35,9 +33,7 @@ class ImageServiceTest extends UnitTestCase
         self::assertTrue($imageService->isAnimatedGif($fileMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotAnimatedGif(): void
     {
         $imageService = new ImageService();

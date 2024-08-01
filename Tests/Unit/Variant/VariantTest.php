@@ -10,16 +10,14 @@
 namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Variant;
 
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\Variant\Variant
- */
+#[CoversClass(Variant::class)]
 class VariantTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewInstanceWithArguments(): void
     {
         $variant = new Variant('test', ['foo' => 'bar']);

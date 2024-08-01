@@ -12,44 +12,38 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\Variant\VariantFactory
- */
+#[CoversClass(VariantFactory::class)]
 class VariantFactoryTest extends FunctionalTestCase
 {
+    /**
+     * @var non-empty-string[]
+     */
+    protected array $testExtensionsToLoad = [
+        'codemonkey1988/responsive-images',
+    ];
+
     private VariantFactory $subject;
 
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad = [
-            'typo3conf/ext/responsive_images'
-        ];
-
         parent::setUp();
 
-        if (version_compare(VersionNumberUtility::getCurrentTypo3Version(), '12.1.0', '>=')) {
-            $this->initializeTypoScriptV12();
-        } else {
-            $this->initializeTypoScript();
-        }
+        $this->initializeTypoScript();
 
         $this->subject = $this->get(VariantFactory::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewInstanceAndReceiveDefaultConfiguration(): void
     {
         $variant = $this->subject->get();
@@ -58,9 +52,7 @@ class VariantFactoryTest extends FunctionalTestCase
         self::assertSame('default', $variant->getConfig()['croppingVariantKey'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewInstanceAndReceiveGivenConfiguration(): void
     {
         $variant = $this->subject->get('large');
@@ -69,9 +61,7 @@ class VariantFactoryTest extends FunctionalTestCase
         self::assertSame('large', $variant->getConfig()['croppingVariantKey'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewInstanceAndThrowNoSuchVariantException(): void
     {
         $this->expectException(NoSuchVariantException::class);
@@ -80,25 +70,19 @@ class VariantFactoryTest extends FunctionalTestCase
         $this->subject->get('does-not-exist');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasVariantReturnsTrue(): void
     {
         self::assertTrue($this->subject->has('large'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasVariantReturnsFalse(): void
     {
         self::assertFalse($this->subject->has('does-not-exist'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getVariantKeyUseFromRegistry(): void
     {
         $GLOBALS['TSFE'] = new \stdClass();
@@ -111,25 +95,6 @@ class VariantFactoryTest extends FunctionalTestCase
     }
 
     private function initializeTypoScript(): void
-    {
-        $typoScript = (string)file_get_contents(__DIR__ . '/../Fixtures/TypoScript/TestingVariants.typoscript');
-        $typoScriptParser = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $typoScriptParser->parse($typoScript);
-
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $GLOBALS['TSFE']->tmpl->setup = $typoScriptParser->setup;
-
-        $request = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $request
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-
-        // Required for TYPO3 v10
-        $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
-        $environmentService->setFrontendMode(true);
-    }
-
-    private function initializeTypoScriptV12(): void
     {
         $typoScript = (string)file_get_contents(__DIR__ . '/../Fixtures/TypoScript/TestingVariants.typoscript');
         $typoScriptFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);

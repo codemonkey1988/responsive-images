@@ -11,25 +11,26 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\ViewHelpers;
 
+use Codemonkey1988\ResponsiveImages\ViewHelpers\SourceViewHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\ViewHelpers\SourceViewHelper
- */
+#[CoversClass(SourceViewHelper::class)]
 class SourceViewHelperTest extends ViewHelperTestCase
 {
+    /**
+     * @var array<string, mixed>
+     */
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'defaultTypoScript_setup' => '@import \'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/\'',
+        ],
+    ];
+
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad = [
-            'typo3conf/ext/responsive_images',
-        ];
-        $this->configurationToUseInTestInstance = [
-            'FE' => [
-                'defaultTypoScript_setup' => '@import \'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/\'',
-            ],
-        ];
-
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/BeUsers.csv');
@@ -40,9 +41,7 @@ class SourceViewHelperTest extends ViewHelperTestCase
         $this->setUpBackendUser(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderGivenVariantWithSrcsetAndSizes(): void
     {
         $image =  $this->get(FileRepository::class)->findByUid(1);

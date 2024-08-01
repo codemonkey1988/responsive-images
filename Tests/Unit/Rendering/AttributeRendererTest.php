@@ -11,6 +11,8 @@ namespace Codemonkey1988\ResponsiveImages\Tests\Unit\Rendering;
 
 use Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\File;
@@ -18,9 +20,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer
- */
+#[CoversClass(AttributeRenderer::class)]
 class AttributeRendererTest extends UnitTestCase
 {
     protected MockObject $imageServiceMock;
@@ -41,9 +41,7 @@ class AttributeRendererTest extends UnitTestCase
         $this->eventDispatcherMock->method('dispatch')->willReturnArgument(0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSrcsetReturnAttributeValue(): void
     {
         $fileMock = $this->createMock(File::class);
@@ -84,9 +82,7 @@ class AttributeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSizesReturnAttributeValue(): void
     {
         $variantMock = $this->getMockBuilder(Variant::class)
