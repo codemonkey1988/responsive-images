@@ -50,6 +50,8 @@ php:phpstan:
     matrix:
       - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2', '8.3' ]
+      - TYPO3_VERSION: '^13.4'
+        PHP_VERSION: [ '8.3' ]
 
 unit-tests:
   stage: test
@@ -76,6 +78,8 @@ unit-tests:
     matrix:
       - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2', '8.3' ]
+      - TYPO3_VERSION: '^13.4'
+        PHP_VERSION: [ '8.3' ]
   cache:
     key: composer-cache
     paths:
@@ -124,6 +128,8 @@ functional-tests:
     matrix:
       - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2', '8.3' ]
+      - TYPO3_VERSION: '^13.4'
+        PHP_VERSION: [ '8.3' ]
   cache:
     key: composer-cache
     paths:
@@ -154,7 +160,7 @@ cypress-tests:
   before_script:
     - ddev rm -RO t3ext-responsive-images || true
     - cd $CI_PROJECT_ROOT_DIR
-    - cp $CI_PROJECT_DIR/Tests/Cypress/Fixtures/Composer/v12.json $CI_PROJECT_ROOT_DIR/composer.json
+    - cp $CI_PROJECT_DIR/Tests/Cypress/Fixtures/Composer/$COMPOSER_FILE $CI_PROJECT_ROOT_DIR/composer.json
     - |
         ddev config \
         --auto \
@@ -183,6 +189,11 @@ cypress-tests:
       - TYPO3_VERSION: '^12'
         PHP_VERSION: [ '8.2' ]
         DATABASE: [ 'mariadb:10.8' ]
+        COMPOSER_FILE: 'v12.json'
+      - TYPO3_VERSION: '^13'
+        PHP_VERSION: [ '8.3' ]
+        DATABASE: [ 'mariadb:10.11' ]
+        COMPOSER_FILE: 'v13.json'
   artifacts:
     expire_in: 1 day
     paths:

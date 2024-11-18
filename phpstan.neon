@@ -7,8 +7,9 @@ parameters:
     - ext_emconf.php
   excludePaths:
     - Tests/Functional/ViewHelpers/ViewHelperTestCase.php
-    # Can be removed when v11 support is dropped.
+    # Can be removed when v12 support is dropped.
     - Tests/Functional/Variant/VariantFactoryTest.php
+    - Classes/Variant/VariantFactory.php
 
 includes:
 	- .Build/vendor/saschaegerer/phpstan-typo3/extension.neon

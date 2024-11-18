@@ -28,7 +28,7 @@ class IfAnimatedGifViewHelper extends AbstractConditionViewHelper
      *
      * @param array{image: FileInterface} $arguments
      */
-    protected static function evaluateCondition($arguments = null)
+    protected static function evaluateCondition($arguments = null): bool
     {
         /** @var ImageService $imageService */
         $imageService = GeneralUtility::makeInstance(ImageService::class);
