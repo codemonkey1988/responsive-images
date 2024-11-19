@@ -9,22 +9,19 @@
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\Variant;
 
+use Codemonkey1988\ResponsiveImages\Tests\Functional\ServerRequestTrait;
 use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Variant\Variant;
 use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
-use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 #[CoversClass(VariantFactory::class)]
 class VariantFactoryTest extends FunctionalTestCase
 {
+    use ServerRequestTrait;
+
     /**
      * @var non-empty-string[]
      */
@@ -38,7 +35,7 @@ class VariantFactoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->initializeTypoScript();
+        $GLOBALS['TYPO3_REQUEST'] = $this->buildFakeServerRequest();
 
         $this->subject = $this->get(VariantFactory::class);
     }
@@ -92,21 +89,5 @@ class VariantFactoryTest extends FunctionalTestCase
 
         self::assertInstanceOf(Variant::class, $variant);
         self::assertSame('large', $variant->getConfig()['croppingVariantKey'] ?? '');
-    }
-
-    private function initializeTypoScript(): void
-    {
-        $typoScript = (string)file_get_contents(__DIR__ . '/../Fixtures/TypoScript/TestingVariants.typoscript');
-        $typoScriptFactory = GeneralUtility::makeInstance(TypoScriptStringFactory::class);
-        $astBuilder = GeneralUtility::makeInstance(AstBuilder::class);
-        $rootNode = $typoScriptFactory->parseFromString($typoScript, $astBuilder);
-
-        $frontendTypoScript = new FrontendTypoScript($rootNode, []);
-        $frontendTypoScript->setSetupArray($rootNode->toArray());
-
-        $request = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $request
-            ->withAttribute('frontend.typoscript', $frontendTypoScript)
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
 }

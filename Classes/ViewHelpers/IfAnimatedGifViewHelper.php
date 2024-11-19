@@ -14,6 +14,7 @@ namespace Codemonkey1988\ResponsiveImages\ViewHelpers;
 use Codemonkey1988\ResponsiveImages\Service\ImageService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 class IfAnimatedGifViewHelper extends AbstractConditionViewHelper
@@ -24,18 +25,12 @@ class IfAnimatedGifViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
-     *
      * @param array{image: FileInterface} $arguments
      */
-    protected static function evaluateCondition($arguments = null): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         /** @var ImageService $imageService */
         $imageService = GeneralUtility::makeInstance(ImageService::class);
-
-        if (!isset($arguments['image'])) {
-            return false;
-        }
 
         return $imageService->isAnimatedGif($arguments['image']);
     }

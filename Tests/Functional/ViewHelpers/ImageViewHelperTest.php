@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\ViewHelpers;
 
+use Codemonkey1988\ResponsiveImages\Tests\Functional\ServerRequestTrait;
 use Codemonkey1988\ResponsiveImages\ViewHelpers\ImageViewHelper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -20,6 +21,8 @@ use TYPO3\CMS\Fluid\View\TemplateView;
 #[CoversClass(ImageViewHelper::class)]
 class ImageViewHelperTest extends ViewHelperTestCase
 {
+    use ServerRequestTrait;
+
     /**
      * @var array<string, mixed>
      */
@@ -39,6 +42,8 @@ class ImageViewHelperTest extends ViewHelperTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/SysFileMetadata.csv');
 
         $this->setUpBackendUser(1);
+
+        $GLOBALS['TYPO3_REQUEST'] = $this->buildFakeServerRequest();
     }
 
     #[Test]
