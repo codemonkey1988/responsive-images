@@ -15,6 +15,7 @@ use Codemonkey1988\ResponsiveImages\Exception;
 use Codemonkey1988\ResponsiveImages\Rendering\AttributeRenderer;
 use Codemonkey1988\ResponsiveImages\Variant\Exception\NoSuchVariantException;
 use Codemonkey1988\ResponsiveImages\Variant\VariantFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -42,7 +43,10 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
+        $typo3Version = new Typo3Version();
+        if ($typo3Version->getMajorVersion() < 13) {
+            $this->registerUniversalTagAttributes();
+        }
         $this->registerArgument('image', 'object', 'A FAL image object', true);
         $this->registerArgument('srcsetVariantKey', 'string', 'Render an srcset attribute by using the variant config for the given key.');
         $this->registerArgument('cropVariantKey', 'string', 'Use the given crop variant for srcset rendering.', false, 'default');
