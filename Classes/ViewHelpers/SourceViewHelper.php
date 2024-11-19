@@ -52,6 +52,7 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('cropVariantKey', 'string', 'Use the given crop variant for srcset rendering.', false, 'default');
         $this->registerArgument('media', 'string', 'Value for the media attribute (overwrites media value from variant config)');
         $this->registerArgument('fileExtension', 'string', 'The target file extension - only works with image extensions');
+        $this->registerArgument('type', 'string', 'Forces the given type for type attribute.');
     }
 
     /**
@@ -71,7 +72,8 @@ class SourceViewHelper extends AbstractTagBasedViewHelper
             $image = $image->getOriginalResource();
         }
 
-        $this->tag->addAttribute('type', $variant->getConfig()['type'] ?? $image->getMimeType());
+        $type = $this->arguments['type'] ?? $variant->getConfig()['type'] ?? $image->getMimeType();
+        $this->tag->addAttribute('type', $type);
         $this->tag->addAttribute('srcset', $this->attributeRenderer->renderSrcset(
             $image,
             $variant,
