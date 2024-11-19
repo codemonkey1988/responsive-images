@@ -5,6 +5,14 @@
 Changelog
 =========
 
+4.0.0
+~~~~~
+
+* !!!TASK: Drop support for TYPO3 v10 and v11
+* TASK: Add support for TYPO3 v13
+
+No migrations necessary.
+
 3.1.3
 ~~~~~
 
