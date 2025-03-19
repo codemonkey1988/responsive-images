@@ -6,7 +6,9 @@ parameters:
     - Tests
     - ext_emconf.php
   excludePaths:
+    - Tests/Functional/ServerRequestTrait.php
     - Tests/Functional/ViewHelpers/ViewHelperTestCase.php
+    - Tests/Functional/ViewHelpers/LoadRegisterViewHelperTest.php
     # Can be removed when v12 support is dropped.
     - Tests/Functional/Variant/VariantFactoryTest.php
     - Classes/Variant/VariantFactory.php

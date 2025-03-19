@@ -11,21 +11,46 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\ViewHelpers;
 
+use Codemonkey1988\ResponsiveImages\Tests\Functional\ServerRequestTrait;
 use Codemonkey1988\ResponsiveImages\ViewHelpers\LoadRegisterViewHelper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 #[CoversClass(LoadRegisterViewHelper::class)]
 class LoadRegisterViewHelperTest extends ViewHelperTestCase
 {
+    use ServerRequestTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
+
+        $typo3Version = new Typo3Version();
+        if ($typo3Version->getMajorVersion() > 12) {
+            $GLOBALS['TSFE'] = new TypoScriptFrontendController();
+        } else {
+            $site = new Site('test', 1, []);
+            $GLOBALS['TSFE'] = new TypoScriptFrontendController(
+                $this->get(Context::class),
+                $site,
+                $site->getDefaultLanguage(),
+                new PageArguments(1, '0', []),
+                new FrontendUserAuthentication(),
+            );
+        }
+
         $GLOBALS['TSFE']->registerStack = [];
         $GLOBALS['TSFE']->register = [];
+
+        $GLOBALS['TYPO3_REQUEST'] = $this->buildFakeServerRequest();
     }
 
     /**

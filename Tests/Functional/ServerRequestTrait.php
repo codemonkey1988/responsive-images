@@ -68,6 +68,10 @@ trait ServerRequestTrait
         }
 
         $typoScript->setSetupArray($this->getTypoScriptSetup());
+        // The method was introduced in v13.
+        if (method_exists($typoScript, 'setConfigArray')) {
+            $typoScript->setConfigArray([]);
+        }
 
         // set up normalizedParams
         $request = new ServerRequest($url, $method, null, [], $serverParams);
@@ -123,6 +127,7 @@ trait ServerRequestTrait
         ];
 
         return [
+            'config.' => [],
             'plugin.' => [
                 'tx_responsiveimages.' => [
                     'settings.' => [

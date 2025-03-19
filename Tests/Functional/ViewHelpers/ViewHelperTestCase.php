@@ -11,11 +11,16 @@ declare(strict_types=1);
 
 namespace Codemonkey1988\ResponsiveImages\Tests\Functional\ViewHelpers;
 
+use Codemonkey1988\ResponsiveImages\Tests\Functional\ServerRequestTrait;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 abstract class ViewHelperTestCase extends FunctionalTestCase
 {
+    use ServerRequestTrait;
+
     /**
      * @var non-empty-string[]
      */
@@ -29,8 +34,18 @@ abstract class ViewHelperTestCase extends FunctionalTestCase
             'Codemonkey1988\\ResponsiveImages\\ViewHelpers'
         ];
 
+        $cObj = new ContentObjectRenderer();
+        $cObj->start(['uid' => 123], 'tt_content');
+        $serverRequest = $this->buildFakeServerRequest()
+            ->withAttribute('currentContentObject', $cObj)
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $cObj->setRequest($serverRequest);
+
         /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory $factory */
         $factory = $this->get(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory::class);
-        return $factory->create();
+        $context = $factory->create();
+        $context->setRequest($serverRequest);
+
+        return $context;
     }
 }
