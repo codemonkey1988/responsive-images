@@ -15,7 +15,7 @@ use Codemonkey1988\ResponsiveImages\Exception;
 
 class InvalidImageException extends Exception
 {
-    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null, ?string $fileExtension = null)
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, ?string $fileExtension = null)
     {
         if ($fileExtension !== null && empty($message)) {
             $message = sprintf(
