@@ -84,7 +84,10 @@ class AttributeRenderer implements LoggerAwareInterface
             if (isset($variant->getConfig()['srcset.'][$key . '.']['prefix'])) {
                 $prefix = $variant->getConfig()['srcset.'][$key . '.']['prefix'];
             }
-            $srcset[$key] = sprintf('%s %s', $imageUri, $prefix);
+            $srcsetPart = sprintf('%s %s', $imageUri, $prefix);
+            if (!in_array($srcsetPart, $srcset, true)) {
+                $srcset[$key] = sprintf('%s %s', $imageUri, $prefix);
+            }
         }
 
         $event = new AfterSrcsetProcessingEvent($srcset, $image, $variant);

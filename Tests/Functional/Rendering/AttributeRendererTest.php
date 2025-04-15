@@ -63,4 +63,25 @@ class AttributeRendererTest extends FunctionalTestCase
 
         self::assertMatchesRegularExpression('/csm_test_[a-f0-9]{10}\.png/', $srcset);
     }
+
+    #[Test]
+    public function givenImageWillRenderUniqueImageUriInSrcset(): void
+    {
+        /** @var FileInterface $image */
+        $image = GeneralUtility::makeInstance(FileRepository::class)->findByUid(1);
+        $variant = new Variant('test', [
+            'providedImageSizes.' => [
+                '10.' => [
+                    'maxwidth' => '2000',
+                ],
+                '20.' => [
+                    'maxwidth' => '3000',
+                ],
+            ],
+        ]);
+
+        $srcset = $this->subject->renderSrcset($image, $variant);
+
+        self::assertSame('typo3conf/ext/responsive_images/Tests/Functional/Fixtures/Storage/test.jpg 1920w', $srcset);
+    }
 }
