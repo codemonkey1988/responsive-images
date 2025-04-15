@@ -77,16 +77,15 @@ class AttributeRenderer implements LoggerAwareInterface
         $this->eventDispatcher->dispatch($event);
         $allProcessingInstructions = $event->getProcessingInstructions();
 
+        $providedImageWidths = [];
         foreach ($allProcessingInstructions as $key => $processingInstructions) {
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
             $imageUri = $this->imageService->getImageUri($processedImage, (bool)($variant->getConfig()['absolute'] ?? false));
             $prefix = $processedImage->getProperty('width') . 'w';
-            if (isset($variant->getConfig()['srcset.'][$key . '.']['prefix'])) {
-                $prefix = $variant->getConfig()['srcset.'][$key . '.']['prefix'];
-            }
             $srcsetPart = sprintf('%s %s', $imageUri, $prefix);
-            if (!in_array($srcsetPart, $srcset, true)) {
-                $srcset[$key] = sprintf('%s %s', $imageUri, $prefix);
+            if (!in_array($prefix, $providedImageWidths, true) && !in_array($srcsetPart, $srcset, true)) {
+                $srcset[$key] = $srcsetPart;
+                $providedImageWidths[] = $prefix;
             }
         }
 
