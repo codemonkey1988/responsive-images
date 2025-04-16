@@ -5,6 +5,30 @@
 Changelog
 =========
 
+4.1.3
+~~~~~
+
+* BUGFIX: Improve avoiding duplicate image uri in srcset attribute
+
+4.1.2
+~~~~~
+
+* BUGFIX: Avoid duplicate image uri in srcset attribute
+
+4.1.1
+~~~~~
+
+* TASK: Avoid using CompileWithRenderStatic in LoadRegisterViewHelper
+* TASK: Add PHP 8.4 to testing suite
+
+4.1.0
+~~~~~
+
+* FEATURE: Add SiteSets for presets
+* FEATURE: Allow forcing type attribute in SourceViewHelper
+* TASK: Do not call deprecated ViewHelper methods in TYPO3 v13
+* BUGFIX: Avoid implicit nullable parameter declaration
+
 4.0.0
 ~~~~~
 
