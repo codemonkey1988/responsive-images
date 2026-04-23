@@ -16,7 +16,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
  * Class to store configuration for different picture tag configurations.
@@ -44,7 +43,7 @@ class VariantFactory implements LoggerAwareInterface
                 ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
             $settings = $typoScript['plugin.']['tx_responsiveimages.']['settings.'] ?? [];
-        } catch (InvalidConfigurationTypeException $e) {
+        } catch (\Throwable) {
             $settings = [];
         }
 
@@ -56,7 +55,7 @@ class VariantFactory implements LoggerAwareInterface
         try {
             $this->get($key);
             return true;
-        } catch (NoSuchVariantException $e) {
+        } catch (NoSuchVariantException) {
             return false;
         }
     }
@@ -82,7 +81,7 @@ class VariantFactory implements LoggerAwareInterface
      */
     protected function buildVariants(array $settings): void
     {
-        if (array_key_exists('variants.', $settings) && is_array($settings['variants.'])) {
+        if (array_key_exists('variants.', $settings)) {
             foreach ($settings['variants.'] as $key => $config) {
                 $key = rtrim($key, '.');
                 $this->variants[$key] = GeneralUtility::makeInstance(

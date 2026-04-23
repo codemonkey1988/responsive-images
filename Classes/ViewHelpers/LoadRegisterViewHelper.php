@@ -72,16 +72,9 @@ class LoadRegisterViewHelper extends AbstractViewHelper
 
     private function getTypo3Request(): ServerRequestInterface
     {
-        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+        /** @phpstan-ignore nullsafe.neverNull */
+        if ($this->renderingContext?->hasAttribute(ServerRequestInterface::class)) {
             return $this->renderingContext->getAttribute(ServerRequestInterface::class);
-        }
-
-        // Fallback for TYPO3 v12
-        if (method_exists($this->renderingContext, 'getRequest')) {
-            $request = $this->renderingContext->getRequest();
-            if ($request !== null) {
-                return $request;
-            }
         }
 
         throw new \RuntimeException('Missing server request object.', 1742392712);

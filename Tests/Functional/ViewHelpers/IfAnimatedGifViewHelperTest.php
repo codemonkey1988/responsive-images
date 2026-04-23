@@ -15,7 +15,7 @@ use Codemonkey1988\ResponsiveImages\ViewHelpers\IfAnimatedGifViewHelper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 #[CoversClass(IfAnimatedGifViewHelper::class)]
 class IfAnimatedGifViewHelperTest extends ViewHelperTestCase
