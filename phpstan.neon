@@ -9,7 +9,6 @@ parameters:
   excludePaths:
     - Tests/Functional/ServerRequestTrait.php
     - Tests/Functional/ViewHelpers/ViewHelperTestCase.php
-    - Tests/Functional/ViewHelpers/LoadRegisterViewHelperTest.php
 
 includes:
 	- .Build/vendor/saschaegerer/phpstan-typo3/extension.neon

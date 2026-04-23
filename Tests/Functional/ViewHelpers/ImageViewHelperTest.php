@@ -67,7 +67,7 @@ class ImageViewHelperTest extends ViewHelperTestCase
     public function givenSrcsetVariantKeyWillRenderImgTagWithSrcsetAndSizesAttribute(): void
     {
         $image =  $this->get(FileRepository::class)->findByUid(1);
-        $template = '<r:image image="{image}" srcsetVariantKey="default" />';
+        $template = '<r:image image="{image}" srcsetVariantKey="default" alt="" />';
         $context = $this->buildRenderingContext();
         $context->getVariableProvider()->add('image', $image);
         $context->getTemplatePaths()->setTemplateSource($template);

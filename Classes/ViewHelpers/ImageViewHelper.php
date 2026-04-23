@@ -123,9 +123,13 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
                 $this->tag->addAttribute('width', $processedImage->getProperty('width'));
                 $this->tag->addAttribute('height', $processedImage->getProperty('height'));
 
-                // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
-                if (empty($this->arguments['alt'])) {
-                    $this->tag->addAttribute('alt', $image->hasProperty('alternative') ? $image->getProperty('alternative') : '');
+                if (isset($this->additionalArguments['alt']) && $this->additionalArguments['alt'] === '') {
+                    // In case the "alt" attribute is explicitly set to an empty string, respect
+                    // this to allow excluding it from screen readers, improving accessibility.
+                    $this->tag->addAttribute('alt', '');
+                } elseif (!isset($this->additionalArguments['alt'])) {
+                    // The alt-attribute is mandatory to have valid html-code, therefore use "alternative" property or empty
+                    $this->tag->addAttribute('alt', $image->getProperty('alternative') ?? '');
                 }
                 // Add title-attribute from property if not already set and the property is not an empty string
                 $title = (string)($image->hasProperty('title') ? $image->getProperty('title') : '');
