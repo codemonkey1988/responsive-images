@@ -3,6 +3,7 @@
 /.php_cs.cache
 /.Build
 /.cache
+/.ddev
 /var
 /config
 /Tests/Functional/Fixtures/fileadmin/typo3temp
