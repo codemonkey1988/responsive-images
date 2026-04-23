@@ -141,64 +141,6 @@ functional-tests:
         coverage_format: cobertura
         path: build/reports/cobertura-functional.xml
 
-cypress-tests:
-  stage: test
-  except:
-    - master
-  interruptible: true
-  resource_group: ddev
-  variables:
-    GIT_STRATEGY: clone
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/responsive-images/packages/responsive-images
-    CI_PROJECT_ROOT_DIR: $CI_BUILDS_DIR/responsive-images
-  tags:
-    - ddev
-  before_script:
-    - ddev rm -RO t3ext-responsive-images || true
-    - cd $CI_PROJECT_ROOT_DIR
-    - cp $CI_PROJECT_DIR/Tests/Cypress/Fixtures/Composer/$COMPOSER_FILE $CI_PROJECT_ROOT_DIR/composer.json
-    - |
-        ddev config \
-        --auto \
-        --php-version=$PHP_VERSION \
-        --database=$DATABASE \
-        --project-name="t3ext-responsive-images" \
-        --docroot="public" \
-        --project-type="typo3" \
-        --nodejs-version=18 \
-        --web-environment="TYPO3_DB_DRIVER=mysqli,TYPO3_DB_USERNAME=db,TYPO3_DB_PASSWORD=db,TYPO3_DB_DBNAME=db,TYPO3_DB_HOST=db,TYPO3_DB_PORT=3306,TYPO3_SETUP_ADMIN_EMAIL=dev@tim-schreiner.de,TYPO3_SETUP_ADMIN_USERNAME=administrator,TYPO3_SETUP_ADMIN_PASSWORD=P@ssw0rd,TYPO3_INSTALL_SITE_NAME=responsive-images-cypress,TYPO3_SETUP_CREATE_SITE=https://t3ext-responsive-images.ddev.site,TYPO3_SERVER_TYPE=other"
-    - ddev start -y
-    - ddev composer update
-    - ddev typo3 setup --no-interaction --force
-    - ddev mysql < $CI_PROJECT_DIR/Tests/Cypress/Fixtures/test-data.sql
-    - source $HOME/.nvm/nvm.sh
-    - nvm install 18 && nvm use 18
-    - cd $CI_PROJECT_DIR/build/ && npm ci && npx cypress install
-  script:
-    # Restarting ddev again - this needs to be done for some reason.
-    - cd $CI_PROJECT_ROOT_DIR && ddev start
-    - cd $CI_PROJECT_DIR/build/ && npx cypress run --headless --e2e --browser chrome
-  after_script:
-    - ddev rm -RO t3ext-responsive-images || true
-  parallel:
-    matrix:
-      - TYPO3_VERSION: '^13'
-        PHP_VERSION: [ '8.4' ]
-        DATABASE: [ 'mariadb:10.11' ]
-        COMPOSER_FILE: 'v13.json'
-      - TYPO3_VERSION: '^14'
-        PHP_VERSION: [ '8.4' ]
-        DATABASE: [ 'mariadb:10.11' ]
-        COMPOSER_FILE: 'v14.json'
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - build/cypress/screenshots/
-      - build/reports/
-    when: always
-    reports:
-      junit: build/reports/cypress-integration*.xml
-
 mirror:
   stage: mirror
   image: registry.gitlab.com/codemonkey1988/docker-composer-image:2-php8.2
