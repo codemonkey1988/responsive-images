@@ -51,7 +51,9 @@ php:phpstan:
       - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2', '8.3' ]
       - TYPO3_VERSION: '^13.4'
-        PHP_VERSION: [ '8.3', '8.4' ]
+        PHP_VERSION: [ '8.2', '8.3', '8.4' ]
+      - TYPO3_VERSION: '^14.3'
+        PHP_VERSION: [ '8.2', '8.3', '8.4' ]
 
 unit-tests:
   stage: test
@@ -79,7 +81,9 @@ unit-tests:
       - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2', '8.3' ]
       - TYPO3_VERSION: '^13.4'
-        PHP_VERSION: [ '8.3', '8.4' ]
+        PHP_VERSION: [ '8.2', '8.3', '8.4' ]
+      - TYPO3_VERSION: '^14.3'
+        PHP_VERSION: [ '8.2', '8.3', '8.4' ]
   cache:
     key: composer-cache
     paths:
@@ -129,7 +133,9 @@ functional-tests:
       - TYPO3_VERSION: '^12.4'
         PHP_VERSION: [ '8.1', '8.2', '8.3' ]
       - TYPO3_VERSION: '^13.4'
-        PHP_VERSION: [ '8.3', '8.4' ]
+        PHP_VERSION: [ '8.2', '8.3', '8.4' ]
+      - TYPO3_VERSION: '^14.3'
+        PHP_VERSION: [ '8.2', '8.3', '8.4' ]
   cache:
     key: composer-cache
     paths:
@@ -194,6 +200,10 @@ cypress-tests:
         PHP_VERSION: [ '8.4' ]
         DATABASE: [ 'mariadb:10.11' ]
         COMPOSER_FILE: 'v13.json'
+      - TYPO3_VERSION: '^14'
+        PHP_VERSION: [ '8.4' ]
+        DATABASE: [ 'mariadb:10.11' ]
+        COMPOSER_FILE: 'v14.json'
   artifacts:
     expire_in: 1 day
     paths:
