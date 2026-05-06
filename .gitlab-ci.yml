@@ -106,7 +106,6 @@ functional-tests:
     typo3DatabaseName: typo3_test
     typo3DatabaseDriver: mysqli
   before_script:
-    - docker-php-ext-install mysqli
     - docker-php-ext-enable xdebug
     - echo -e "xdebug.mode=coverage" > /usr/local/etc/php/conf.d/xdebug_coverage.ini
     - mkdir -p .composer/cache
