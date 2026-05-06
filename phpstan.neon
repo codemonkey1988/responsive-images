@@ -9,6 +9,8 @@ parameters:
   excludePaths:
     - Tests/Functional/ServerRequestTrait.php
     - Tests/Functional/ViewHelpers/ViewHelperTestCase.php
+    # Remove after PHP 8.2 and PHP 8.3 support is dropped
+    - Tests/Functional/Frontend/FrontendRenderingTest.php
 
 includes:
 	- .Build/vendor/saschaegerer/phpstan-typo3/extension.neon

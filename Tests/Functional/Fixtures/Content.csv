@@ -1,0 +1,25 @@
+pages,,,,,
+,uid,pid,is_siteroot,title,slug
+,1,0,1,Root,/
+,2,1,0,"Default Configuration",/default
+,3,1,0,"Bootstrap Configuration",/bootstrap
+,4,1,0,"Srcset Configuration",/srcset-rendering
+
+sys_template,,,,,,,,
+,uid,pid,title,root,clear,constants,config,include_static_file
+,1,1,root,1,3,,"@import 'EXT:responsive_images/Tests/Functional/Fixtures/TypoScript/page.typoscript'","EXT:fluid_styled_content/Configuration/TypoScript/"
+,2,2,default,0,0,"styles.templates.templateRootPath = EXT:responsive_images/Tests/Functional/Fixtures/Templates/Default/",,"EXT:responsive_images/Configuration/TypoScript/DefaultConfiguration"
+,3,3,bootstrap,0,0,"styles.templates.templateRootPath = EXT:responsive_images/Tests/Functional/Fixtures/Templates/Bootstrap/",,"EXT:responsive_images/Configuration/TypoScript/BootstrapConfiguration"
+,4,4,srcset,0,0,"styles.templates.templateRootPath = EXT:responsive_images/Tests/Functional/Fixtures/Templates/Srcset/",,"EXT:responsive_images/Configuration/TypoScript/DefaultConfiguration"
+
+tt_content,,,,,,
+,uid,pid,sorting,CType,colPos,image
+,1,2,1,image,0,1
+,2,3,1,image,0,1
+,3,4,1,image,0,1
+
+sys_file_reference,,,,,,,
+,uid,pid,uid_local,uid_foreign,tablenames,fieldname,sorting_foreign
+,1,2,1,1,tt_content,image,1
+,2,3,1,2,tt_content,image,1
+,3,4,1,3,tt_content,image,1
