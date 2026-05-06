@@ -13,7 +13,7 @@ $EM_CONF['responsive_images'] = [
     'category' => 'fe',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.0-13.4.99',
+            'typo3' => '13.4.0-14.3.99',
         ],
         'conflicts' => [],
     ],
