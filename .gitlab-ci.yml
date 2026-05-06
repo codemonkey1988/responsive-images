@@ -134,6 +134,8 @@ functional-tests:
     expire_in: 1 day
     paths:
       - build/reports/
+      - var/log/
+      - .Build/Web/typo3temp/var/tests/**/typo3temp/var/log/
     when: always
     reports:
       junit: build/reports/phpunit-functional.xml
